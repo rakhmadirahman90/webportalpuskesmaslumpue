@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Instagram, Facebook, Youtube, ExternalLink } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export default function MediaSosial() {
   const [activeTab, setActiveTab] = useState('instagram');

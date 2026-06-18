@@ -52,11 +52,13 @@ export function CMSProvider({ children }: { children: ReactNode }) {
 
   // Fetch from Supabase on mount
   useEffect(() => {
-    supabase
-      .from('cms_settings')
-      .select('*')
-      .eq('id', 'default')
-      .then(({ data, error }) => {
+    const loadData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('cms_settings')
+          .select('*')
+          .eq('id', 'default');
+          
         if (!error && data && data.length > 0) {
           const remoteData = data[0];
           setSiteData({
@@ -67,9 +69,13 @@ export function CMSProvider({ children }: { children: ReactNode }) {
             gallery: remoteData.gallery || defaultSiteData.gallery,
           });
         }
-      })
-      .catch((err) => console.error('Failed to load site data', err))
-      .finally(() => setLoading(false));
+      } catch (err) {
+        console.error('Failed to load site data', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
   }, []);
 
   const updateSection = async (section: string, data: any) => {
