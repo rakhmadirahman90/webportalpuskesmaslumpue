@@ -1,0 +1,86 @@
+import React from 'react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+
+export default function Kontak() {
+  return (
+    <section id="kontak" className="pt-36 pb-24 min-h-[85vh] bg-slate-50 relative border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Hubungi Kami</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Kontak & Lokasi</h2>
+          <p className="text-slate-600 text-lg">
+            Kami siap melayani Anda. Kunjungi puskesmas kami atau hubungi kami melalui kontak yang tersedia untuk informasi lebih lanjut.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Info Kontak & Foto */}
+          <div className="space-y-8">
+            <div className="rounded-3xl overflow-hidden border border-slate-200 shadow-lg relative h-64 sm:h-80 w-full bg-slate-200">
+              <img 
+                src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800" 
+                alt="Gedung UPTD Puskesmas Lumpue" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900/80 to-transparent p-6">
+                <h3 className="text-white font-bold text-xl">Gedung UPTD Puskesmas Lumpue</h3>
+              </div>
+            </div>
+
+            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 flex flex-col">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-50 text-blue-600 p-3 rounded-2xl shrink-0">
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-1">Alamat Lengkap</h4>
+                  <p className="text-slate-600 leading-relaxed">
+                    Jl. Bau Massepe No. 12<br/>
+                    Kelurahan Lumpue, Kecamatan Bacukiki Barat<br/>
+                    Kota Parepare, Sulawesi Selatan 91122
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="bg-green-50 text-green-600 p-3 rounded-2xl shrink-0">
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-1">Telepon / WhatsApp</h4>
+                  <p className="text-slate-600 font-medium">UGB/IGD: 119 / (0421) 21119</p>
+                  <p className="text-slate-500 text-sm">Pelayanan 24 Jam</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="bg-orange-50 text-orange-600 p-3 rounded-2xl shrink-0">
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-1">Email</h4>
+                  <p className="text-slate-600 font-medium">puskesmas.lumpue@pareparekota.go.id</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Maps */}
+          <div className="h-[600px] lg:h-full bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-lg relative min-h-[400px]">
+             <iframe 
+              src="https://maps.google.com/maps?q=Puskesmas+Lumpue+Parepare&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen={true} 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0"
+              title="Peta Lokasi Puskesmas Lumpue"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

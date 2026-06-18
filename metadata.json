@@ -1,0 +1,6 @@
+{
+  "name": "UPTD Puskesmas Lumpue",
+  "description": "Web Portal Informasi UPTD Puskesmas Lumpue, Parepare Interaktif dan Modern sesuai standar Kementerian Kesehatan RI",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

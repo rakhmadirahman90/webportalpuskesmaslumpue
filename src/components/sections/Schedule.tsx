@@ -1,0 +1,135 @@
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import { Calendar, Clock, User, AlertCircle } from 'lucide-react';
+
+export default function Schedule() {
+  const [activeTab, setActiveTab] = useState<'umum' | 'spesialis' | 'kia'>('umum');
+
+  const schedules = {
+    umum: [
+      { name: "dr. Arief Rahman", poly: "Poli Umum 1", days: "Senin - Kamis", hours: "08:00 - 14:00" },
+      { name: "dr. Arief Rahman", poly: "Poli Umum 1", days: "Jumat", hours: "08:00 - 11:30" },
+      { name: "dr. Siti Aminah", poly: "Poli Umum 2", days: "Senin - Sabtu", hours: "08:00 - 13:00" },
+      { name: "drg. Budi Santoso", poly: "Poli Gigi", days: "Senin, Rabu, Jumat", hours: "08:00 - 12:00" },
+    ],
+    spesialis: [
+      { name: "dr. Maya Indah, Sp.A", poly: "Poli Anak", days: "Selasa & Kamis", hours: "09:00 - 12:00" },
+      { name: "dr. Hendra, Sp.PD", poly: "Poli Penyakit Dalam", days: "Senin & Rabu", hours: "10:00 - 13:00" },
+    ],
+    kia: [
+      { name: "Bidan Sinta, Amd.Keb", poly: "Poli KIA", days: "Senin - Sabtu", hours: "08:00 - 13:00" },
+      { name: "Bidan Ningsih, S.ST", poly: "Poli KB / Imunisasi", days: "Selasa & Kamis", hours: "08:00 - 12:00" },
+    ]
+  };
+
+  return (
+    <section id="jadwal" className="pt-36 pb-24 min-h-[85vh] bg-white relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+          {/* Header & Info */}
+          <div className="lg:w-1/3">
+            <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Informasi Praktik</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">Jadwal<br/>Pelayanan & Dokter</h2>
+            <p className="text-slate-600 text-lg mb-8 leading-relaxed">
+              Jadwal dapat berubah sewaktu-waktu. Untuk kepastian, Anda dapat melakukan pemesanan antrean secara online satu hari sebelum kunjungan.
+            </p>
+            
+            <div className="bg-amber-50 border-l-4 border-amber-500 p-5 rounded-r-xl">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="text-amber-500 shrink-0 mt-0.5" size={20} />
+                <div>
+                  <h4 className="font-bold text-amber-900">Perhatian</h4>
+                  <p className="text-amber-800 text-sm mt-1 leading-relaxed">Pendaftaran ditutup 30 menit sebelum jam operasional berakhir. Kuota harian dibatasi sesuai kapasitas puskesmas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Schedule Tables */}
+          <div className="lg:w-2/3">
+            
+            {/* Tabs */}
+            <div className="flex overflow-x-auto pb-2 mb-6 gap-2 hide-scrollbar">
+              {[
+                { id: 'umum', label: 'Poliklinik Umum & Gigi' },
+                { id: 'kia', label: 'KIA & KB' },
+                { id: 'spesialis', label: 'Layanan Spesialis' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as 'umum' | 'spesialis' | 'kia')}
+                  className={`px-6 py-3 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+                    activeTab === tab.id 
+                      ? 'bg-blue-600 text-white shadow-md' 
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Table Content */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-sm">
+                      <th className="p-4 pl-6">Dokter / Tenaga Medis</th>
+                      <th className="p-4">Poliklinik</th>
+                      <th className="p-4">Hari Praktik</th>
+                      <th className="p-4 pr-6">Jam Praktik</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {schedules[activeTab].map((item, idx) => (
+                      <motion.tr 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: idx * 0.05 }}
+                        key={idx} 
+                        className="hover:bg-slate-50 transition-colors"
+                      >
+                        <td className="p-4 pl-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                              <User size={18} />
+                            </div>
+                            <span className="font-bold text-slate-900">{item.name}</span>
+                          </div>
+                        </td>
+                        <td className="p-4 text-slate-600 font-medium">{item.poly}</td>
+                        <td className="p-4 text-slate-600">
+                          <div className="flex items-center gap-2">
+                            <Calendar size={16} className="text-slate-400" />
+                            {item.days}
+                          </div>
+                        </td>
+                        <td className="p-4 pr-6">
+                          <div className="inline-flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">
+                            <Clock size={14} className="text-slate-500" />
+                            {item.hours}
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Empty state fallback if none */}
+              {schedules[activeTab].length === 0 && (
+                <div className="p-12 text-center text-slate-500">
+                  Tidak ada jadwal tersedia untuk kategori ini.
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
