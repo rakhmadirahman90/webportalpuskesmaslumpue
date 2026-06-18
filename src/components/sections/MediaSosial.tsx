@@ -19,7 +19,7 @@ export default function MediaSosial() {
   ];
 
   return (
-    <section id="media-sosial" className="pt-36 pb-24 min-h-[85vh] bg-slate-50 relative border-t border-slate-100">
+    <section id="media-sosial" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Jejaring Sosial</span>
@@ -27,20 +27,22 @@ export default function MediaSosial() {
           <p className="text-slate-600 text-lg">Ikuti kami untuk mendapatkan informasi, berita, dan edukasi kesehatan terbaru dari UPTD Puskesmas Lumpue.</p>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {socials.map(soc => (
-            <a key={soc.id} href={soc.link} target="_blank" rel="noreferrer" className={`block p-8 bg-white border ${activeTab === soc.id ? soc.border + ' shadow-md ring-2 ring-offset-2 ring-blue-500' : 'border-slate-100 shadow-sm'} rounded-3xl hover:shadow-xl transition-all text-center group`}>
-              <div className={`w-20 h-20 mx-auto rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${soc.bg} ${soc.color} shadow-inner`}>
-                <soc.icon size={40} />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2 font-display">{soc.title}</h3>
-              <p className="text-slate-500 font-medium mb-6">@puskesmaslumpue</p>
-              <span className={`inline-flex items-center gap-2 text-sm font-bold ${soc.color}`}>
-                Kunjungi Profil <ExternalLink size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </span>
-            </a>
+        <AnimatePresence mode="wait">
+          {socials.map(soc => activeTab === soc.id && (
+            <motion.div key={soc.id} initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className="max-w-xl mx-auto">
+              <a href={soc.link} target="_blank" rel="noreferrer" className={`block p-10 bg-white border ${soc.border} shadow-xl rounded-3xl hover:shadow-2xl hover:-translate-y-2 transition-all text-center group`}>
+                <div className={`w-28 h-28 mx-auto rounded-full flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 ${soc.bg} ${soc.color} shadow-inner`}>
+                  <soc.icon size={56} />
+                </div>
+                <h3 className="text-3xl font-bold text-slate-900 mb-3 font-display">{soc.title}</h3>
+                <p className="text-slate-500 font-medium mb-8 text-lg">@puskesmaslumpue</p>
+                <div className={`inline-flex items-center gap-2 text-lg font-bold px-8 py-4 rounded-full ${soc.bg} ${soc.color}`}>
+                  Kunjungi Profil <ExternalLink size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </div>
+              </a>
+            </motion.div>
           ))}
-        </div>
+        </AnimatePresence>
       </div>
     </section>
   );

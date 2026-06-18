@@ -97,7 +97,7 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
   );
 
   return hideHeader ? content : (
-    <section id="informasi" className="pt-36 pb-24 min-h-[85vh] bg-slate-50 relative">
+    <section id="informasi" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative">
       {content}
     </section>
   );

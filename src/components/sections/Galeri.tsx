@@ -14,22 +14,18 @@ export default function Galeri() {
   }, []);
 
   return (
-    <section id="galeri" className="pt-36 pb-24 min-h-[85vh] bg-white relative border-t border-slate-100">
+    <section id="galeri" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-white relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Dokumentasi</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Galeri Puskesmas</h2>
         </div>
 
-        <div className="flex justify-center mb-10 gap-4">
-          <button onClick={() => setActiveTab('foto')} className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-colors ${activeTab === 'foto' ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100'}`}><ImageIcon size={18}/> Foto Kegiatan</button>
-          <button onClick={() => setActiveTab('video')} className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-colors ${activeTab === 'video' ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100'}`}><Film size={18}/> Video Edukasi</button>
-        </div>
-
         <AnimatePresence mode="wait">
           {activeTab === 'foto' && (
             <motion.div key="foto" initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="max-h-[60vh] overflow-y-auto overflow-x-hidden custom-scrollbar pr-2 pb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[
                   { id: 1, title: 'Kegiatan Posyandu', sub: 'Layanan Balita', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600' },
                   { id: 2, title: 'Pemeriksaan Kesehatan Lengkap', sub: 'Layanan Umum', img: 'https://plus.unsplash.com/premium_photo-1661764835694-ee2643a1a364?auto=format&fit=crop&q=80&w=600' },
@@ -46,6 +42,7 @@ export default function Galeri() {
                     </div>
                   </div>
                 ))}
+              </div>
               </div>
             </motion.div>
           )}

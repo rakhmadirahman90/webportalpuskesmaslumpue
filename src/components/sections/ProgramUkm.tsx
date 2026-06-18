@@ -64,25 +64,15 @@ export default function ProgramUkm() {
   ];
 
   return (
-    <section id="program-ukm" className="pt-36 pb-24 min-h-[85vh] bg-slate-50 relative border-t border-slate-100">
+    <section id="program-ukm" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Program UKM</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Upaya Kesehatan Masyarakat</h2>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-           <div className="lg:w-1/3 flex overflow-x-auto lg:flex-col gap-2 pb-4 lg:pb-0 hide-scrollbar shrink-0">
-             {programs.map(prog => {
-               const isActive = activeTab === prog.id;
-               return (
-                 <button key={prog.id} onClick={() => setActiveTab(prog.id)} className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-semibold transition-all whitespace-nowrap lg:whitespace-normal text-left ${isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'bg-white text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-100'}`}>
-                   <prog.icon size={20} className={isActive ? 'text-indigo-200' : 'text-slate-400'} /> {prog.title}
-                 </button>
-               )
-             })}
-           </div>
-           <div className="lg:w-2/3 bg-white border border-slate-100 p-6 md:p-10 rounded-3xl shadow-sm">
+        <div className="flex flex-col gap-8 justify-center">
+           <div className="bg-white border border-slate-100 p-6 md:p-10 rounded-3xl shadow-sm max-w-4xl mx-auto w-full max-h-[60vh] overflow-y-auto custom-scrollbar">
              <AnimatePresence mode="wait">
                {programs.map(prog => activeTab === prog.id && (
                  <motion.div key={prog.id} initial={{opacity: 0, x: 20}} animate={{opacity: 1, x: 0}} exit={{opacity: 0, x: -20}} className="space-y-6">

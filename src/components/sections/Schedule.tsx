@@ -23,7 +23,7 @@ export default function Schedule() {
   };
 
   return (
-    <section id="jadwal" className="pt-36 pb-24 min-h-[85vh] bg-white relative">
+    <section id="jadwal" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">

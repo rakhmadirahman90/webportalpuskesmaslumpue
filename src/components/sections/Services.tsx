@@ -49,7 +49,7 @@ export default function Services() {
   ];
 
   return (
-    <section id="layanan" className="pt-36 pb-24 min-h-[85vh] bg-slate-50 relative">
+    <section id="layanan" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Cakupan Layanan</span>

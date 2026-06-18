@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 export default function Kontak() {
   return (
-    <section id="kontak" className="pt-36 pb-24 min-h-[85vh] bg-slate-50 relative border-t border-slate-100">
+    <section id="kontak" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Hubungi Kami</span>

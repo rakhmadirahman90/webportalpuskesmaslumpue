@@ -17,16 +17,11 @@ export default function Publikasi() {
   }, []);
 
   return (
-    <section id="publikasi" className="pt-36 pb-24 min-h-[85vh] bg-slate-50 relative border-t border-slate-100">
+    <section id="publikasi" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Publikasi</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Berita & Pengumuman</h2>
-        </div>
-
-        <div className="flex flex-wrap justify-center mb-8 gap-4">
-          <button onClick={() => setActiveTab('berita')} className={`px-6 py-2.5 rounded-full font-semibold transition-colors ${activeTab === 'berita' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'}`}>Berita & Artikel</button>
-          <button onClick={() => setActiveTab('pengumuman')} className={`px-6 py-2.5 rounded-full font-semibold transition-colors ${activeTab === 'pengumuman' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'}`}>Pengumuman</button>
         </div>
 
         <AnimatePresence mode="wait">
@@ -37,7 +32,7 @@ export default function Publikasi() {
           )}
           {activeTab === 'pengumuman' && (
             <motion.div key="pengumuman" initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}}>
-                <div className="space-y-4 text-left">
+                <div className="space-y-4 text-left max-h-[60vh] overflow-y-auto pr-2">
                   <h3 className="text-2xl font-bold text-slate-800 mb-6 font-display px-2">Daftar Pengumuman</h3>
                   {[
                     { id: 1, title: 'Jadwal Pelayanan Vaksinasi COVID-19 Booster Kedua', date: '15 June 2026', type: 'Penting' },
