@@ -53,19 +53,53 @@ export default function Profile() {
 
   const pegawaiData = profileData.pegawaiData || defaultPegawaiData;
 
+  const profileTabs = [
+    { id: 'selayang-pandang', name: 'Selayang Pandang' },
+    { id: 'visi-misi', name: 'Visi & Misi' },
+    { id: 'tujuan', name: 'Tujuan' },
+    { id: 'tata-nilai', name: 'Tata Nilai' },
+    { id: 'motto', name: 'Motto' },
+    { id: 'kebijakan-mutu', name: 'Kebijakan Mutu' },
+    { id: 'struktur', name: 'Struktur Organisasi' },
+    { id: 'pegawai', name: 'Data Pegawai' },
+  ];
+
   return (
-    <section id="profil" className="min-h-[calc(100vh-80px)] xl:h-[calc(100vh-80px)] mt-20 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100 py-8 lg:py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="profil" className="min-h-screen mt-20 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100 py-10 lg:py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
-        <div className="text-center mb-12">
-          <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Profil Kami</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Mengenal Lebih Dekat</h2>
-          <p className="text-slate-600 text-lg">
+        <div className="text-center mb-10">
+          <span className="text-blue-600 font-bold tracking-wider uppercase text-xs sm:text-sm mb-2 block">Profil Kami</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Mengenal Lebih Dekat</h2>
+          <p className="text-slate-600 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Informasi lengkap mengenai profil, visi misi, hingga struktur organisasi UPTD Puskesmas Lumpue.
           </p>
         </div>
 
-        <div className="bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 min-h-[400px] max-h-[60vh] overflow-y-auto custom-scrollbar">
+        {/* Horizontal Navigation Tabs (Swipeable/Scrollable on Mobile) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 hide-scrollbar px-1 -mx-4 sm:mx-0 sm:px-0 sm:justify-center w-[calc(100%+32px)] sm:w-full">
+          {profileTabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setSelectedRole(null);
+                }}
+                className={`px-4 py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all whitespace-nowrap shrink-0 border shadow-sm ${
+                  isActive
+                    ? "bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-600/15"
+                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                }`}
+              >
+                {tab.name}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="bg-white p-4 sm:p-6 md:p-10 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-100 min-h-[300px] sm:min-h-[400px] max-h-[65vh] overflow-y-auto custom-scrollbar">
           <AnimatePresence mode="wait">
             {activeTab === 'selayang-pandang' && (
               <motion.div
@@ -260,9 +294,9 @@ export default function Profile() {
                     {(profileData.strukturOrganisasi?.pengurus || []).map((p: any, idx: number) => (
                      <div key={idx} className={`bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow ${idx === (profileData.strukturOrganisasi.pengurus.length - 1) && profileData.strukturOrganisasi.pengurus.length % 2 !== 0 ? 'sm:col-span-2 lg:col-span-2 max-w-xl mx-auto w-full' : ''}`}>
                       <img src={p.photo || 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400'} alt={p.name} onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400' }} className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
-                      <div>
-                        <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">{p.role}</span>
-                        <span className="text-base font-bold text-slate-900 leading-tight">{p.name}</span>
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[10px] sm:text-xs font-extrabold text-blue-600 mb-1 inline-block uppercase tracking-wider bg-blue-50 px-2.5 py-0.5 rounded-full w-fit max-w-full break-words leading-tight">{p.role}</span>
+                        <span className="text-sm sm:text-base font-bold text-slate-900 leading-tight block mt-0.5 break-words">{p.name}</span>
                       </div>
                     </div>
                    ))}
@@ -335,10 +369,10 @@ export default function Profile() {
                           className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner"
                           onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400' }}
                         />
-                        <div>
-                          <h4 className="font-bold text-slate-900 leading-tight">{p.name}</h4>
-                          <span className="text-sm font-medium text-blue-600 block mt-0.5">{p.role}</span>
-                          {p.nip && <span className="text-xs text-slate-500 block mt-1">NIP. {p.nip}</span>}
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-bold text-slate-900 leading-tight break-words">{p.name}</h4>
+                          <span className="text-sm font-medium text-blue-600 block mt-0.5 break-words">{p.role}</span>
+                          {p.nip && <span className="text-xs text-slate-500 block mt-1 break-all">NIP. {p.nip}</span>}
                         </div>
                       </div>
                     )) : (

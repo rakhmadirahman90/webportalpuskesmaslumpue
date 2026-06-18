@@ -18,6 +18,8 @@ import {
   Trash2,
   Plus,
   HelpCircle,
+  Menu,
+  X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
@@ -40,6 +42,7 @@ export default function Admin() {
   const navigate = useNavigate();
   const { siteData, updateSection } = useCMS();
   const [activeTab, setActiveTab] = useState("hero");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Form states mapping to contexts
   const [formHero, setFormHero] = useState(siteData.hero || {});
@@ -135,28 +138,128 @@ export default function Admin() {
         </div>
       </aside>
 
+      {/* Sidebar Mobile Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] md:hidden"
+            />
+            
+            {/* Drawer */}
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", bounce: 0, duration: 0.35 }}
+              className="fixed top-0 left-0 bottom-0 w-[80%] max-w-xs bg-white shadow-2xl border-r border-slate-100 overflow-y-auto z-[110] md:hidden flex flex-col"
+            >
+              {/* Header Drawer */}
+              <div className="sticky top-0 bg-white border-b border-slate-100 z-20 px-5 py-4 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="bg-blue-600 p-1.5 rounded-lg text-white shadow-sm shadow-blue-600/10">
+                    <Activity size={18} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-extrabold text-blue-600 tracking-wide uppercase leading-none mb-0.5">
+                      Portal Admin
+                    </span>
+                    <span className="font-bold text-sm text-slate-900 tracking-tight leading-none">
+                      Puskesmas Lumpue
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-1.5 text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50/50 rounded-xl transition-all border border-slate-100"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Navigation */}
+              <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-3 px-3">
+                  Modules
+                </div>
+                {tabs.map((tab) => {
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        setActiveTab(tab.id);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                        isActive
+                          ? "bg-blue-50 text-blue-700 shadow-sm shadow-blue-100/30"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      }`}
+                    >
+                      <tab.icon
+                        size={16}
+                        className={isActive ? "text-blue-600" : "text-slate-400"}
+                      />
+                      <span>{tab.name}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+
+              {/* Footer Drawer */}
+              <div className="p-4 border-t border-slate-100">
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all font-semibold text-xs border border-red-100"
+                >
+                  <LogOut size={14} /> Logout
+                </button>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto w-full relative h-screen">
-        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 py-5 flex items-center justify-between sticky top-0 z-10 w-full">
-          <h2 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
-            <span className="md:hidden text-blue-600 mr-2">
-              <Activity size={24} />
-            </span>
-            {tabs.find((t) => t.id === activeTab)?.name}
-          </h2>
+        <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 sm:px-6 md:px-8 md:py-5 flex items-center justify-between sticky top-0 z-30 w-full">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden p-2 -ml-1 text-slate-600 hover:bg-slate-100 rounded-xl transition-all"
+            >
+              <Menu size={20} />
+            </button>
+            <h2 className="text-base sm:text-lg md:text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
+              <span className="hidden md:flex text-blue-600">
+                <Activity size={24} />
+              </span>
+              {tabs.find((t) => t.id === activeTab)?.name}
+            </h2>
+          </div>
           <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Administrator Staff</span>
             <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
               A
             </div>
           </div>
         </header>
 
-        <div className="p-6 md:p-10 max-w-5xl mx-auto w-full pb-24">
-          <div className="mb-8">
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight font-display">
+        <div className="p-4 sm:p-6 md:p-10 max-w-5xl mx-auto w-full pb-24">
+          <div className="mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
               Manajemen {tabs.find((t) => t.id === activeTab)?.name}
             </h2>
-            <p className="text-slate-500 mt-2 text-sm max-w-2xl">
+            <p className="text-slate-500 mt-1 sm:mt-2 text-xs sm:text-sm max-w-2xl">
               Perbarui konten modul melalui form di bawah ini agar perubahan
               dapat langsung terlihat di halaman publikasi utama.
             </p>
@@ -167,7 +270,7 @@ export default function Admin() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 w-full"
+            className="bg-white p-4 sm:p-8 rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 w-full"
           >
             {activeTab === "hero" && (
               <div className="space-y-6">

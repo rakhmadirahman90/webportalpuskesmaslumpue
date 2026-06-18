@@ -49,7 +49,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative pt-12 pb-10 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-24 overflow-hidden items-center flex h-[100svh] min-h-[100svh] lg:h-auto"
+      className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 overflow-hidden items-center flex min-h-screen lg:min-h-0 lg:h-auto"
     >
       {/* Full Background Slider */}
       <div className="absolute inset-0 z-0 bg-slate-900">
