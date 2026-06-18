@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, User } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import bcrypt from 'bcryptjs';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -9,25 +11,40 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    // Seed admin if empty
+    supabase.from('admins').select('*').then(async ({ data, error }) => {
+      if (!error && data && data.length === 0) {
+        const hash = await bcrypt.hash('admin123', 10);
+        await supabase.from('admins').insert([{ username: 'admin', password: hash }]);
+        console.log('Default admin seeded.');
+      }
+    });
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
     
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
+      const { data: adminRows, error: fetchErr } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('username', username);
+        
+      if (fetchErr || !adminRows || adminRows.length === 0) {
+        throw new Error('Username atau password salah');
+      }
+
+      const admin = adminRows[0];
+      const match = await bcrypt.compare(password, admin.password);
       
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed. Please try again.');
+      if (!match) {
+        throw new Error('Username atau password salah');
       }
       
-      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('auth_token', 'frontend-token');
       localStorage.setItem('isAuthenticated', 'true');
       navigate('/admin');
     } catch (err: any) {

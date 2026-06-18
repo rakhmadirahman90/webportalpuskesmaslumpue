@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '../lib/supabase';
 
 // Default initial data for the entire site
 const defaultSiteData = {
@@ -49,18 +50,21 @@ export function CMSProvider({ children }: { children: ReactNode }) {
   const [siteData, setSiteData] = useState<any>(defaultSiteData);
   const [loading, setLoading] = useState(true);
 
-  // Fetch from the server on mount
+  // Fetch from Supabase on mount
   useEffect(() => {
-    fetch('/api/site-data')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && !data.error) {
+    supabase
+      .from('cms_settings')
+      .select('*')
+      .eq('id', 'default')
+      .then(({ data, error }) => {
+        if (!error && data && data.length > 0) {
+          const remoteData = data[0];
           setSiteData({
-            hero: data.hero || defaultSiteData.hero,
-            profile: data.profile || defaultSiteData.profile,
-            services: data.services || defaultSiteData.services,
-            news: data.news || defaultSiteData.news,
-            gallery: data.gallery || defaultSiteData.gallery,
+            hero: remoteData.hero || defaultSiteData.hero,
+            profile: remoteData.profile || defaultSiteData.profile,
+            services: remoteData.services || defaultSiteData.services,
+            news: remoteData.news || defaultSiteData.news,
+            gallery: remoteData.gallery || defaultSiteData.gallery,
           });
         }
       })
@@ -74,19 +78,28 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setSiteData(newData);
     
     // Remote update
-    const token = localStorage.getItem('auth_token');
     try {
-      const response = await fetch('/api/site-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ section, data })
-      });
-      if (!response.ok) {
-        console.error('Failed to save to database');
-        alert('Gagal menyimpan ke database. Anda mungkin belum login dengan benar.');
+      const { data: current, error: currentErr } = await supabase
+        .from('cms_settings')
+        .select('*')
+        .eq('id', 'default');
+        
+      if (currentErr) throw currentErr;
+      
+      let updatePayload: any = {};
+      
+      if (!current || current.length === 0) {
+        // Initial insert
+        updatePayload = { id: 'default', [section]: data };
+        const { error: insErr } = await supabase.from('cms_settings').insert([updatePayload]);
+        if (insErr) throw insErr;
+      } else {
+        updatePayload = { [section]: data, updated_at: new Date().toISOString() };
+        const { error: upErr } = await supabase
+          .from('cms_settings')
+          .update(updatePayload)
+          .eq('id', 'default');
+        if (upErr) throw upErr;
       }
     } catch (err) {
       console.error(err);
