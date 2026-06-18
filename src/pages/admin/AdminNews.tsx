@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import ImageUpload from '../../components/ImageUpload';
 
 export default function AdminNews() {
   const { siteData, updateSection } = useCMS();
@@ -48,7 +49,11 @@ export default function AdminNews() {
           <input className="w-full border p-2 rounded" placeholder="Kategori" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} />
           <input className="w-full border p-2 rounded" placeholder="Tanggal (cth: 12 Okt 2026)" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
         </div>
-        <input className="w-full border p-2 rounded" placeholder="URL Gambar" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} />
+        <ImageUpload 
+           label="Foto / Gambar Publikasi" 
+           value={formData.image} 
+           onChange={val => setFormData({...formData, image: val})} 
+        />
         <textarea className="w-full border p-2 rounded" placeholder="Kutipan (Excerpt)" value={formData.excerpt} onChange={e => setFormData({...formData, excerpt: e.target.value})} />
         <div className="flex gap-2">
           <button onClick={submitEdit} className="bg-blue-600 text-white px-4 py-2 rounded">Simpan Item</button>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import ImageUpload from '../../components/ImageUpload';
 
 export default function AdminGallery() {
   const { siteData, updateSection } = useCMS();
@@ -47,8 +48,11 @@ export default function AdminGallery() {
         <h3 className="text-lg font-bold">Edit Foto</h3>
         <input className="w-full border p-2 rounded" placeholder="Judul Foto" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
         <input className="w-full border p-2 rounded" placeholder="Poli/Kategori (Sub)" value={formData.sub} onChange={e => setFormData({...formData, sub: e.target.value})} />
-        <input className="w-full border p-2 rounded" placeholder="URL Gambar" value={formData.img} onChange={e => setFormData({...formData, img: e.target.value})} />
-        {formData.img && <img src={formData.img} alt="preview" className="h-40 rounded" />}
+        <ImageUpload 
+          label="Foto / Gambar" 
+          value={formData.img || ''} 
+          onChange={val => setFormData({...formData, img: val})} 
+        />
         <div className="flex gap-2">
           <button onClick={submitEdit} className="bg-blue-600 text-white px-4 py-2 rounded">Simpan Item</button>
           <button onClick={() => setEditingId(null)} className="bg-slate-200 px-4 py-2 rounded">Batal</button>
@@ -80,13 +84,32 @@ export default function AdminGallery() {
       </div>
       
       <div className="border-t pt-6 mt-6">
-         <h3 className="font-bold text-lg mb-4">Daftar ID Video (YouTube)</h3>
-         <div className="text-sm text-slate-600 mb-2">Masukkan ID Video, pisahkan dengan koma.</div>
-         <input 
-           className="w-full border p-2 rounded" 
-           value={data.video?.join(', ') || ''} 
-           onChange={e => setData({...data, video: e.target.value.split(',').map(s=>s.trim()).filter(Boolean)})} 
-         />
+         <h3 className="font-bold text-lg mb-4">Daftar Link Video (YouTube)</h3>
+         <div className="space-y-3">
+           {(data.video || []).map((vid: string, idx: number) => (
+              <div key={idx} className="flex gap-2">
+                 <input 
+                   className="flex-grow border p-2 rounded" 
+                   placeholder="https://youtube.com/watch?v=..."
+                   value={vid} 
+                   onChange={(e) => {
+                     const updated = [...data.video];
+                     updated[idx] = e.target.value;
+                     setData({...data, video: updated});
+                   }} 
+                 />
+                 <button onClick={() => {
+                    const updated = data.video.filter((_: any, i: number) => i !== idx);
+                    setData({...data, video: updated});
+                 }} className="bg-red-50 text-red-600 px-3 rounded hover:bg-red-100 transition"><Trash2 size={16}/></button>
+              </div>
+           ))}
+           <button onClick={() => {
+              setData({...data, video: [...(data.video || []), '']});
+           }} className="text-sm font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-100 transition">
+             <Plus size={16} /> Tambah Video
+           </button>
+         </div>
       </div>
 
       <button onClick={handleSave} className="bg-blue-600 text-white px-6 py-2 rounded mt-8 w-full flex justify-center items-center gap-2">

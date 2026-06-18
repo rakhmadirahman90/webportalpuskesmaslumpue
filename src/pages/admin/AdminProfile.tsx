@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Save, Plus, Trash2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import ImageUpload from '../../components/ImageUpload';
 
 export default function AdminProfile() {
   const { siteData, updateSection } = useCMS();
@@ -127,42 +128,130 @@ export default function AdminProfile() {
         
         <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl">
           <h4 className="font-semibold text-blue-800 mb-2">Kepala Puskesmas</h4>
-          <div className="grid grid-cols-2 gap-2 mb-2">
+          <div className="grid grid-cols-2 gap-2 mb-4">
             <input className="border p-2 rounded" placeholder="Nama Kepala" value={data.strukturOrganisasi?.kepala?.name || ''} onChange={e => setStruktur('kepala', {...data.strukturOrganisasi?.kepala, name: e.target.value})} />
             <input className="border p-2 rounded" placeholder="Jabatan/Role" value={data.strukturOrganisasi?.kepala?.role || ''} onChange={e => setStruktur('kepala', {...data.strukturOrganisasi?.kepala, role: e.target.value})} />
           </div>
-          <input className="w-full border p-2 rounded" placeholder="URL Foto Kepala" value={data.strukturOrganisasi?.kepala?.photo || ''} onChange={e => setStruktur('kepala', {...data.strukturOrganisasi?.kepala, photo: e.target.value})} />
+          <ImageUpload 
+            label="Foto Kepala"
+            value={data.strukturOrganisasi?.kepala?.photo || ''} 
+            onChange={val => setStruktur('kepala', {...data.strukturOrganisasi?.kepala, photo: val})} 
+          />
         </div>
 
         <div className="space-y-2">
           <h4 className="font-semibold text-slate-700">Daftar Pengurus Lainnya</h4>
           {(data.strukturOrganisasi?.pengurus || []).map((p: any, idx: number) => (
-            <div key={idx} className="bg-slate-50 border p-3 rounded-lg flex items-center gap-2">
-              <img src={p.photo} alt="" className="w-10 h-10 rounded-full object-cover bg-slate-200" />
-              <div className="flex-grow grid grid-cols-2 gap-2">
-                <input className="border p-2 rounded text-sm" placeholder="Nama" value={p.name} onChange={e => handlePengurusChange(idx, 'name', e.target.value)} />
-                <input className="border p-2 rounded text-sm" placeholder="Jabatan" value={p.role} onChange={e => handlePengurusChange(idx, 'role', e.target.value)} />
-                <input className="border p-2 rounded text-sm col-span-2" placeholder="URL Foto" value={p.photo} onChange={e => handlePengurusChange(idx, 'photo', e.target.value)} />
+            <div key={idx} className="bg-slate-50 border p-3 rounded-lg flex flex-col gap-3">
+              <div className="flex justify-between items-center">
+                 <h5 className="font-bold text-sm text-slate-700">Pengurus {idx + 1}</h5>
+                 <button onClick={() => removePengurus(idx)} className="p-2 text-red-600 hover:bg-red-100 rounded text-xs px-3">Hapus</button>
               </div>
-              <button onClick={() => removePengurus(idx)} className="p-2 text-red-600 bg-red-100 rounded self-start"><Trash2 size={16}/></button>
+              <div className="flex items-start gap-4 flex-col sm:flex-row">
+                <div className="w-full sm:w-1/3 shrink-0">
+                  <ImageUpload 
+                     value={p.photo} 
+                     onChange={val => handlePengurusChange(idx, 'photo', val)} 
+                  />
+                </div>
+                <div className="flex-grow grid grid-cols-1 gap-2 w-full">
+                  <input className="border p-2 rounded text-sm w-full" placeholder="Nama" value={p.name} onChange={e => handlePengurusChange(idx, 'name', e.target.value)} />
+                  <input className="border p-2 rounded text-sm w-full" placeholder="Jabatan" value={p.role} onChange={e => handlePengurusChange(idx, 'role', e.target.value)} />
+                </div>
+              </div>
             </div>
           ))}
           <button onClick={addPengurus} className="text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded mt-2">+ Tambah Pengurus</button>
         </div>
       </div>
 
-      <div className="space-y-2 border-t pt-4">
-        <label className="block text-sm font-semibold text-slate-700">Data Pegawai Lengkap (JSON)</label>
-        <textarea
-          rows={6}
-          value={typeof data.pegawaiData === 'object' ? JSON.stringify(data.pegawaiData, null, 2) : ''}
-          onChange={(e) => {
-            try {
-              setData({...data, pegawaiData: JSON.parse(e.target.value)});
-            } catch (err) {}
-          }}
-          className="w-full font-mono border border-slate-300 rounded-xl p-3.5 text-xs bg-slate-50 outline-none"
-        />
+      <div className="space-y-4 border-t pt-6">
+        <div>
+           <label className="block text-lg font-bold text-slate-800">Manajemen Data Pegawai</label>
+           <p className="text-sm text-slate-500 mt-1">Kelola divisi, jabatan, dan daftar pegawai secara terstruktur.</p>
+        </div>
+        
+        <div className="space-y-6">
+          <div className="flex gap-2">
+            <input 
+              id="new-role-input"
+              className="border p-3 rounded-lg text-sm w-64 outline-none focus:border-blue-500" 
+              placeholder="Nama Divisi/Poli Baru" 
+            />
+            <button 
+              onClick={() => {
+                const input = document.getElementById('new-role-input') as HTMLInputElement;
+                if(input.value) {
+                   setData({...data, pegawaiData: {...(data.pegawaiData||{}), [input.value]: []}});
+                   input.value = '';
+                }
+              }} 
+              className="bg-slate-800 text-white px-4 py-2 flex items-center gap-2 rounded-lg text-sm font-semibold hover:bg-slate-700 transition"
+            >
+              <Plus size={16}/> Tambah Divisi
+            </button>
+          </div>
+
+          {Object.keys(data.pegawaiData || {}).map((role) => (
+             <div key={role} className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="bg-slate-100 px-5 py-3.5 font-bold flex justify-between items-center">
+                   <span className="text-slate-800">{role}</span>
+                   <button onClick={() => {
+                      if(confirm(`Hapus divisi "${role}" beserta pegawainya?`)) {
+                         const newData = {...data.pegawaiData};
+                         delete newData[role];
+                         setData({...data, pegawaiData: newData});
+                      }
+                   }} className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition">
+                     <Trash2 size={18} />
+                   </button>
+                </div>
+                <div className="p-5 space-y-4">
+                   {(data.pegawaiData[role] || []).map((peg: any, pIdx: number) => (
+                      <div key={pIdx} className="bg-white border border-slate-200 shadow-sm p-4 rounded-xl flex flex-col md:flex-row gap-4 items-start">
+                         <div className="w-full md:w-48 shrink-0">
+                           <ImageUpload 
+                              value={peg.photo || ''} 
+                              onChange={(val) => {
+                                 const updated = [...data.pegawaiData[role]];
+                                 updated[pIdx].photo = val;
+                                 setData({...data, pegawaiData: {...data.pegawaiData, [role]: updated}});
+                              }}
+                           />
+                         </div>
+                         <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
+                            <input className="border border-slate-300 p-2.5 rounded-lg text-sm w-full outline-none focus:border-blue-500" placeholder="Nama Lengkap Pegawai" value={peg.name} onChange={(e) => {
+                                 const updated = [...data.pegawaiData[role]];
+                                 updated[pIdx].name = e.target.value;
+                                 setData({...data, pegawaiData: {...data.pegawaiData, [role]: updated}});
+                            }} />
+                            <input className="border border-slate-300 p-2.5 rounded-lg text-sm w-full outline-none focus:border-blue-500" placeholder="Jabatan Spesifik" value={peg.role} onChange={(e) => {
+                                 const updated = [...data.pegawaiData[role]];
+                                 updated[pIdx].role = e.target.value;
+                                 setData({...data, pegawaiData: {...data.pegawaiData, [role]: updated}});
+                            }} />
+                            <input className="border border-slate-300 p-2.5 rounded-lg text-sm md:col-span-2 w-full outline-none focus:border-blue-500" placeholder="NIP (Opsional)" value={peg.nip || ''} onChange={(e) => {
+                                 const updated = [...data.pegawaiData[role]];
+                                 updated[pIdx].nip = e.target.value;
+                                 setData({...data, pegawaiData: {...data.pegawaiData, [role]: updated}});
+                            }} />
+                         </div>
+                         <button onClick={() => {
+                             const updated = data.pegawaiData[role].filter((_:any, i:number) => i !== pIdx);
+                             setData({...data, pegawaiData: {...data.pegawaiData, [role]: updated}});
+                         }} className="text-red-500 border border-red-200 hover:bg-red-50 p-2 rounded-lg self-start transition"><Trash2 size={16} /></button>
+                      </div>
+                   ))}
+                   <button onClick={() => {
+                       const updated = [...(data.pegawaiData[role] || []), {name: '', role: '', nip: '', photo: ''}];
+                       setData({...data, pegawaiData: {...data.pegawaiData, [role]: updated}});
+                   }} className="text-blue-600 bg-blue-50 hover:bg-blue-100 transition font-semibold text-sm px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-blue-100">
+                     <Plus size={16} /> Tambah Daftar Pegawai
+                   </button>
+                </div>
+             </div>
+          ))}
+        </div>
       </div>
 
       <button onClick={handleSave} className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-semibold w-full flex items-center justify-center gap-2">

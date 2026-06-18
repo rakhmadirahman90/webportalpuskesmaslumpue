@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Save } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import ImageUpload from '../../components/ImageUpload';
 
 export default function AdminContact() {
   const { siteData, updateSection } = useCMS();
@@ -42,13 +43,11 @@ export default function AdminContact() {
           />
         </div>
         <div>
-          <label className="block text-sm font-semibold mb-1">URL Gambar Gedung Puskesmas</label>
-          <input 
-            className="w-full border p-2 rounded" 
-            value={data.gambarGedung || ''} 
-            onChange={e => setData({...data, gambarGedung: e.target.value})} 
+          <ImageUpload 
+             label="Foto Gedung Puskesmas" 
+             value={data.gambarGedung || ''} 
+             onChange={val => setData({...data, gambarGedung: val})} 
           />
-          {data.gambarGedung && <img src={data.gambarGedung} alt="preview" className="h-40 rounded mt-2" />}
         </div>
         <div>
           <label className="block text-sm font-semibold mb-1">URL Embed Google Maps (Src dari Iframe)</label>
