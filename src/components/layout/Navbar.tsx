@@ -49,6 +49,17 @@ export default function Navbar({ activePage }: { activePage?: string }) {
         { name: 'Data Pegawai', tabId: 'pegawai' }
       ]
     },
+    {
+      name: 'Layanan & Fasilitas',
+      href: '#layanan',
+      page: 'layanan',
+      subLinks: [
+        { name: 'Layanan Utama', tabId: 'layanan', href: '#layanan' },
+        { name: 'Fasilitas Kami', tabId: 'fasilitas', href: '#fasilitas' },
+        { name: 'Tim Medis', tabId: 'tim-medis', href: '#tim-medis' },
+        { name: 'Jadwal Pelayanan', tabId: 'jadwal', href: '#jadwal' }
+      ]
+    },
     { 
       name: 'Publikasi', 
       href: '#publikasi',

@@ -245,9 +245,10 @@ export default function Profile() {
                     <div className="bg-white border border-blue-100 shadow-lg shadow-blue-50 px-8 py-6 rounded-3xl flex flex-col items-center text-center max-w-sm w-full relative overflow-hidden">
                       <div className="absolute top-0 w-full h-24 bg-blue-50 left-0 -z-10"></div>
                       <img 
-                        src={profileData.strukturOrganisasi.kepala.photo} 
+                        src={profileData.strukturOrganisasi.kepala.photo || 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400'} 
                         alt={profileData.strukturOrganisasi.kepala.name} 
                         className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-4"
+                        onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400' }}
                       />
                       <span className="text-sm font-bold text-blue-600 mb-1 uppercase tracking-wider bg-blue-50 px-3 py-1 rounded-full">{profileData.strukturOrganisasi.kepala.role}</span>
                       <span className="text-xl font-bold text-slate-900 mt-2">{profileData.strukturOrganisasi.kepala.name}</span>
@@ -258,7 +259,7 @@ export default function Profile() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     {(profileData.strukturOrganisasi?.pengurus || []).map((p: any, idx: number) => (
                      <div key={idx} className={`bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow ${idx === (profileData.strukturOrganisasi.pengurus.length - 1) && profileData.strukturOrganisasi.pengurus.length % 2 !== 0 ? 'sm:col-span-2 lg:col-span-2 max-w-xl mx-auto w-full' : ''}`}>
-                      <img src={p.photo} alt={p.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
+                      <img src={p.photo || 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400'} alt={p.name} onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400' }} className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
                       <div>
                         <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">{p.role}</span>
                         <span className="text-base font-bold text-slate-900 leading-tight">{p.name}</span>
@@ -329,9 +330,10 @@ export default function Profile() {
                     {pegawaiData[selectedRole] ? pegawaiData[selectedRole].map((p, idx) => (
                       <div key={idx} className="flex items-center gap-4 p-4 border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow">
                         <img 
-                          src={p.photo} 
+                          src={p.photo || 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400'} 
                           alt={p.name} 
                           className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner"
+                          onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400' }}
                         />
                         <div>
                           <h4 className="font-bold text-slate-900 leading-tight">{p.name}</h4>

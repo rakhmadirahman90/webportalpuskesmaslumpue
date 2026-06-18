@@ -22,11 +22,21 @@ export default function AdminGallery() {
 
   const handleAdd = () => {
     setEditingId('new');
-    setFormData({ id: Date.now(), title: '', sub: '', img: '' });
+    setFormData({ id: Date.now(), title: '', sub: '', img: '', content: '' });
+  };
+
+  const handleAddVideo = () => {
+    setEditingId('new_vid');
+    setFormData({ id: Date.now(), title: '', url: '', content: '' });
   };
 
   const handleEdit = (item: any) => {
     setEditingId(item.id);
+    setFormData(item);
+  };
+
+  const handleEditVideo = (item: any) => {
+    setEditingId(`vid_${item.id}`);
     setFormData(item);
   };
 
@@ -36,9 +46,20 @@ export default function AdminGallery() {
     }
   };
 
+  const handleDeleteVideo = (id: any) => {
+    if (confirm('Hapus video ini?')) {
+      setData({...data, video: data.video.filter((i:any) => i.id !== id)});
+    }
+  };
+
   const submitEdit = () => {
     if (editingId === 'new') {
       setData({...data, foto: [...data.foto, formData]});
+    } else if (editingId === 'new_vid') {
+      setData({...data, video: [...(data.video || []), formData]});
+    } else if (typeof editingId === 'string' && editingId.startsWith('vid_')) {
+      const realId = editingId.replace('vid_', '');
+      setData({...data, video: data.video.map((i:any) => i.id.toString() === realId ? formData : i)});
     } else {
       setData({...data, foto: data.foto.map((i:any) => i.id === editingId ? formData : i)});
     }
@@ -46,11 +67,27 @@ export default function AdminGallery() {
   };
 
   if (editingId) {
+    if (editingId.startsWith && editingId.startsWith('vid_')) {
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold">Edit Video</h3>
+          <input className="w-full border p-2 rounded" placeholder="Judul Video" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+          <input className="w-full border p-2 rounded" placeholder="URL YouTube (https://www.youtube.com/watch?v=...)" value={formData.url} onChange={e => setFormData({...formData, url: e.target.value})} />
+          <textarea rows={4} className="w-full border p-2 rounded" placeholder="Deskripsi Video" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
+          <div className="flex gap-2">
+            <button onClick={submitEdit} className="bg-blue-600 text-white px-4 py-2 rounded">Simpan Item</button>
+            <button onClick={() => setEditingId(null)} className="bg-slate-200 px-4 py-2 rounded">Batal</button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-4">
         <h3 className="text-lg font-bold">Edit Foto</h3>
         <input className="w-full border p-2 rounded" placeholder="Judul Foto" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
         <input className="w-full border p-2 rounded" placeholder="Poli/Kategori (Sub)" value={formData.sub} onChange={e => setFormData({...formData, sub: e.target.value})} />
+        <textarea rows={4} className="w-full border p-2 rounded" placeholder="Deskripsi Foto" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
         <ImageUpload 
           label="Foto / Gambar" 
           value={formData.img || ''} 
@@ -73,7 +110,7 @@ export default function AdminGallery() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {data.foto.map((item:any, idx:number) => (
           <div key={idx} className="border p-2 rounded bg-slate-50 flex flex-col gap-2 relative group">
-            <img src={item.img} alt={item.title} className="w-full aspect-video object-cover rounded" />
+            <img src={item.img} alt={item.title} className="w-full aspect-video object-cover rounded" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=400' }} />
             <div className="p-2">
               <div className="font-bold text-sm truncate">{item.title}</div>
               <div className="text-xs text-slate-500 truncate">{item.sub}</div>
@@ -87,31 +124,22 @@ export default function AdminGallery() {
       </div>
       
       <div className="border-t pt-6 mt-6">
-         <h3 className="font-bold text-lg mb-4">Daftar Link Video (YouTube)</h3>
-         <div className="space-y-3">
-           {(data.video || []).map((vid: string, idx: number) => (
-              <div key={idx} className="flex gap-2">
-                 <input 
-                   className="flex-grow border p-2 rounded" 
-                   placeholder="https://youtube.com/watch?v=..."
-                   value={vid} 
-                   onChange={(e) => {
-                     const updated = [...data.video];
-                     updated[idx] = e.target.value;
-                     setData({...data, video: updated});
-                   }} 
-                 />
-                 <button onClick={() => {
-                    const updated = data.video.filter((_: any, i: number) => i !== idx);
-                    setData({...data, video: updated});
-                 }} className="bg-red-50 text-red-600 px-3 rounded hover:bg-red-100 transition"><Trash2 size={16}/></button>
-              </div>
+         <div className="flex justify-between items-center mb-4">
+           <h3 className="font-bold text-lg">Daftar Link Video (YouTube)</h3>
+           <button onClick={handleAddVideo} className="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"><Plus size={16}/> Tambah Video</button>
+         </div>
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+           {(data.video || []).map((vid: any, idx: number) => (
+             <div key={idx} className="border p-4 rounded bg-slate-50 flex flex-col gap-2 relative group">
+               <div className="font-bold text-md truncate">{vid.title || 'Video Tanpa Judul'}</div>
+               <div className="text-sm text-blue-600 truncate">{vid.url}</div>
+               <div className="text-sm text-slate-600 line-clamp-2 mt-1">{vid.content}</div>
+               <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                 <button onClick={() => handleEditVideo(vid)} className="p-1.5 bg-white text-blue-600 hover:bg-blue-50 border rounded"><Edit2 size={14}/></button>
+                 <button onClick={() => handleDeleteVideo(vid.id)} className="p-1.5 bg-white text-red-600 hover:bg-red-50 border rounded"><Trash2 size={14}/></button>
+               </div>
+             </div>
            ))}
-           <button onClick={() => {
-              setData({...data, video: [...(data.video || []), '']});
-           }} className="text-sm font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-100 transition">
-             <Plus size={16} /> Tambah Video
-           </button>
          </div>
       </div>
 

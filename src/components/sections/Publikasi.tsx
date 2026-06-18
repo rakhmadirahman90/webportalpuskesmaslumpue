@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Megaphone } from 'lucide-react';
 import News from './News';
+import { useCMS } from '../../context/CMSContext';
+import DetailModal from '../DetailModal';
 
 export default function Publikasi() {
   const [activeTab, setActiveTab] = useState('berita');
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const { siteData } = useCMS();
 
   useEffect(() => {
     const handleTabChange = (e: any) => {
@@ -15,6 +19,8 @@ export default function Publikasi() {
     window.addEventListener('changeTab', handleTabChange);
     return () => window.removeEventListener('changeTab', handleTabChange);
   }, []);
+
+  const pengumumanData = siteData.pengumuman || [];
 
   return (
     <section id="publikasi" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
@@ -34,14 +40,12 @@ export default function Publikasi() {
             <motion.div key="pengumuman" initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}}>
                 <div className="space-y-4 text-left max-h-[60vh] overflow-y-auto pr-2">
                   <h3 className="text-2xl font-bold text-slate-800 mb-6 font-display px-2">Daftar Pengumuman</h3>
-                  {[
-                    { id: 1, title: 'Jadwal Pelayanan Vaksinasi COVID-19 Booster Kedua', date: '15 June 2026', type: 'Penting' },
-                    { id: 2, title: 'Kegiatan Posyandu Balita RW 05 Ditunda', date: '12 June 2026', type: 'Jadwal' },
-                    { id: 3, title: 'Pembukaan Pendaftaran Antrean Online Melalui WhatsApp', date: '10 June 2026', type: 'Layanan' },
-                    { id: 4, title: 'Penyuluhan Kesehatan Lingkungan & Stunting', date: '05 June 2026', type: 'Kegiatan' },
-                    { id: 5, title: 'Lowongan Relawan Tenaga Promosi Kesehatan', date: '01 June 2026', type: 'Rekrutmen' }
-                  ].map(item => (
-                    <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-4 bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group">
+                  {pengumumanData.map((item: any) => (
+                    <div 
+                      key={item.id} 
+                      onClick={() => setSelectedItem(item)}
+                      className="flex flex-col sm:flex-row sm:items-center gap-4 bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
+                    >
                       <div className="shrink-0">
                         <div className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full inline-block">
                           {item.type}
@@ -63,6 +67,15 @@ export default function Publikasi() {
           )}
         </AnimatePresence>
       </div>
+
+      <DetailModal 
+        isOpen={!!selectedItem} 
+        onClose={() => setSelectedItem(null)}
+        title={selectedItem?.title}
+        date={selectedItem?.date}
+        category={selectedItem?.type}
+        content={selectedItem?.content}
+      />
     </section>
   );
 }

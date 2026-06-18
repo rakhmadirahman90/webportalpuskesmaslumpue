@@ -2,21 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Image as ImageIcon, Film } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import DetailModal from '../DetailModal';
 
 export default function Galeri() {
   const { siteData } = useCMS();
   const galleryData = siteData.gallery || {};
-  const fotoData = galleryData.foto || [
-    { id: 1, title: 'Kegiatan Posyandu', sub: 'Layanan Balita', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600' },
-    { id: 2, title: 'Pemeriksaan Kesehatan Lengkap', sub: 'Layanan Umum', img: 'https://plus.unsplash.com/premium_photo-1661764835694-ee2643a1a364?auto=format&fit=crop&q=80&w=600' },
-    { id: 3, title: 'Edukasi Kesehatan Sekolah', sub: 'Kegiatan UKM', img: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600' },
-    { id: 4, title: 'Layanan Gigi & Mulut', sub: 'Poli Gigi', img: 'https://images.unsplash.com/photo-1606811841689-1372dfcb1c76?auto=format&fit=crop&q=80&w=600' },
-    { id: 5, title: 'Penyuluhan Stunting', sub: 'Program Gizi', img: 'https://images.unsplash.com/photo-1536640712-4d4c36ef0e52?auto=format&fit=crop&q=80&w=600' },
-    { id: 6, title: 'Fasilitas Puskesmas', sub: 'Ruang Rawat', img: 'https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?auto=format&fit=crop&q=80&w=600' },
-  ];
-  const videoData = galleryData.video || [1, 2];
+  const fotoData = galleryData.foto || [];
+  const videoData = galleryData.video || [];
 
   const [activeTab, setActiveTab] = useState('foto');
+  const [selectedItem, setSelectedItem] = useState<any>(null);
 
   useEffect(() => {
     const handleTabChange = (e: any) => {
@@ -40,8 +35,8 @@ export default function Galeri() {
               <div className="max-h-[60vh] overflow-y-auto overflow-x-hidden custom-scrollbar pr-2 pb-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {fotoData.map((item: any) => (
-                  <div key={item.id} className="aspect-[4/3] bg-slate-100 rounded-3xl overflow-hidden border border-slate-200 flex items-center justify-center group relative cursor-pointer">
-                    <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div key={item.id} onClick={() => setSelectedItem({...item, type: 'foto'})} className="aspect-[4/3] bg-slate-100 rounded-3xl overflow-hidden border border-slate-200 flex items-center justify-center group relative cursor-pointer">
+                    <img src={item.img || 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=800'} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=800' }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                       <span className="text-white font-bold text-lg leading-tight mb-1">{item.title}</span>
                       <span className="text-blue-300 text-sm font-semibold">{item.sub}</span>
@@ -55,16 +50,16 @@ export default function Galeri() {
           {activeTab === 'video' && (
             <motion.div key="video" initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}}>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                 {videoData.map((i: any) => (
-                  <div key={i} className="aspect-video bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 flex items-center justify-center relative group shadow-lg">
+                 {videoData.map((vid: any) => (
+                  <div key={vid.id || vid} onClick={() => setSelectedItem({ ...(typeof vid === 'object' ? vid : { id: vid, title: 'Video Edukasi' }), type: 'video' })} className="aspect-video bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 flex items-center justify-center relative group shadow-lg cursor-pointer">
                     <Film size={48} className="text-slate-700" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 cursor-pointer pl-1">
+                      <div className="w-16 h-16 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 pl-1">
                         <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                       </div>
                     </div>
                     <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                       <span className="bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">Video Edukasi</span>
+                       <span className="bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">{vid.title || 'Video Edukasi'}</span>
                     </div>
                   </div>
                  ))}
@@ -73,6 +68,15 @@ export default function Galeri() {
           )}
         </AnimatePresence>
       </div>
+
+      <DetailModal 
+        isOpen={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+        title={selectedItem?.title}
+        category={selectedItem?.type === 'foto' ? selectedItem?.sub || 'Galeri Foto' : 'Video Edukasi'}
+        image={selectedItem?.type === 'foto' ? selectedItem?.img : undefined}
+        content={(selectedItem?.content) || (selectedItem?.type === 'video' && selectedItem?.url ? `Link Video:\n${selectedItem.url}\n\n${selectedItem.content || ''}` : '')}
+      />
     </section>
   );
 }

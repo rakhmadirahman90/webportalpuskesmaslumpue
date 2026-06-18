@@ -1,7 +1,8 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Activity, Baby, CrossIcon, Heart, Microscope, Stethoscope, Syringe, Tablets } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import DetailModal from '../DetailModal';
 
 const iconMapping: any = {
   Stethoscope, Activity, Baby, Syringe, Microscope, Tablets
@@ -9,6 +10,7 @@ const iconMapping: any = {
 
 export default function Services() {
   const { siteData } = useCMS();
+  const [selectedItem, setSelectedItem] = useState<any>(null);
 
   const services = [
     {
@@ -74,11 +76,12 @@ export default function Services() {
                 return (
                 <motion.div
                   key={service.id || index}
+                  onClick={() => setSelectedItem(service)}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-100 hover:border-blue-200 transition-all group"
+                  className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-100 hover:border-blue-200 transition-all group cursor-pointer"
                 >
                   <div className="flex justify-between items-start mb-6">
                     <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
@@ -95,12 +98,12 @@ export default function Services() {
                   <p className="text-slate-600 leading-relaxed mb-6">
                     {service.desc}
                   </p>
-                  <a href="#layanan" onClick={(e) => { e.preventDefault(); window.location.hash = 'layanan'; }} className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+                  <button onClick={(e) => { e.stopPropagation(); setSelectedItem(service); }} className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors">
                     Pelajari Lebih Lanjut
                     <svg className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                     </svg>
-                  </a>
+                  </button>
                 </motion.div>
                 )}
               )}
@@ -117,6 +120,14 @@ export default function Services() {
           </div>
         </div>
       </div>
+      
+      <DetailModal 
+        isOpen={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+        title={selectedItem?.title}
+        category="Layanan"
+        content={selectedItem?.content || selectedItem?.desc}
+      />
     </section>
   );
 }

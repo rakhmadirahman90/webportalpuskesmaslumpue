@@ -1,10 +1,12 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, CalendarDays, Tag } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import DetailModal from '../DetailModal';
 
 export default function News({ hideHeader }: { hideHeader?: boolean }) {
   const { siteData } = useCMS();
+  const [selectedItem, setSelectedItem] = useState<any>(null);
 
   const articles = [
     {
@@ -57,6 +59,7 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
           {newsData.map((article: any, idx: number) => (
             <motion.article 
               key={article.id}
+              onClick={() => setSelectedItem(article)}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -65,9 +68,10 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img 
-                  src={article.image} 
+                  src={article.image || 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=800'} 
                   alt={article.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=800' }}
                 />
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg text-xs font-bold text-blue-700 flex items-center gap-1.5">
                   <Tag size={12} />
@@ -101,9 +105,22 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
       </div>
   );
 
-  return hideHeader ? content : (
-    <section id="informasi" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative">
-      {content}
-    </section>
+  return (
+    <>
+      {hideHeader ? content : (
+        <section id="informasi" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative">
+          {content}
+        </section>
+      )}
+      <DetailModal 
+        isOpen={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+        title={selectedItem?.title}
+        date={selectedItem?.date}
+        category={selectedItem?.category}
+        image={selectedItem?.image}
+        content={selectedItem?.content || selectedItem?.excerpt}
+      />
+    </>
   );
 }

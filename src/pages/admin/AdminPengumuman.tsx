@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
 import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
-import ImageUpload from '../../components/ImageUpload';
 import { toast } from 'sonner';
 
-export default function AdminNews() {
+export default function AdminPengumuman() {
   const { siteData, updateSection } = useCMS();
-  const [data, setData] = useState<any[]>(siteData.news || []);
+  const [data, setData] = useState<any[]>(siteData.pengumuman || []);
 
   const [editingId, setEditingId] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
 
   const handleSave = () => {
-    updateSection('news', data);
+    updateSection('pengumuman', data);
     toast.success('Data Berhasil Disimpan!', {
-      description: 'Pengaturan berita dan publikasi telah diperbarui.'
+      description: 'Pengaturan pengumuman telah diperbarui.'
     });
   };
 
   const handleAdd = () => {
     setEditingId('new');
-    setFormData({ id: Date.now(), title: '', category: '', date: '', image: '', excerpt: '' });
+    setFormData({ id: Date.now(), title: '', type: '', date: '', content: '' });
   };
 
   const handleEdit = (item: any) => {
@@ -29,7 +28,7 @@ export default function AdminNews() {
   };
 
   const handleDelete = (id: any) => {
-    if (confirm('Hapus berita ini?')) {
+    if (confirm('Hapus pengumuman ini?')) {
       setData(data.filter(i => i.id !== id));
     }
   };
@@ -46,19 +45,13 @@ export default function AdminNews() {
   if (editingId) {
     return (
       <div className="space-y-4">
-        <h3 className="text-lg font-bold">Edit Publikasi</h3>
-        <input className="w-full border p-2 rounded" placeholder="Judul Berita" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+        <h3 className="text-lg font-bold">Edit Pengumuman</h3>
+        <input className="w-full border p-2 rounded" placeholder="Judul Pengumuman" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
         <div className="grid grid-cols-2 gap-4">
-          <input className="w-full border p-2 rounded" placeholder="Kategori" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} />
+          <input className="w-full border p-2 rounded" placeholder="Jenis (cth: Penting, Jadwal)" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} />
           <input className="w-full border p-2 rounded" placeholder="Tanggal (cth: 12 Okt 2026)" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
         </div>
-        <ImageUpload 
-           label="Foto / Gambar Publikasi" 
-           value={formData.image} 
-           onChange={val => setFormData({...formData, image: val})} 
-        />
-        <textarea className="w-full border p-2 rounded" placeholder="Kutipan (Excerpt)" value={formData.excerpt} onChange={e => setFormData({...formData, excerpt: e.target.value})} />
-        <textarea rows={6} className="w-full border p-2 rounded" placeholder="Isi Konten Berita/Artikel (Bisa format Markdown/Paragraf panjang)" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
+        <textarea rows={6} className="w-full border p-2 rounded" placeholder="Isi Konten Pengumuman Lengkap" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
         <div className="flex gap-2">
           <button onClick={submitEdit} className="bg-blue-600 text-white px-4 py-2 rounded">Simpan Item</button>
           <button onClick={() => setEditingId(null)} className="bg-slate-200 px-4 py-2 rounded">Batal</button>
@@ -70,16 +63,15 @@ export default function AdminNews() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-bold text-lg">Daftar Publikasi Berita</h3>
+        <h3 className="font-bold text-lg">Daftar Pengumuman</h3>
         <button onClick={handleAdd} className="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"><Plus size={16}/> Tambah</button>
       </div>
       <div className="grid gap-4">
         {data.map((item, idx) => (
           <div key={idx} className="border p-4 rounded bg-slate-50 flex justify-between items-center gap-4">
-            {item.image && <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded" />}
             <div className="flex-grow">
               <div className="font-bold">{item.title}</div>
-              <div className="text-sm text-slate-500">{item.category} • {item.date}</div>
+              <div className="text-sm text-slate-500">{item.type} • {item.date}</div>
             </div>
             <div className="flex gap-2 shrink-0">
               <button onClick={() => handleEdit(item)} className="p-2 text-blue-600 hover:bg-blue-100 rounded"><Edit2 size={16}/></button>

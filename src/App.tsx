@@ -16,6 +16,8 @@ import Schedule from './components/sections/Schedule';
 import Publikasi from './components/sections/Publikasi';
 import ProgramUkm from './components/sections/ProgramUkm';
 import Galeri from './components/sections/Galeri';
+import Fasilitas from './components/sections/Fasilitas';
+import TimMedis from './components/sections/TimMedis';
 import MediaSosial from './components/sections/MediaSosial';
 import Kontak from './components/sections/Kontak';
 import Login from './pages/Login';
@@ -29,7 +31,7 @@ function PublicLayout() {
       let hash = window.location.hash.substring(1);
       if (!hash) hash = 'home';
       
-      const validPages = ['home', 'portal', 'profil', 'layanan', 'jadwal', 'publikasi', 'program-ukm', 'galeri', 'media-sosial', 'kontak'];
+      const validPages = ['home', 'portal', 'profil', 'layanan', 'jadwal', 'fasilitas', 'tim-medis', 'publikasi', 'program-ukm', 'galeri', 'media-sosial', 'kontak'];
       if (validPages.includes(hash)) {
         setActivePage(hash);
         window.scrollTo(0, 0);
@@ -51,6 +53,8 @@ function PublicLayout() {
         {activePage === 'portal' && <Hero />}
         {activePage === 'profil' && <Profile />}
         {activePage === 'layanan' && <Services />}
+        {activePage === 'fasilitas' && <Fasilitas />}
+        {activePage === 'tim-medis' && <TimMedis />}
         {activePage === 'jadwal' && <Schedule />}
         {activePage === 'publikasi' && <Publikasi />}
         {activePage === 'program-ukm' && <ProgramUkm />}

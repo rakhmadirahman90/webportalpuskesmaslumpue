@@ -191,17 +191,39 @@ const defaultSiteData = {
       excerpt: "Memahami konsep gizi seimbang melalui pedoman Isi Piringku dari Kementerian Kesehatan."
     }
   ],
+  pengumuman: [
+    { id: 1, title: 'Jadwal Pelayanan Vaksinasi COVID-19 Booster Kedua', date: '15 June 2026', type: 'Penting', content: 'Vaksinasi akan diselenggarakan di lapangan utama.' },
+    { id: 2, title: 'Kegiatan Posyandu Balita RW 05 Ditunda', date: '12 June 2026', type: 'Jadwal', content: 'Diundur sampai minggu depan.' },
+    { id: 3, title: 'Pembukaan Pendaftaran Antrean Online Melalui WhatsApp', date: '10 June 2026', type: 'Layanan', content: 'Silahkan kirim pesan WA ke nomor kami.' },
+    { id: 4, title: 'Penyuluhan Kesehatan Lingkungan & Stunting', date: '05 June 2026', type: 'Kegiatan', content: 'Acara gratis untuk warga.' },
+    { id: 5, title: 'Lowongan Relawan Tenaga Promosi Kesehatan', date: '01 June 2026', type: 'Rekrutmen', content: 'Silahkan daftar di bagian administrasi.' }
+  ],
   gallery: {
     foto: [
-      { id: 1, title: 'Kegiatan Posyandu', sub: 'Layanan Balita', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600' },
-      { id: 2, title: 'Pemeriksaan Kesehatan Lengkap', sub: 'Layanan Umum', img: 'https://plus.unsplash.com/premium_photo-1661764835694-ee2643a1a364?auto=format&fit=crop&q=80&w=600' },
-      { id: 3, title: 'Edukasi Kesehatan Sekolah', sub: 'Kegiatan UKM', img: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600' },
-      { id: 4, title: 'Layanan Gigi & Mulut', sub: 'Poli Gigi', img: 'https://images.unsplash.com/photo-1606811841689-1372dfcb1c76?auto=format&fit=crop&q=80&w=600' },
-      { id: 5, title: 'Penyuluhan Stunting', sub: 'Program Gizi', img: 'https://images.unsplash.com/photo-1536640712-4d4c36ef0e52?auto=format&fit=crop&q=80&w=600' },
-      { id: 6, title: 'Fasilitas Puskesmas', sub: 'Ruang Rawat', img: 'https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?auto=format&fit=crop&q=80&w=600' },
+      { id: 1, title: 'Kegiatan Posyandu', sub: 'Layanan Balita', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600', content: 'Kegiatan rutin posyandu untuk memantau tumbuh kembang balita di wilayah kerja.' },
+      { id: 2, title: 'Pemeriksaan Kesehatan Lengkap', sub: 'Layanan Umum', img: 'https://plus.unsplash.com/premium_photo-1661764835694-ee2643a1a364?auto=format&fit=crop&q=80&w=600', content: 'Pemeriksaan kesehatan secara komprehensif untuk mendeteksi dini penyakit.' },
+      { id: 3, title: 'Edukasi Kesehatan Sekolah', sub: 'Kegiatan UKM', img: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600', content: 'Penyuluhan kebersihan lingkungan dan makanan sehat dilakukan di sekolah-sekolah dasar.' },
+      { id: 4, title: 'Layanan Gigi & Mulut', sub: 'Poli Gigi', img: 'https://images.unsplash.com/photo-1606811841689-1372dfcb1c76?auto=format&fit=crop&q=80&w=600', content: 'Pemeriksaan berkala yang dilakukan untuk menjaga kesehatan gigi anak dan dewasa.' },
+      { id: 5, title: 'Penyuluhan Stunting', sub: 'Program Gizi', img: 'https://images.unsplash.com/photo-1536640712-4d4c36ef0e52?auto=format&fit=crop&q=80&w=600', content: 'Sosialisasi pemenuhan gizi untuk ibu hamil dan balita untuk mencegah resiko stunting.' },
+      { id: 6, title: 'Fasilitas Puskesmas', sub: 'Ruang Rawat', img: 'https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?auto=format&fit=crop&q=80&w=600', content: 'Perkenalan fasilitas kesehatan kami yang lengkap dengan standard operasional terbaru.' },
     ],
-    video: [1, 2]
-  }
+    video: [
+      { id: 1, title: 'Edukasi Pencegahan Demam Berdarah', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', content: 'Video informatif tentang cara mencegah penyakit yang disebarkan oleh nyamuk Aedes aegypti di lingkungan rumah dan sekolah.' },
+      { id: 2, title: 'Cara Tepat Mencuci Tangan', url: 'https://www.youtube.com/watch?v=kYxR1S_bVGE', content: 'Langkah demi langkah mencuci tangan dengan sabun yang benar menurut panduan Kementerian Kesehatan RI.' }
+    ]
+  },
+  fasilitas: [
+    { id: 1, title: 'Ruang UGD 24 Jam', desc: 'Pelayanan gawat darurat yang siaga 24 jam dengan peralatan lengkap.', img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800' },
+    { id: 2, title: 'Ruang Rawat Inap', desc: 'Fasilitas rawat inap yang nyaman dan bersih untuk pemulihan pasien.', img: 'https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?auto=format&fit=crop&q=80&w=800' },
+    { id: 3, title: 'Laboratorium', desc: 'Peralatan lab modern untuk pengecekan darah, urin, dan tes lainnya.', img: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&q=80&w=800' },
+    { id: 4, title: 'Apotek', desc: 'Penyediaan obat-obatan lengkap sesuai dengan resep dokter.', img: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&q=80&w=800' }
+  ],
+  timMedis: [
+    { id: 1, name: 'Dr. Andi Pratama', role: 'Dokter Umum', img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400' },
+    { id: 2, name: 'Drg. Siti Aminah', role: 'Dokter Gigi', img: 'https://images.unsplash.com/photo-1594824432258-fcc73177894a?auto=format&fit=crop&q=80&w=400' },
+    { id: 3, name: 'Bdn. Rina Mulyati', role: 'Bidan Koordinator', img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400' },
+    { id: 4, name: 'Ns. Budi Santoso', role: 'Perawat Utama', img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400' }
+  ]
 };
 
 export const CMSContext = createContext<any>(null);
@@ -229,7 +251,10 @@ export function CMSProvider({ children }: { children: ReactNode }) {
             services: remoteData.services || defaultSiteData.services,
             programUkm: remoteData.programUkm || defaultSiteData.programUkm,
             news: remoteData.news || defaultSiteData.news,
+            pengumuman: remoteData.pengumuman || defaultSiteData.pengumuman,
             gallery: remoteData.gallery || defaultSiteData.gallery,
+            fasilitas: remoteData.fasilitas || defaultSiteData.fasilitas,
+            timMedis: remoteData.timMedis || defaultSiteData.timMedis,
           });
         }
       } catch (err) {

@@ -6,6 +6,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 import ImageUpload from '../components/ImageUpload';
 import AdminNews from './admin/AdminNews';
+import AdminPengumuman from './admin/AdminPengumuman';
+import AdminFasilitas from './admin/AdminFasilitas';
+import AdminTimMedis from './admin/AdminTimMedis';
 import AdminUkm from './admin/AdminUkm';
 import AdminGallery from './admin/AdminGallery';
 import AdminContact from './admin/AdminContact';
@@ -45,7 +48,10 @@ export default function Admin() {
   const tabs = [
     { id: 'hero', name: 'Beranda (Hero)', icon: Home },
     { id: 'profile', name: 'Profil', icon: UserIcon },
-    { id: 'news', name: 'Publikasi', icon: Newspaper },
+    { id: 'fasilitas', name: 'Fasilitas', icon: HeartPulse },
+    { id: 'tim-medis', name: 'Tenaga Medis', icon: Activity },
+    { id: 'news', name: 'Berita & Artikel', icon: Newspaper },
+    { id: 'pengumuman', name: 'Pengumuman', icon: Newspaper },
     { id: 'ukm', name: 'Program UKM', icon: Layout },
     { id: 'gallery', name: 'Galeri', icon: Image },
     { id: 'socials', name: 'Media Sosial', icon: Share2 },
@@ -213,13 +219,16 @@ export default function Admin() {
             )}
             
             {activeTab === 'profile' && <AdminProfile />}
+            {activeTab === 'fasilitas' && <AdminFasilitas />}
+            {activeTab === 'tim-medis' && <AdminTimMedis />}
             {activeTab === 'news' && <AdminNews />}
+            {activeTab === 'pengumuman' && <AdminPengumuman />}
             {activeTab === 'ukm' && <AdminUkm />}
             {activeTab === 'gallery' && <AdminGallery />}
             {activeTab === 'contact' && <AdminContact />}
             {activeTab === 'socials' && <AdminSocials />}
 
-            {['hero', 'profile', 'news', 'gallery', 'ukm', 'contact', 'socials'].indexOf(activeTab) === -1 && (
+            {['hero', 'profile', 'fasilitas', 'tim-medis', 'news', 'pengumuman', 'gallery', 'ukm', 'contact', 'socials'].indexOf(activeTab) === -1 && (
               <div className="py-16 text-center">
                 <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                   {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Layout, { size: 40, className: "text-slate-400" })}

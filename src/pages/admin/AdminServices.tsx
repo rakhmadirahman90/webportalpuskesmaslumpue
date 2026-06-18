@@ -45,9 +45,10 @@ export default function AdminServices() {
   if (editingId) {
     return (
       <div className="space-y-4">
-        <h3 className="text-lg font-bold">Edut Layanan</h3>
+        <h3 className="text-lg font-bold">Edit Layanan</h3>
         <input className="w-full border p-2 rounded" placeholder="Judul" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
-        <textarea className="w-full border p-2 rounded" placeholder="Deskripsi" value={formData.desc} onChange={e => setFormData({...formData, desc: e.target.value})} />
+        <textarea className="w-full border p-2 rounded" placeholder="Deskripsi Singkat" value={formData.desc} onChange={e => setFormData({...formData, desc: e.target.value})} />
+        <textarea rows={6} className="w-full border p-2 rounded" placeholder="Isi Konten Layanan Lengkap (Markdown/Paragraf)" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
         <input className="w-full border p-2 rounded" placeholder="Icon (lucide-react name)" value={formData.icon} onChange={e => setFormData({...formData, icon: e.target.value})} />
         <label className="flex items-center gap-2">
           <input type="checkbox" checked={formData.popular} onChange={e => setFormData({...formData, popular: e.target.checked})} />
