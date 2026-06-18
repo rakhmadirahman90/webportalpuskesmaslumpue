@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, CalendarHeart, Stethoscope, Users, Pill, ShieldCheck } from 'lucide-react';
+import { useCMS } from '../../context/CMSContext';
 
 export default function Hero() {
+  const { siteData } = useCMS();
+  const heroData = siteData.hero;
+
   const sliderImages = [
     "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?q=80&w=2000&auto=format&fit=crop",
@@ -60,16 +64,16 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
               </span>
-              Sistem Pendaftaran Online Resmi Dibuka
+              {heroData.subtitle}
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6 drop-shadow-sm font-display tracking-tight">
-              Pelayanan Kesehatan 
-              <span className="block text-blue-600 mt-2 filter drop-shadow-sm">Sepenuh Hati</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6 drop-shadow-sm font-display tracking-tight whitespace-pre-wrap">
+              {heroData.title}
+              <span className="block text-blue-600 mt-2 filter drop-shadow-sm">{heroData.titleHighlight}</span>
             </h1>
             
             <p className="text-lg sm:text-xl text-slate-700 font-medium mb-8 leading-relaxed max-w-lg drop-shadow-sm">
-              Fasilitas Pelayanan Kesehatan Tingkat Pertama (FKTP) bersertifikasi standar Kementerian Kesehatan RI. Cepat, tepat, dan ramah untuk keluarga Anda.
+              {heroData.description}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">

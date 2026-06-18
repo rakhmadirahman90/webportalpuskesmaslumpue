@@ -4,6 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { CMSProvider } from './context/CMSContext';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Hero from './components/sections/Hero';
@@ -15,8 +17,10 @@ import ProgramUkm from './components/sections/ProgramUkm';
 import Galeri from './components/sections/Galeri';
 import MediaSosial from './components/sections/MediaSosial';
 import Kontak from './components/sections/Kontak';
+import Login from './pages/Login';
+import Admin from './pages/Admin';
 
-export default function App() {
+function PublicLayout() {
   const [activePage, setActivePage] = useState('home');
 
   useEffect(() => {
@@ -56,5 +60,19 @@ export default function App() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <CMSProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<PublicLayout />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin/*" element={<Admin />} />
+        </Routes>
+      </Router>
+    </CMSProvider>
   );
 }

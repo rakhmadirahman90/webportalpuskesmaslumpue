@@ -10,8 +10,12 @@ import {
   Network, 
   Users 
 } from 'lucide-react';
+import { useCMS } from '../../context/CMSContext';
 
 export default function Profile() {
+  const { siteData } = useCMS();
+  const profileData = siteData.profile || {};
+
   const [activeTab, setActiveTab] = useState('selayang-pandang');
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
@@ -74,13 +78,8 @@ export default function Profile() {
                   <Info size={18} /> Selayang Pandang
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 font-display">UPTD Puskesmas Lumpue</h3>
-                <div className="prose prose-slate prose-lg text-slate-600 leading-relaxed">
-                  <p>
-                    UPTD Puskesmas Lumpue merupakan Fasilitas Kesehatan Tingkat Pertama (FKTP) yang bertanggung jawab menyelenggarakan pembangunan kesehatan di wilayah kerja Kecamatan Bacukiki Barat, Kota Parepare.
-                  </p>
-                  <p>
-                    Kami berkomitmen untuk menyelenggarakan pelayanan kesehatan yang paripurna, merata, bermutu, dan berkeadilan bagi seluruh lapisan masyarakat. Dengan fasilitas yang terus dikembangkan dan tenaga kesehatan yang profesional, kami siap menjadi mitra kesehatan keluarga Anda.
-                  </p>
+                <div className="prose prose-slate prose-lg text-slate-600 leading-relaxed whitespace-pre-wrap">
+                  {profileData.selayangPandang}
                 </div>
               </motion.div>
             )}
@@ -99,7 +98,7 @@ export default function Profile() {
                     <Target size={18} /> Visi
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 leading-snug font-display">
-                    "Terwujudnya Masyarakat Sehat yang Mandiri dan Berkeadilan Melalui Pelayanan Kesehatan Primer yang Bermutu."
+                    "{profileData.visi}"
                   </h3>
                 </div>
                 
@@ -108,12 +107,7 @@ export default function Profile() {
                     <Target size={18} /> Misi
                   </div>
                   <ul className="space-y-4">
-                    {[
-                      "Meningkatkan pelayanan kesehatan dasar yang merata, terjangkau, dan bermutu.",
-                      "Mendorong kemandirian masyarakat untuk berperilaku hidup bersih dan sehat (PHBS).",
-                      "Menggerakkan dan mendorong pembangunan berwawasan kesehatan di wilayah kerja.",
-                      "Meningkatkan kualitas Sumber Daya Manusia (SDM) kesehatan secara profesional dan akuntabel."
-                    ].map((item, idx) => (
+                    {profileData.misi?.map((item: string, idx: number) => (
                       <li key={idx} className="flex gap-4 items-start">
                         <span className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm mt-0.5">
                           {idx + 1}
@@ -140,8 +134,8 @@ export default function Profile() {
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 font-display">Tujuan Organisasi</h3>
                 <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
-                  <p className="text-lg text-slate-700 leading-relaxed font-medium">
-                    Meningkatkan derajat kesehatan masyarakat yang optimal, melalui terciptanya masyarakat, kelompok, dan individu yang memiliki perilaku sehat, memiliki kemampuan untuk menjangkau pelayanan kesehatan yang bermutu, hidup dalam lingkungan rumah yang sehat, dan memiliki derajat kesehatan yang memadai di wilayah kerja UPTD Puskesmas Lumpue.
+                  <p className="text-lg text-slate-700 leading-relaxed font-medium whitespace-pre-wrap">
+                    {profileData.tujuan}
                   </p>
                 </div>
               </motion.div>
@@ -196,13 +190,7 @@ export default function Profile() {
                 </div>
                 <h3 className="text-3xl font-extrabold text-blue-600 tracking-widest font-display">C.E.P.A.T</h3>
                 <div className="space-y-4 pt-4 relative before:absolute before:inset-y-4 before:left-4 before:w-0.5 before:bg-blue-100">
-                  {[
-                    { letter: 'C', text: 'Cekatan dalam bertindak' },
-                    { letter: 'E', text: 'Empati dalam bersikap' },
-                    { letter: 'P', text: 'Profesional dalam bekerja' },
-                    { letter: 'A', text: 'Akurat dalam mendiagnosa' },
-                    { letter: 'T', text: 'Tuntas dalam pengobatan' },
-                  ].map((item, idx) => (
+                  {profileData.motto?.map((item: any, idx: number) => (
                     <div key={idx} className="flex items-center gap-6 relative">
                       <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-md relative z-10">
                         {item.letter}
@@ -233,8 +221,8 @@ export default function Profile() {
                   <div className="absolute top-0 right-0 p-8 opacity-10">
                     <ShieldCheck size={120} />
                   </div>
-                  <p className="text-xl md:text-2xl leading-relaxed font-medium relative z-10 font-display">
-                    "Kami Pimpinan dan Seluruh Karyawan UPTD Puskesmas Lumpue Berkomitmen Untuk Memberikan Pelayanan Kesehatan Secara Profesional, Sesuai Standar Operasional Prosedur (SOP) Secara Berkesinambungan Guna Memenuhi Kepuasan Pelanggan Serta Melakukan Peningkatan Sistem Manajemen Mutu Secara Terus Menerus."
+                  <p className="text-xl md:text-2xl leading-relaxed font-medium relative z-10 font-display whitespace-pre-wrap">
+                    "{profileData.kebijakanMutu}"
                   </p>
                 </div>
               </motion.div>
