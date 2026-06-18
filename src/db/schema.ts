@@ -18,5 +18,13 @@ export const cmsSettings = pgTable('cms_settings', {
   services: jsonb('services'),
   news: jsonb('news'),
   gallery: jsonb('gallery'),
+  kontak: jsonb('kontak'),
+  sosialMedia: jsonb('sosial_media'),
+  programUkm: jsonb('program_ukm'),
+  pengumuman: jsonb('pengumuman'),
+  fasilitas: jsonb('fasilitas'),
+  timMedis: jsonb('tim_medis'),
+  faqs: jsonb('faqs'),
+  jadwal: jsonb('jadwal'),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
