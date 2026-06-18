@@ -1,7 +1,11 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { useCMS } from '../../context/CMSContext';
 
 export default function Kontak() {
+  const { siteData } = useCMS();
+  const kontakData = siteData.kontak || {};
+
   return (
     <section id="kontak" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,7 +22,7 @@ export default function Kontak() {
           <div className="space-y-8">
             <div className="rounded-3xl overflow-hidden border border-slate-200 shadow-lg relative h-64 sm:h-80 w-full bg-slate-200">
               <img 
-                src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800" 
+                src={kontakData.gambarGedung} 
                 alt="Gedung UPTD Puskesmas Lumpue" 
                 className="w-full h-full object-cover"
               />
@@ -34,10 +38,8 @@ export default function Kontak() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 mb-1">Alamat Lengkap</h4>
-                  <p className="text-slate-600 leading-relaxed">
-                    Jl. Bau Massepe No. 12<br/>
-                    Kelurahan Lumpue, Kecamatan Bacukiki Barat<br/>
-                    Kota Parepare, Sulawesi Selatan 91122
+                  <p className="text-slate-600 leading-relaxed whitespace-pre-wrap">
+                    {kontakData.alamat}
                   </p>
                 </div>
               </div>
@@ -48,7 +50,7 @@ export default function Kontak() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 mb-1">Telepon / WhatsApp</h4>
-                  <p className="text-slate-600 font-medium">UGB/IGD: 119 / (0421) 21119</p>
+                  <p className="text-slate-600 font-medium">{kontakData.telepon}</p>
                   <p className="text-slate-500 text-sm">Pelayanan 24 Jam</p>
                 </div>
               </div>
@@ -59,7 +61,7 @@ export default function Kontak() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 mb-1">Email</h4>
-                  <p className="text-slate-600 font-medium">puskesmas.lumpue@pareparekota.go.id</p>
+                  <p className="text-slate-600 font-medium">{kontakData.email}</p>
                 </div>
               </div>
             </div>
@@ -68,7 +70,7 @@ export default function Kontak() {
           {/* Maps */}
           <div className="h-[600px] lg:h-full bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-lg relative min-h-[400px]">
              <iframe 
-              src="https://maps.google.com/maps?q=Puskesmas+Lumpue+Parepare&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              src={kontakData.embedMap}
               width="100%" 
               height="100%" 
               style={{ border: 0 }} 

@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Instagram, Facebook, Youtube, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useCMS } from '../../context/CMSContext';
 
 export default function MediaSosial() {
   const [activeTab, setActiveTab] = useState('instagram');
+  const { siteData } = useCMS();
+  const sosialData = siteData.sosialMedia || [
+    { title: "Facebook", username: "Puskesmas Lumpue", url: "https://facebook.com", icon: "Facebook" },
+    { title: "Instagram", username: "@puskesmaslumpue", url: "https://instagram.com", icon: "Instagram" },
+    { title: "YouTube", username: "PKM Lumpue", url: "https://youtube.com", icon: "Youtube" }
+  ];
 
   useEffect(() => {
     const handleTabChange = (e: any) => {
@@ -13,11 +20,12 @@ export default function MediaSosial() {
     return () => window.removeEventListener('changeTab', handleTabChange);
   }, []);
 
-  const socials = [
-    { id: 'instagram', title: 'Instagram', icon: Instagram, color: 'text-pink-600', bg: 'bg-pink-50', border: 'border-pink-100', link: '#' },
-    { id: 'facebook', title: 'Facebook', icon: Facebook, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100', link: '#' },
-    { id: 'youtube', title: 'YouTube', icon: Youtube, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100', link: '#' },
-  ];
+  const getIconData = (title: string) => {
+    const t = title.toLowerCase();
+    if (t.includes('facebook')) return { icon: Facebook, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100', id: 'facebook' };
+    if (t.includes('youtube')) return { icon: Youtube, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100', id: 'youtube' };
+    return { icon: Instagram, color: 'text-pink-600', bg: 'bg-pink-50', border: 'border-pink-100', id: 'instagram' };
+  };
 
   return (
     <section id="media-sosial" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
@@ -29,20 +37,23 @@ export default function MediaSosial() {
         </div>
 
         <AnimatePresence mode="wait">
-          {socials.map(soc => activeTab === soc.id && (
-            <motion.div key={soc.id} initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className="max-w-xl mx-auto">
-              <a href={soc.link} target="_blank" rel="noreferrer" className={`block p-10 bg-white border ${soc.border} shadow-xl rounded-3xl hover:shadow-2xl hover:-translate-y-2 transition-all text-center group`}>
-                <div className={`w-28 h-28 mx-auto rounded-full flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 ${soc.bg} ${soc.color} shadow-inner`}>
-                  <soc.icon size={56} />
+          {sosialData.map((soc: any) => {
+            const iconData = getIconData(soc.title);
+            if (activeTab !== iconData.id) return null;
+            return (
+            <motion.div key={iconData.id} initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className="max-w-xl mx-auto">
+              <a href={soc.url} target="_blank" rel="noreferrer" className={`block p-10 bg-white border ${iconData.border} shadow-xl rounded-3xl hover:shadow-2xl hover:-translate-y-2 transition-all text-center group`}>
+                <div className={`w-28 h-28 mx-auto rounded-full flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 ${iconData.bg} ${iconData.color} shadow-inner`}>
+                  <iconData.icon size={56} />
                 </div>
                 <h3 className="text-3xl font-bold text-slate-900 mb-3 font-display">{soc.title}</h3>
-                <p className="text-slate-500 font-medium mb-8 text-lg">@puskesmaslumpue</p>
-                <div className={`inline-flex items-center gap-2 text-lg font-bold px-8 py-4 rounded-full ${soc.bg} ${soc.color}`}>
+                <p className="text-slate-500 font-medium mb-8 text-lg">{soc.username}</p>
+                <div className={`inline-flex items-center gap-2 text-lg font-bold px-8 py-4 rounded-full ${iconData.bg} ${iconData.color}`}>
                   Kunjungi Profil <ExternalLink size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </div>
               </a>
             </motion.div>
-          ))}
+          )})}
         </AnimatePresence>
       </div>
     </section>

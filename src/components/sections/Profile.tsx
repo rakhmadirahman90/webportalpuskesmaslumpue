@@ -157,13 +157,7 @@ export default function Profile() {
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-6 font-display">S.I.G.A.P</h3>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  {[
-                    { letter: 'S', title: 'Senyum, Sapa, Salam', desc: 'Dalam memberikan setiap pelayanan kepada masyarakat.' },
-                    { letter: 'I', title: 'Inovatif', desc: 'Terus mengembangkan program kesehatan yang efektif.' },
-                    { letter: 'G', title: 'Gotong Royong', desc: 'Melibatkan peran serta seluruh elemen masyarakat.' },
-                    { letter: 'A', title: 'Akuntabel', desc: 'Bertanggung jawab dalam setiap pelaksanaan kegiatan.' },
-                    { letter: 'P', title: 'Profesional', desc: 'Dalam melaksanakan asuhan dan tindakan medis.' },
-                  ].map((item, idx) => (
+                  {(profileData.tataNilai || []).map((item: any, idx: number) => (
                     <div key={idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex gap-4 items-start">
                       <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-2xl shrink-0 font-display">
                         {item.letter}
@@ -246,55 +240,31 @@ export default function Profile() {
                 
                 <div className="grid gap-6 mt-8">
                   {/* Kepala Puskesmas */}
+                  {profileData.strukturOrganisasi?.kepala && (
                   <div className="flex justify-center">
                     <div className="bg-white border border-blue-100 shadow-lg shadow-blue-50 px-8 py-6 rounded-3xl flex flex-col items-center text-center max-w-sm w-full relative overflow-hidden">
                       <div className="absolute top-0 w-full h-24 bg-blue-50 left-0 -z-10"></div>
                       <img 
-                        src="https://randomuser.me/api/portraits/men/32.jpg" 
-                        alt="Andi Irwan R" 
+                        src={profileData.strukturOrganisasi.kepala.photo} 
+                        alt={profileData.strukturOrganisasi.kepala.name} 
                         className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-4"
                       />
-                      <span className="text-sm font-bold text-blue-600 mb-1 uppercase tracking-wider bg-blue-50 px-3 py-1 rounded-full">Kepala UPTD Puskesmas</span>
-                      <span className="text-xl font-bold text-slate-900 mt-2">Andi Irwan R, SKM., M.Kes</span>
+                      <span className="text-sm font-bold text-blue-600 mb-1 uppercase tracking-wider bg-blue-50 px-3 py-1 rounded-full">{profileData.strukturOrganisasi.kepala.role}</span>
+                      <span className="text-xl font-bold text-slate-900 mt-2">{profileData.strukturOrganisasi.kepala.name}</span>
                     </div>
                   </div>
+                  )}
                   
                   <div className="grid sm:grid-cols-2 gap-4">
-                     <div className="bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow">
-                      <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Hj. Salmah" className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
+                    {(profileData.strukturOrganisasi?.pengurus || []).map((p: any, idx: number) => (
+                     <div key={idx} className={`bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow ${idx === (profileData.strukturOrganisasi.pengurus.length - 1) && profileData.strukturOrganisasi.pengurus.length % 2 !== 0 ? 'sm:col-span-2 lg:col-span-2 max-w-xl mx-auto w-full' : ''}`}>
+                      <img src={p.photo} alt={p.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
                       <div>
-                        <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">Kasubag Tata Usaha</span>
-                        <span className="text-base font-bold text-slate-900 leading-tight">Hj. Salmah, S.ST</span>
+                        <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">{p.role}</span>
+                        <span className="text-base font-bold text-slate-900 leading-tight">{p.name}</span>
                       </div>
                     </div>
-                    <div className="bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow">
-                      <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="dr. M. Adnan" className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
-                      <div>
-                        <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">PJ Mutu</span>
-                        <span className="text-base font-bold text-slate-900 leading-tight">dr. M. Adnan</span>
-                      </div>
-                    </div>
-                    <div className="bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow">
-                      <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Siti Nurhaliza" className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
-                      <div>
-                        <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">PJ UKM</span>
-                        <span className="text-base font-bold text-slate-900 leading-tight">Siti Nurhaliza, SKM</span>
-                      </div>
-                    </div>
-                    <div className="bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow">
-                      <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="drg. Fatihah Rizki" className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
-                      <div>
-                         <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">PJ UKP</span>
-                         <span className="text-base font-bold text-slate-900 leading-tight">drg. Fatihah Rizki</span>
-                      </div>
-                    </div>
-                    <div className="bg-white border border-slate-200 p-4 rounded-2xl flex items-center gap-4 hover:shadow-md transition-shadow sm:col-span-2 lg:col-span-2 max-w-xl mx-auto w-full">
-                       <img src="https://randomuser.me/api/portraits/women/89.jpg" alt="Bidan Rahmawati" className="w-16 h-16 rounded-full object-cover border-2 border-slate-50 shadow-inner shrink-0" />
-                       <div>
-                         <span className="text-xs font-bold text-blue-600 mb-1 block uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">PJ Jaringan & Jejaring Fasyankes</span>
-                         <span className="text-base font-bold text-slate-900 leading-tight">Bidan Rahmawati, Amd.Keb</span>
-                       </div>
-                    </div>
+                   ))}
                   </div>
                 </div>
               </motion.div>
@@ -324,7 +294,9 @@ export default function Profile() {
                   </div>
                   {!selectedRole ? (
                     <div className="bg-blue-600 text-white px-5 py-3 rounded-2xl flex items-center gap-3 shrink-0">
-                      <div className="text-3xl font-black font-display tracking-tighter">45</div>
+                      <div className="text-3xl font-black font-display tracking-tighter">
+                        {Object.values(pegawaiData || {}).reduce((acc: any, curr: any) => acc + curr.length, 0)}
+                      </div>
                       <div className="text-sm font-medium leading-tight opacity-90">Total<br/>Pegawai</div>
                     </div>
                   ) : (
@@ -339,26 +311,15 @@ export default function Profile() {
 
                 {!selectedRole ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                    {[
-                      { role: 'Dokter Umum', count: 3 },
-                      { role: 'Dokter Gigi', count: 1 },
-                      { role: 'Perawat', count: 15 },
-                      { role: 'Bidan', count: 12 },
-                      { role: 'Tenaga Kesmas', count: 3 },
-                      { role: 'Tenaga Kesling', count: 1 },
-                      { role: 'Ahli Lab Medik', count: 2 },
-                      { role: 'Tenaga Gizi', count: 2 },
-                      { role: 'Tenaga Farmasi', count: 2 },
-                      { role: 'Tenaga Admin', count: 4 },
-                    ].map((item, idx) => (
+                    {Object.keys(pegawaiData || {}).map((role, idx) => (
                       <button 
                         key={idx} 
-                        onClick={() => setSelectedRole(item.role)}
+                        onClick={() => setSelectedRole(role)}
                         className="flex justify-between items-center p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-400 hover:shadow-md transition-all text-left group"
                       >
-                        <span className="font-semibold text-slate-700 text-sm group-hover:text-blue-700">{item.role}</span>
+                        <span className="font-semibold text-slate-700 text-sm group-hover:text-blue-700">{role}</span>
                         <span className="bg-white border border-slate-200 px-3 py-1 rounded-full text-blue-600 font-bold text-sm group-hover:bg-blue-50 group-hover:border-blue-200">
-                          {item.count}
+                          {pegawaiData[role].length}
                         </span>
                       </button>
                     ))}

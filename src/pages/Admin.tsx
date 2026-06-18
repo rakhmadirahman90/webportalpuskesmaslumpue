@@ -3,6 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useCMS } from '../context/CMSContext';
 import { LogOut, Home, User as UserIcon, Layout, Calendar, Newspaper, Image, HeartPulse, Share2, Phone, CheckCircle2, Save, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import AdminServices from './admin/AdminServices';
+import AdminNews from './admin/AdminNews';
+import AdminUkm from './admin/AdminUkm';
+import AdminGallery from './admin/AdminGallery';
+import AdminContact from './admin/AdminContact';
+import AdminSocials from './admin/AdminSocials';
+import AdminProfile from './admin/AdminProfile';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -200,144 +207,15 @@ export default function Admin() {
               </div>
             )}
             
-            {activeTab === 'profile' && (
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">Selayang Pandang</label>
-                  <textarea
-                    rows={6}
-                    value={formProfile.selayangPandang || ''}
-                    onChange={(e) => setFormProfile({...formProfile, selayangPandang: e.target.value})}
-                    className="w-full border border-slate-300 rounded-xl p-3.5 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
-                    placeholder="Sambutan Kepala Puskesmas / Profil Utama"
-                  ></textarea>
-                </div>
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">Visi</label>
-                  <input
-                    type="text"
-                    value={formProfile.visi || ''}
-                    onChange={(e) => setFormProfile({...formProfile, visi: e.target.value})}
-                    className="w-full border border-slate-300 rounded-xl p-3.5 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
-                    placeholder="Contoh: Terwujudnya Pelayanan Kesehatan Paripurna..."
-                  />
-                </div>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-slate-700">Misi / Tujuan</label>
-                    <textarea
-                      rows={5}
-                      value={formProfile.tujuan || ''}
-                      onChange={(e) => setFormProfile({...formProfile, tujuan: e.target.value})}
-                      className="w-full border border-slate-300 rounded-xl p-3.5 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
-                      placeholder="Masukkan daftar misi..."
-                    ></textarea>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-slate-700">Kebijakan Mutu / Motto</label>
-                    <textarea
-                      rows={5}
-                      value={formProfile.kebijakanMutu || ''}
-                      onChange={(e) => setFormProfile({...formProfile, kebijakanMutu: e.target.value})}
-                      className="w-full border border-slate-300 rounded-xl p-3.5 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
-                      placeholder="Motto layanan atau kebijakan mutu..."
-                    ></textarea>
-                  </div>
-                </div>
+            {activeTab === 'profile' && <AdminProfile />}
+            {activeTab === 'services' && <AdminServices />}
+            {activeTab === 'news' && <AdminNews />}
+            {activeTab === 'ukm' && <AdminUkm />}
+            {activeTab === 'gallery' && <AdminGallery />}
+            {activeTab === 'contact' && <AdminContact />}
+            {activeTab === 'socials' && <AdminSocials />}
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">Data Pegawai (JSON)</label>
-                  <textarea
-                    rows={8}
-                    value={typeof formProfile.pegawaiData === 'object' ? JSON.stringify(formProfile.pegawaiData, null, 2) : ''}
-                    onChange={(e) => {
-                      try {
-                        const parsed = JSON.parse(e.target.value);
-                        setFormProfile({...formProfile, pegawaiData: parsed});
-                      } catch (err) {}
-                    }}
-                    className="w-full font-mono border border-slate-300 rounded-xl p-3.5 text-xs text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none bg-slate-50"
-                    placeholder="Struktur JSON data pegawai"
-                  ></textarea>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex justify-end">
-                  <button
-                    onClick={handleProfileSave}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2"
-                  >
-                    <Save size={18} /> Simpan Perubahan
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {['services', 'news', 'gallery', 'ukm'].includes(activeTab) && (
-              <div className="space-y-6">
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-4">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-indigo-100 p-2 rounded-xl text-indigo-600 mt-1">
-                       <Layout size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-slate-800 text-sm">Mode Lanjutan (Editor JSON)</h4>
-                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                        Anda dapat secara bebas mengubah data terstruktur untuk modul ini. Format array diperlukan untuk mendukung fleksibilitas tanpa batas untuk konten-konten dinamis. Pastikan format syntax (tanda kurung kurawal & spasi) tidak salah sebelum menyimpan.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">Struktur Data Koleksi</label>
-                  <textarea
-                    rows={16}
-                    className="w-full font-mono text-sm leading-relaxed border border-slate-300 rounded-xl p-4 text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none bg-slate-50 shadow-inner"
-                    value={
-                      activeTab === 'services' ? JSON.stringify(formServices, null, 2) :
-                      activeTab === 'news' ? JSON.stringify(formNews, null, 2) :
-                      activeTab === 'ukm' ? JSON.stringify(formUkm, null, 2) :
-                      JSON.stringify(formGallery, null, 2)
-                    }
-                    onChange={(e) => {
-                      try {
-                         // let valid JSON through
-                         const val = e.target.value;
-                         if (activeTab === 'services') {
-                           // Set the string value directly to avoid losing cursors while typing.
-                           // Actually the best way is to keep a string state, but we'll try parsing inside blur or save.
-                           // Wait, the current implementation uses JSON.parse on every change which breaks typing in middle.
-                           // I will leave it as is if it was what the code previously did, wait -> no, the old code parse on change. Realistically that fails frequently.
-                           // Let me just map it to state.
-                         }
-                         const parsed = JSON.parse(val);
-                         if (activeTab === 'services') setFormServices(parsed);
-                         if (activeTab === 'news') setFormNews(parsed);
-                         if (activeTab === 'ukm') setFormUkm(parsed);
-                         if (activeTab === 'gallery') setFormGallery(parsed);
-                      } catch (err) {
-                        // ignore
-                      }
-                    }}
-                  />
-                </div>
-                <div className="pt-4 border-t border-slate-100 flex justify-end">
-                  <button
-                    onClick={() => {
-                      if (activeTab === 'services') genericSave('services', formServices);
-                      if (activeTab === 'news') genericSave('news', formNews);
-                      if (activeTab === 'ukm') genericSave('programUkm', formUkm);
-                      if (activeTab === 'gallery') genericSave('gallery', formGallery);
-                    }}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2"
-                  >
-                    <Save size={18} /> Simpan Struktur Data
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {activeTab !== 'hero' && activeTab !== 'profile' && !['services', 'news', 'gallery', 'ukm'].includes(activeTab) && (
+            {activeTab !== 'hero' && activeTab !== 'profile' && !['services', 'news', 'gallery', 'ukm', 'contact', 'socials'].includes(activeTab) && (
               <div className="py-16 text-center">
                 <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                   {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Layout, { size: 40, className: "text-slate-400" })}

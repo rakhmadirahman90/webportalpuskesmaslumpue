@@ -20,6 +20,13 @@ const defaultSiteData = {
     ],
     tujuan: "Meningkatkan derajat kesehatan masyarakat yang optimal, melalui terciptanya masyarakat, kelompok, dan individu yang memiliki perilaku sehat, memiliki kemampuan untuk menjangkau pelayanan kesehatan yang bermutu, hidup dalam lingkungan rumah yang sehat, dan memiliki derajat kesehatan yang memadai di wilayah kerja UPTD Puskesmas Lumpue.",
     kebijakanMutu: "Kami Pimpinan dan Seluruh Karyawan UPTD Puskesmas Lumpue Berkomitmen Untuk Memberikan Pelayanan Kesehatan Secara Profesional, Sesuai Standar Operasional Prosedur (SOP) Secara Berkesinambungan Guna Memenuhi Kepuasan Pelanggan Serta Melakukan Peningkatan Sistem Manajemen Mutu Secara Terus Menerus.",
+    tataNilai: [
+      { letter: 'S', title: 'Senyum, Sapa, Salam', desc: 'Dalam memberikan setiap pelayanan kepada masyarakat.' },
+      { letter: 'I', title: 'Inovatif', desc: 'Terus mengembangkan program kesehatan yang efektif.' },
+      { letter: 'G', title: 'Gotong Royong', desc: 'Melibatkan peran serta seluruh elemen masyarakat.' },
+      { letter: 'A', title: 'Akuntabel', desc: 'Bertanggung jawab dalam setiap pelaksanaan kegiatan.' },
+      { letter: 'P', title: 'Profesional', desc: 'Dalam melaksanakan asuhan dan tindakan medis.' }
+    ],
     motto: [
       { letter: 'C', text: 'Cekatan dalam bertindak' },
       { letter: 'E', text: 'Empati dalam bersikap' },
@@ -27,6 +34,16 @@ const defaultSiteData = {
       { letter: 'A', text: 'Akurat dalam mendiagnosa' },
       { letter: 'T', text: 'Tuntas dalam pengobatan' },
     ],
+    strukturOrganisasi: {
+      kepala: { name: 'Andi Irwan R, SKM., M.Kes', role: 'Kepala UPTD Puskesmas', photo: 'https://randomuser.me/api/portraits/men/32.jpg' },
+      pengurus: [
+        { name: 'Hj. Salmah, S.ST', role: 'Kasubag Tata Usaha', photo: 'https://randomuser.me/api/portraits/women/44.jpg' },
+        { name: 'dr. M. Adnan', role: 'PJ Mutu', photo: 'https://randomuser.me/api/portraits/men/45.jpg' },
+        { name: 'Siti Nurhaliza, SKM', role: 'PJ UKM', photo: 'https://randomuser.me/api/portraits/women/68.jpg' },
+        { name: 'drg. Fatihah Rizki', role: 'PJ UKP', photo: 'https://randomuser.me/api/portraits/women/65.jpg' },
+        { name: 'Bidan Rahmawati, Amd.Keb', role: 'PJ Jaringan & Jejaring Fasyankes', photo: 'https://randomuser.me/api/portraits/women/89.jpg' }
+      ]
+    },
     pegawaiData: {
       'Dokter Umum': [
         { name: 'dr. Andi Suryadi', role: 'Dokter Umum', nip: '198001012010011001', photo: 'https://randomuser.me/api/portraits/men/11.jpg' },
@@ -38,6 +55,18 @@ const defaultSiteData = {
       ]
     }
   },
+  kontak: {
+    alamat: "Jl. Bau Massepe No. 12\nKelurahan Lumpue, Kecamatan Bacukiki Barat\nKota Parepare, Sulawesi Selatan 91122",
+    telepon: "119 / (0421) 21119",
+    email: "puskesmas.lumpue@pareparekota.go.id",
+    gambarGedung: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800",
+    embedMap: "https://maps.google.com/maps?q=Puskesmas+Lumpue+Parepare&t=&z=15&ie=UTF8&iwloc=&output=embed"
+  },
+  sosialMedia: [
+    { title: "Facebook", username: "Puskesmas Lumpue", url: "https://facebook.com", icon: "Facebook" },
+    { title: "Instagram", username: "@puskesmaslumpue", url: "https://instagram.com", icon: "Instagram" },
+    { title: "YouTube", username: "PKM Lumpue", url: "https://youtube.com", icon: "Youtube" }
+  ],
   services: [
     {
       id: "umum",
@@ -188,7 +217,10 @@ export function CMSProvider({ children }: { children: ReactNode }) {
           setSiteData({
             hero: remoteData.hero || defaultSiteData.hero,
             profile: remoteData.profile || defaultSiteData.profile,
+            kontak: remoteData.kontak || defaultSiteData.kontak,
+            sosialMedia: remoteData.sosialMedia || defaultSiteData.sosialMedia,
             services: remoteData.services || defaultSiteData.services,
+            programUkm: remoteData.programUkm || defaultSiteData.programUkm,
             news: remoteData.news || defaultSiteData.news,
             gallery: remoteData.gallery || defaultSiteData.gallery,
           });
