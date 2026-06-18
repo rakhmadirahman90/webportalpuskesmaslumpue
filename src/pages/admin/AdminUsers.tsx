@@ -12,14 +12,14 @@ export default function AdminUsers() {
   // Form states
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedAdminId, setSelectedAdminId] = useState<any>(null);
+  const [selectedAdminUsername, setSelectedAdminUsername] = useState<string | null>(null);
 
   const fetchAdmins = async () => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase
         .from('admins')
-        .select('id, username, created_at')
+        .select('username')
         .order('username', { ascending: true });
 
       if (error) {
@@ -39,21 +39,22 @@ export default function AdminUsers() {
 
   const handleAddOrEdit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username.trim()) {
+    const cleanUsername = username.trim();
+    if (!cleanUsername) {
       toast.error('Username tidak boleh kosong');
       return;
     }
 
-    if (!selectedAdminId && !password) {
+    if (!selectedAdminUsername && !password) {
       toast.error('Password wajib diisi untuk pengguna baru');
       return;
     }
 
     setIsSaving(true);
     try {
-      if (selectedAdminId) {
+      if (selectedAdminUsername) {
         // Update
-        const updates: any = { username: username.trim() };
+        const updates: any = { username: cleanUsername };
         if (password) {
           updates.password = await bcrypt.hash(password, 10);
         }
@@ -61,16 +62,26 @@ export default function AdminUsers() {
         const { error } = await supabase
           .from('admins')
           .update(updates)
-          .eq('id', selectedAdminId);
+          .eq('username', selectedAdminUsername);
 
         if (error) throw error;
         toast.success('Pengguna berhasil diperbarui!');
       } else {
+        // Check local duplicate first
+        const isDuplicate = admins.some(
+          (admin) => admin.username.toLowerCase() === cleanUsername.toLowerCase()
+        );
+        if (isDuplicate) {
+          toast.error('Username sudah digunakan', { description: 'Silakan gunakan username unik yang lain.' });
+          setIsSaving(false);
+          return;
+        }
+
         // Insert
         const hashedPassword = await bcrypt.hash(password, 10);
         const { error } = await supabase
           .from('admins')
-          .insert([{ username: username.trim(), password: hashedPassword }]);
+          .insert([{ username: cleanUsername, password: hashedPassword }]);
 
         if (error) throw error;
         toast.success('Pengguna baru berhasil ditambahkan!');
@@ -79,7 +90,7 @@ export default function AdminUsers() {
       // Reset Form
       setUsername('');
       setPassword('');
-      setSelectedAdminId(null);
+      setSelectedAdminUsername(null);
       fetchAdmins();
     } catch (err: any) {
       toast.error('Gagal menyimpan pengguna', { description: err.message });
@@ -88,13 +99,13 @@ export default function AdminUsers() {
     }
   };
 
-  const handleDelete = async (id: any, name: string) => {
+  const handleDelete = async (usernameToDelete: string) => {
     if (admins.length <= 1) {
       toast.error('Gagal menghapus', { description: 'Harus tersisa minimal satu akun administrator.' });
       return;
     }
     
-    if (!confirm(`Apakah Anda yakin ingin menghapus administrator "${name}"?`)) {
+    if (!confirm(`Apakah Anda yakin ingin menghapus administrator "${usernameToDelete}"?`)) {
       return;
     }
 
@@ -102,10 +113,16 @@ export default function AdminUsers() {
       const { error } = await supabase
         .from('admins')
         .delete()
-        .eq('id', id);
+        .eq('username', usernameToDelete);
 
       if (error) throw error;
       toast.success('Pengguna berhasil dihapus!');
+      // If we deleted the user that was currently being edited, reset form
+      if (selectedAdminUsername === usernameToDelete) {
+        setSelectedAdminUsername(null);
+        setUsername('');
+        setPassword('');
+      }
       fetchAdmins();
     } catch (err: any) {
       toast.error('Gagal menghapus pengguna', { description: err.message });
@@ -113,7 +130,7 @@ export default function AdminUsers() {
   };
 
   const handleEditClick = (admin: any) => {
-    setSelectedAdminId(admin.id);
+    setSelectedAdminUsername(admin.username);
     setUsername(admin.username);
     setPassword(''); // leave blank if password is not to be changed
   };
@@ -134,7 +151,7 @@ export default function AdminUsers() {
         {/* Form Container */}
         <div className="md:col-span-1 bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <h4 className="font-bold text-sm text-slate-700 mb-4">
-            {selectedAdminId ? 'Edit Akun Admin' : 'Tambah Akun Admin'}
+            {selectedAdminUsername ? 'Edit Akun Admin' : 'Tambah Akun Admin'}
           </h4>
           <form onSubmit={handleAddOrEdit} className="space-y-4">
             <div className="space-y-1.5">
@@ -154,13 +171,13 @@ export default function AdminUsers() {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-600">
-                Password {selectedAdminId && '(Kosongkan jika tidak diubah)'}
+                Password {selectedAdminUsername && '(Kosongkan jika tidak diubah)'}
               </label>
               <div className="relative">
                 <Key size={16} className="absolute left-3 top-3 text-slate-400" />
                 <input
                   type="password"
-                  required={!selectedAdminId}
+                  required={!selectedAdminUsername}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full text-slate-900 bg-white border border-slate-300 rounded-xl py-2 pl-9 pr-4 text-xs font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
@@ -173,20 +190,20 @@ export default function AdminUsers() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-xl text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-1.5"
+                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-xl text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-1.5 animate-none"
               >
                 {isSaving ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
                   <Plus size={14} />
                 )}
-                {selectedAdminId ? 'Simpan' : 'Tambah'}
+                {selectedAdminUsername ? 'Simpan' : 'Tambah'}
               </button>
-              {selectedAdminId && (
+              {selectedAdminUsername && (
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedAdminId(null);
+                    setSelectedAdminUsername(null);
                     setUsername('');
                     setPassword('');
                   }}
@@ -210,32 +227,22 @@ export default function AdminUsers() {
               Belum ada administrator yang terdaftar.
             </div>
           ) : (
-            <div className="overflow-hidden border border-slate-200 rounded-2xl">
+            <div className="overflow-hidden border border-slate-200 rounded-2xl shadow-sm bg-white">
               <table className="w-full text-left text-xs text-slate-600">
                 <thead className="bg-slate-50 text-slate-700 uppercase font-semibold border-b border-slate-200">
                   <tr>
                     <th className="px-6 py-3.5">Username</th>
-                    <th className="px-6 py-3.5">Dibuat Pada</th>
                     <th className="px-6 py-3.5 text-right">Aksi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 bg-white">
+                <tbody className="divide-y divide-slate-200">
                   {admins.map((admin) => (
-                    <tr key={admin.id} className="hover:bg-slate-50 transition-colors">
+                    <tr key={admin.username} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 font-bold text-slate-900 flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] text-blue-700 font-extrabold uppercase">
+                        <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] text-blue-700 font-extrabold uppercase shrink-0">
                           {admin.username[0]}
                         </div>
-                        {admin.username}
-                      </td>
-                      <td className="px-6 py-4 text-slate-500">
-                        {admin.created_at ? new Date(admin.created_at).toLocaleDateString('id-ID', {
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        }) : '-'}
+                        <span className="truncate">{admin.username}</span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
@@ -246,8 +253,9 @@ export default function AdminUsers() {
                             Edit
                           </button>
                           <button
-                            onClick={() => handleDelete(admin.id, admin.username)}
+                            onClick={() => handleDelete(admin.username)}
                             className="text-red-500 hover:bg-red-50 p-1.5 rounded-lg"
+                            title="Hapus"
                           >
                             <Trash2 size={16} />
                           </button>
