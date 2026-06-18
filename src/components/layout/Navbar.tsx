@@ -7,6 +7,12 @@ import {
   Phone,
   ChevronDown,
   Home,
+  Building,
+  Stethoscope,
+  Newspaper,
+  Image as ImageIcon,
+  Share2,
+  HelpCircle,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -48,6 +54,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       name: "Profil",
       href: "#profil",
       page: "profil",
+      icon: Building,
       subLinks: [
         { name: "Selayang Pandang", tabId: "selayang-pandang" },
         { name: "Visi & Misi", tabId: "visi-misi" },
@@ -63,6 +70,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       name: "Layanan & Fasilitas",
       href: "#layanan",
       page: "layanan",
+      icon: Stethoscope,
       subLinks: [
         { name: "Layanan Utama", tabId: "layanan", href: "#layanan" },
         { name: "Fasilitas Kami", tabId: "fasilitas", href: "#fasilitas" },
@@ -74,6 +82,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       name: "Publikasi",
       href: "#publikasi",
       page: "publikasi",
+      icon: Newspaper,
       subLinks: [
         { name: "Berita & Artikel", tabId: "berita", href: "#publikasi" },
         { name: "Pengumuman", tabId: "pengumuman", href: "#publikasi" },
@@ -83,6 +92,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       name: "Program UKM",
       href: "#program-ukm",
       page: "program-ukm",
+      icon: HeartPulse,
       subLinks: [
         { name: "Promkes", tabId: "promkes" },
         { name: "Kesling", tabId: "kesling" },
@@ -95,6 +105,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       name: "Galeri",
       href: "#galeri",
       page: "galeri",
+      icon: ImageIcon,
       subLinks: [
         { name: "Galeri Foto", tabId: "foto" },
         { name: "Galeri Video", tabId: "video" },
@@ -104,6 +115,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       name: "Media Sosial",
       href: "#media-sosial",
       page: "media-sosial",
+      icon: Share2,
       subLinks: [
         { name: "Instagram", tabId: "instagram" },
         { name: "Facebook", tabId: "facebook" },
@@ -114,11 +126,13 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       name: "FAQ",
       href: "#faq",
       page: "faq",
+      icon: HelpCircle,
     },
     {
       name: "Kontak",
       href: "#kontak",
       page: "kontak",
+      icon: Phone,
     },
   ];
 
@@ -134,17 +148,17 @@ export default function Navbar({ activePage }: { activePage?: string }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <img
                 src="/logo.png?v=2"
                 alt="Logo Puskesmas Lumpue"
-                className="w-12 h-12 object-contain"
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
               />
               <div className="flex flex-col justify-center">
-                <span className="text-[0.65rem] font-bold text-blue-600 tracking-widest uppercase mb-0.5 leading-none">
+                <span className="text-[0.55rem] sm:text-[0.65rem] font-bold text-blue-600 tracking-wider sm:tracking-widest uppercase mb-0.5 leading-none">
                   UPTD Puskesmas
                 </span>
-                <span className="font-extrabold text-xl md:text-2xl text-slate-900 tracking-tight leading-none font-display">
+                <span className="font-extrabold text-lg sm:text-xl md:text-2xl text-slate-900 tracking-tight leading-none font-display">
                   Lumpue
                 </span>
               </div>
@@ -240,79 +254,107 @@ export default function Navbar({ activePage }: { activePage?: string }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 bg-slate-900/50 backdrop-blur-md z-[100] lg:hidden"
             />
             <motion.div
               initial={{ x: "100%", opacity: 0.5 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.5 }}
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl border-l border-slate-100 overflow-y-auto z-[60] lg:hidden flex flex-col"
+              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl border-l border-slate-100 overflow-y-auto z-[110] lg:hidden flex flex-col"
             >
-              <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 px-6 py-5 border-b border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/logo.png?v=2"
-                    alt="Logo Puskesmas Lumpue"
-                    className="w-8 h-8 object-contain"
-                  />
-                  <span className="font-bold text-lg text-slate-800">
-                    Puskesmas Lumpue
-                  </span>
+              <div className="sticky top-0 bg-white border-b border-slate-100 z-20 px-5 py-4 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                    <img
+                      src="/logo.png?v=2"
+                      alt="Logo Puskesmas Lumpue"
+                      className="w-6 h-6 object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-extrabold text-blue-600 tracking-wide uppercase leading-none mb-0.5">
+                      Puskesmas
+                    </span>
+                    <span className="font-bold text-base text-slate-900 tracking-tight leading-none">
+                      Lumpue
+                    </span>
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 -mr-2 text-slate-500 hover:text-red-500 bg-slate-50 hover:bg-red-50 rounded-full transition-colors"
+                  className="p-1.5 text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50/50 rounded-xl transition-all border border-slate-100"
                 >
-                  <X size={20} />
+                  <X size={18} />
                 </button>
               </div>
 
-              <div className="p-6 flex-grow flex flex-col space-y-2">
+              <div className="p-5 flex-grow overflow-y-auto space-y-2">
                 <a
                   href="#portal"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 bg-gradient-to-r from-blue-600 to-[#0061A0] text-white px-5 py-3.5 rounded-xl font-bold shadow-md shadow-blue-600/20 mb-4"
+                  className="flex items-center gap-3.5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-bold shadow-md shadow-blue-600/10 mb-3 border border-blue-500"
                 >
-                  <Home size={20} /> Portal Utama
+                  <div className="p-2 bg-white/10 rounded-lg shrink-0 text-white">
+                    <Home size={18} />
+                  </div>
+                  <span className="text-sm">Portal Utama</span>
                 </a>
 
                 {navLinks.map((link) => {
                   const isActive = activePage === link.href.substring(1);
                   const isExpanded = expandedMenu === link.name;
+                  const LinkIcon = link.icon;
 
                   if (link.subLinks) {
                     return (
                       <div
                         key={link.name}
-                        className="flex flex-col border border-slate-100 rounded-2xl overflow-hidden bg-slate-50/50"
+                        className={`flex flex-col rounded-xl overflow-hidden transition-all border ${
+                          isExpanded
+                            ? "bg-slate-50/70 border-slate-200/60 shadow-sm"
+                            : "bg-transparent border-transparent"
+                        }`}
                       >
                         <button
                           onClick={(e) => {
                             e.preventDefault();
                             setExpandedMenu(isExpanded ? null : link.name);
                           }}
-                          className={`flex items-center justify-between px-5 py-4 text-base font-bold transition-colors ${
+                          className={`flex items-center justify-between w-full px-4 py-2.5 text-sm transition-all ${
                             isActive || isExpanded
-                              ? "text-blue-700 bg-blue-50/50"
-                              : "text-slate-700 hover:text-blue-600"
+                              ? "text-blue-700 font-bold"
+                              : "text-slate-700 font-semibold hover:text-blue-600 hover:bg-slate-50"
                           }`}
                         >
-                          {link.name}
+                          <div className="flex items-center gap-3.5">
+                            <div className={`p-2 rounded-lg shrink-0 transition-colors ${
+                              isActive || isExpanded
+                                ? "bg-blue-100/80 text-blue-700"
+                                : "bg-slate-100 text-slate-500"
+                            }`}>
+                              <LinkIcon size={18} />
+                            </div>
+                            <span>{link.name}</span>
+                          </div>
                           <ChevronDown
-                            size={18}
-                            className={`transition-transform duration-300 ${isExpanded ? "rotate-180 text-blue-600" : "text-slate-400"}`}
+                            size={16}
+                            className={`transition-transform duration-300 ${
+                              isExpanded ? "rotate-180 text-blue-600" : "text-slate-400"
+                            }`}
                           />
                         </button>
                         <AnimatePresence>
                           {isExpanded && (
                             <motion.div
-                              initial={{ height: 0 }}
-                              animate={{ height: "auto" }}
-                              exit={{ height: 0 }}
-                              className="overflow-hidden"
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden bg-white/50"
                             >
-                              <div className="px-3 pb-3 space-y-1">
+                              <div className="pl-13 pr-4 pb-3 pt-1 space-y-1 relative">
+                                <div className="absolute left-9 top-0 bottom-4 w-0.5 bg-slate-200 rounded"></div>
                                 {link.subLinks.map((sub) => {
                                   return (
                                     <a
@@ -326,7 +368,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
                                           sub.tabId,
                                         );
                                       }}
-                                      className="block px-4 py-3 text-sm text-slate-600 hover:text-blue-700 hover:bg-white bg-transparent rounded-xl font-semibold transition-all border border-transparent hover:border-blue-100 hover:shadow-sm"
+                                      className="block px-3.5 py-2 text-xs text-slate-600 hover:text-blue-700 hover:bg-blue-50/50 rounded-lg font-semibold transition-all relative"
                                     >
                                       {sub.name}
                                     </a>
@@ -345,13 +387,18 @@ export default function Navbar({ activePage }: { activePage?: string }) {
                       key={link.name}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className={`block px-5 py-4 text-base font-bold rounded-2xl border ${
+                      className={`flex items-center gap-3.5 px-4 py-2.5 rounded-xl transition-all border ${
                         isActive
-                          ? "text-blue-700 bg-blue-50 border-blue-100"
-                          : "text-slate-700 hover:text-blue-600 bg-slate-50/50 border-slate-100 hover:border-blue-100 hover:bg-white"
+                          ? "text-blue-700 bg-blue-50/60 border-blue-100 font-bold"
+                          : "text-slate-700 hover:text-blue-600 bg-transparent border-transparent hover:bg-slate-50 font-semibold"
                       }`}
                     >
-                      {link.name}
+                      <div className={`p-2 rounded-lg shrink-0 ${
+                        isActive ? "bg-blue-100/80 text-blue-700" : "bg-slate-100 text-slate-500"
+                      }`}>
+                        <LinkIcon size={18} />
+                      </div>
+                      <span className="text-sm">{link.name}</span>
                     </a>
                   );
                 })}

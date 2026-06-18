@@ -16,6 +16,13 @@ const defaultSiteData = {
     subtitle: "Web Portal Informasi Puskesmas Lumpue Resmi Dibuka",
     description:
       "Fasilitas Pelayanan Kesehatan Tingkat Pertama (FKTP) bersertifikasi standar Kementerian Kesehatan RI. Cepat, tepat, dan ramah untuk keluarga Anda.",
+    interval: 5,
+    stats: [
+      { label: "Tenaga Medis & Staff", value: "45+", icon: "Stethoscope" },
+      { label: "Kunjungan /Bulan", value: "4.5k", icon: "Users" },
+      { label: "Desa/Kel. Binaan", value: "4", icon: "ShieldCheck" },
+      { label: "Posyandu Aktif", value: "24", icon: "Pill" },
+    ],
     sliderImages: [
       "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?q=80&w=2000&auto=format&fit=crop",

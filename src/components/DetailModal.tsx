@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X } from 'lucide-react';
+import { X, Eye, ThumbsUp, Share2 } from 'lucide-react';
 
 interface DetailModalProps {
   isOpen: boolean;
@@ -10,9 +10,27 @@ interface DetailModalProps {
   date?: string;
   category?: string;
   content?: string;
+  views?: number;
+  likes?: number;
+  shares?: number;
+  onLike?: () => void;
+  onShare?: () => void;
 }
 
-export default function DetailModal({ isOpen, onClose, title, image, date, category, content }: DetailModalProps) {
+export default function DetailModal({
+  isOpen,
+  onClose,
+  title,
+  image,
+  date,
+  category,
+  content,
+  views,
+  likes,
+  shares,
+  onLike,
+  onShare,
+}: DetailModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -55,6 +73,45 @@ export default function DetailModal({ isOpen, onClose, title, image, date, categ
               ) : (
                 <p className="text-slate-500 italic">Detail konten belum tersedia untuk item ini.</p>
               )}
+            </div>
+
+            {/* Interactions Footer */}
+            <div className="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-4 text-xs font-semibold text-slate-500">
+                <span className="flex items-center gap-1" title="Dilihat">
+                  <Eye size={16} className="text-slate-400" />
+                  {views || 0} Dilihat
+                </span>
+                <span className="flex items-center gap-1" title="Suka">
+                  <ThumbsUp size={16} className="text-slate-400 animate-pulse" />
+                  {likes || 0} Suka
+                </span>
+                <span className="flex items-center gap-1" title="Dibagikan">
+                  <Share2 size={16} className="text-slate-400" />
+                  {shares || 0} Bagikan
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                {onLike && (
+                  <button
+                    onClick={onLike}
+                    className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-slate-200 rounded-xl transition-all"
+                  >
+                    <ThumbsUp size={14} className="text-blue-500" />
+                    Suka
+                  </button>
+                )}
+                {onShare && (
+                  <button
+                    onClick={onShare}
+                    className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-slate-200 rounded-xl transition-all"
+                  >
+                    <Share2 size={14} className="text-blue-500" />
+                    Bagikan
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </motion.div>

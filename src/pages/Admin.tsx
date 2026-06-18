@@ -34,6 +34,7 @@ import AdminGallery from "./admin/AdminGallery";
 import AdminContact from "./admin/AdminContact";
 import AdminSocials from "./admin/AdminSocials";
 import AdminProfile from "./admin/AdminProfile";
+import AdminUsers from "./admin/AdminUsers";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ export default function Admin() {
     { id: "socials", name: "Media Sosial", icon: Share2 },
     { id: "faq", name: "FAQ", icon: HelpCircle },
     { id: "contact", name: "Kontak", icon: Phone },
+    { id: "users", name: "Manajemen User", icon: UserIcon },
   ];
 
   return (
@@ -202,19 +204,40 @@ export default function Admin() {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Sub-Judul (Badge Kecil di Atas)
-                  </label>
-                  <input
-                    type="text"
-                    value={formHero.subtitle || ""}
-                    onChange={(e) =>
-                      setFormHero({ ...formHero, subtitle: e.target.value })
-                    }
-                    className="w-full border border-slate-300 rounded-xl p-3.5 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
-                    placeholder="Contoh: Selamat datang di Portal Resmi..."
-                  />
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-slate-700">
+                      Sub-Judul (Badge Kecil di Atas)
+                    </label>
+                    <input
+                      type="text"
+                      value={formHero.subtitle || ""}
+                      onChange={(e) =>
+                        setFormHero({ ...formHero, subtitle: e.target.value })
+                      }
+                      className="w-full border border-slate-300 rounded-xl p-3.5 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                      placeholder="Contoh: Selamat datang di Portal Resmi..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-slate-700">
+                      Interval Transisi Gambar (Detik)
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={60}
+                      value={formHero.interval || 5}
+                      onChange={(e) =>
+                        setFormHero({
+                          ...formHero,
+                          interval: Math.max(1, parseInt(e.target.value) || 5),
+                        })
+                      }
+                      className="w-full border border-slate-300 rounded-xl p-3.5 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                      placeholder="Masukkan dalam detik, contoh: 5"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-slate-700">
@@ -285,6 +308,56 @@ export default function Admin() {
                   </button>
                 </div>
 
+                {/* Dynamic Stats Customizations */}
+                <div className="space-y-4 pt-6 border-t border-slate-100">
+                  <h3 className="font-bold text-lg">Parameter Statistik (Hero)</h3>
+                  <p className="text-xs text-slate-500 mb-2">Sesuaikan data statistik yang relevan bagi stakeholder pada halaman utama.</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {([0, 1, 2, 3]).map((idx) => {
+                      const defaultStats = [
+                        { label: "Tenaga Medis & Staff", value: "45+", icon: "Stethoscope" },
+                        { label: "Kunjungan /Bulan", value: "4.5k", icon: "Users" },
+                        { label: "Desa/Kel. Binaan", value: "4", icon: "ShieldCheck" },
+                        { label: "Posyandu Aktif", value: "24", icon: "Pill" },
+                      ];
+                      const statsArray = formHero.stats && formHero.stats.length === 4 ? formHero.stats : defaultStats;
+                      const currentStat = statsArray[idx] || defaultStats[idx];
+                      
+                      return (
+                        <div key={idx} className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3">
+                          <span className="text-xs font-bold text-slate-500 block">Statistik {idx + 1}</span>
+                          <div className="space-y-1">
+                            <label className="text-[10px] uppercase tracking-wide text-slate-500 font-bold block">Label</label>
+                            <input
+                              type="text"
+                              value={currentStat.label}
+                              onChange={(e) => {
+                                const newStats = [...statsArray];
+                                newStats[idx] = { ...currentStat, label: e.target.value };
+                                setFormHero({ ...formHero, stats: newStats });
+                              }}
+                              className="w-full border border-slate-300 rounded-lg p-2 text-xs text-slate-900 outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <label className="text-[10px] uppercase tracking-wide text-slate-500 font-bold block">Nilai (Value)</label>
+                            <input
+                              type="text"
+                              value={currentStat.value}
+                              onChange={(e) => {
+                                const newStats = [...statsArray];
+                                newStats[idx] = { ...currentStat, value: e.target.value };
+                                setFormHero({ ...formHero, stats: newStats });
+                              }}
+                              className="w-full border border-slate-300 rounded-lg p-2 text-xs text-slate-900 outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 <div className="pt-4 border-t border-slate-100 flex justify-end mt-6">
                   <button
                     onClick={handleHeroSave}
@@ -308,6 +381,7 @@ export default function Admin() {
             {activeTab === "socials" && <AdminSocials />}
             {activeTab === "faq" && <AdminFaq />}
             {activeTab === "contact" && <AdminContact />}
+            {activeTab === "users" && <AdminUsers />}
 
             {[
               "hero",
@@ -323,6 +397,7 @@ export default function Admin() {
               "ukm",
               "contact",
               "socials",
+              "users",
             ].indexOf(activeTab) === -1 && (
               <div className="py-16 text-center">
                 <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
+import { Save, Plus, Trash2, Edit2, Eye, ThumbsUp, Share2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import ImageUpload from '../../components/ImageUpload';
 import { toast } from 'sonner';
@@ -20,7 +20,7 @@ export default function AdminNews() {
 
   const handleAdd = () => {
     setEditingId('new');
-    setFormData({ id: Date.now(), title: '', category: '', date: '', image: '', excerpt: '' });
+    setFormData({ id: Date.now(), title: '', category: '', date: '', image: '', excerpt: '', views: 0, likes: 0, shares: 0 });
   };
 
   const handleEdit = (item: any) => {
@@ -52,6 +52,23 @@ export default function AdminNews() {
           <input className="w-full border p-2 rounded" placeholder="Kategori" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} />
           <input className="w-full border p-2 rounded" placeholder="Tanggal (cth: 12 Okt 2026)" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
         </div>
+        
+        {/* Engagement Override Controls */}
+        <div className="grid grid-cols-3 gap-4 bg-slate-50 p-4 border rounded-xl">
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500">Jumlah Dilihat (Views)</label>
+            <input type="number" min="0" className="w-full border p-2 rounded bg-white text-xs font-bold" value={formData.views || 0} onChange={e => setFormData({...formData, views: Math.max(0, parseInt(e.target.value) || 0)})} />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500">Jumlah Suka (Likes)</label>
+            <input type="number" min="0" className="w-full border p-2 rounded bg-white text-xs font-bold" value={formData.likes || 0} onChange={e => setFormData({...formData, likes: Math.max(0, parseInt(e.target.value) || 0)})} />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-slate-500">Jumlah Dibagikan (Shares)</label>
+            <input type="number" min="0" className="w-full border p-2 rounded bg-white text-xs font-bold" value={formData.shares || 0} onChange={e => setFormData({...formData, shares: Math.max(0, parseInt(e.target.value) || 0)})} />
+          </div>
+        </div>
+
         <ImageUpload 
            label="Foto / Gambar Publikasi" 
            value={formData.image} 
@@ -79,7 +96,18 @@ export default function AdminNews() {
             {item.image && <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded" />}
             <div className="flex-grow">
               <div className="font-bold">{item.title}</div>
-              <div className="text-sm text-slate-500">{item.category} • {item.date}</div>
+              <div className="text-sm text-slate-500 flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+                <span>{item.category} • {item.date}</span>
+                <span className="flex items-center gap-0.5 text-xs text-slate-400">
+                  <Eye size={12} /> {item.views || 0}
+                </span>
+                <span className="flex items-center gap-0.5 text-xs text-slate-400">
+                  <ThumbsUp size={12} /> {item.likes || 0}
+                </span>
+                <span className="flex items-center gap-0.5 text-xs text-slate-400">
+                  <Share2 size={12} /> {item.shares || 0}
+                </span>
+              </div>
             </div>
             <div className="flex gap-2 shrink-0">
               <button onClick={() => handleEdit(item)} className="p-2 text-blue-600 hover:bg-blue-100 rounded"><Edit2 size={16}/></button>

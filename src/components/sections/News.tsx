@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, CalendarDays, Tag } from 'lucide-react';
+import { ArrowRight, CalendarDays, Tag, Eye, ThumbsUp, Share2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import DetailModal from '../DetailModal';
+import { toast } from 'sonner';
 
 export default function News({ hideHeader }: { hideHeader?: boolean }) {
-  const { siteData } = useCMS();
+  const { siteData, updateSection } = useCMS();
   const [selectedItem, setSelectedItem] = useState<any>(null);
 
   const articles = [
@@ -15,7 +16,10 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
       date: "12 Okt 2026",
       title: "Waspada Demam Berdarah Dengue (DBD) di Musim Hujan",
       image: "https://images.unsplash.com/photo-1584362917165-526a968579e8?q=80&w=800&auto=format&fit=crop",
-      excerpt: "Mari lakukan 3M Plus untuk mencegah perkembangbiakan nyamuk Aedes aegypti di lingkungan sekitar kita."
+      excerpt: "Mari lakukan 3M Plus untuk mencegah perkembangbiakan nyamuk Aedes aegypti di lingkungan sekitar kita.",
+      views: 120,
+      likes: 45,
+      shares: 12
     },
     {
       id: 2,
@@ -23,7 +27,10 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
       date: "08 Okt 2026",
       title: "Pekan Imunisasi Nasional (PIN) Polio Telah Dimulai",
       image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
-      excerpt: "Lindungi buah hati dari ancaman virus Polio. Bawalah anak balita Anda ke Posyandu atau Puskesmas terdekat."
+      excerpt: "Lindungi buah hati dari ancaman virus Polio. Bawalah anak balita Anda ke Posyandu atau Puskesmas terdekat.",
+      views: 95,
+      likes: 38,
+      shares: 15
     },
     {
       id: 3,
@@ -31,11 +38,59 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
       date: "01 Okt 2026",
       title: "Pentingnya Isi Piringku untuk Cegah Stunting Sejak Dini",
       image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop",
-      excerpt: "Memahami konsep gizi seimbang melalui pedoman Isi Piringku dari Kementerian Kesehatan."
+      excerpt: "Memahami konsep gizi seimbang melalui pedoman Isi Piringku dari Kementerian Kesehatan.",
+      views: 150,
+      likes: 62,
+      shares: 20
     }
   ];
 
   const newsData = Array.isArray(siteData?.news) ? siteData.news : articles;
+
+  const handleArticleClick = (article: any) => {
+    const updatedNews = newsData.map((item: any) => {
+      if (item.id === article.id) {
+        const newViews = (item.views || 0) + 1;
+        setSelectedItem({ ...item, views: newViews });
+        return { ...item, views: newViews };
+      }
+      return item;
+    });
+    updateSection('news', updatedNews);
+  };
+
+  const handleLike = (articleId: any) => {
+    const updatedNews = newsData.map((item: any) => {
+      if (item.id === articleId) {
+        const newLikes = (item.likes || 0) + 1;
+        setSelectedItem((prev: any) => prev ? { ...prev, likes: newLikes } : null);
+        return { ...item, likes: newLikes };
+      }
+      return item;
+    });
+    updateSection('news', updatedNews);
+    toast.success('Artikel disukai!', {
+      description: 'Terima kasih atas tanggapan Anda.'
+    });
+  };
+
+  const handleShare = (articleId: any) => {
+    const shareUrl = `${window.location.origin}/#informasi`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      const updatedNews = newsData.map((item: any) => {
+        if (item.id === articleId) {
+          const newShares = (item.shares || 0) + 1;
+          setSelectedItem((prev: any) => prev ? { ...prev, shares: newShares } : null);
+          return { ...item, shares: newShares };
+        }
+        return item;
+      });
+      updateSection('news', updatedNews);
+      toast.success('Tautan disalin!', {
+        description: 'Tautan berita disalin ke clipboard.'
+      });
+    });
+  };
 
   const content = (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,7 +114,7 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
           {newsData.map((article: any, idx: number) => (
             <motion.article 
               key={article.id}
-              onClick={() => setSelectedItem(article)}
+              onClick={() => handleArticleClick(article)}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -80,9 +135,23 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
               </div>
               
               <div className="p-6 flex flex-col flex-grow">
-                <div className="flex items-center gap-2 text-slate-500 text-xs font-medium mb-3">
-                  <CalendarDays size={14} />
-                  {article.date}
+                <div className="flex items-center justify-between text-slate-500 text-xs font-medium mb-3">
+                  <div className="flex items-center gap-2">
+                    <CalendarDays size={14} />
+                    {article.date}
+                  </div>
+                  
+                  {/* Minified counters on card */}
+                  <div className="flex items-center gap-2 text-slate-400">
+                    <span className="flex items-center gap-0.5" title="Suka">
+                      <ThumbsUp size={12} />
+                      {article.likes || 0}
+                    </span>
+                    <span className="flex items-center gap-0.5" title="Dilihat">
+                      <Eye size={12} />
+                      {article.views || 0}
+                    </span>
+                  </div>
                 </div>
                 
                 <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
@@ -93,9 +162,18 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
                   {article.excerpt}
                 </p>
                 
-                <div className="mt-auto pt-4 border-t border-slate-100 flex items-center gap-2 text-blue-600 font-semibold text-sm">
-                  Baca Selengkapnya
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-blue-600 font-semibold text-sm">
+                    Baca Selengkapnya
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                  </div>
+                  
+                  {article.shares > 0 && (
+                    <span className="text-[10px] text-slate-400 font-medium flex items-center gap-0.5">
+                      <Share2 size={10} />
+                      {article.shares} share
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.article>
@@ -120,6 +198,11 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
         category={selectedItem?.category}
         image={selectedItem?.image}
         content={selectedItem?.content || selectedItem?.excerpt}
+        views={selectedItem?.views}
+        likes={selectedItem?.likes}
+        shares={selectedItem?.shares}
+        onLike={() => handleLike(selectedItem?.id)}
+        onShare={() => handleShare(selectedItem?.id)}
       />
     </>
   );

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Image as ImageIcon, Film } from 'lucide-react';
+import { Image as ImageIcon, Film, Eye, ThumbsUp, Share2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import DetailModal from '../DetailModal';
+import { toast } from 'sonner';
 
 export default function Galeri() {
-  const { siteData } = useCMS();
+  const { siteData, updateSection } = useCMS();
   const galleryData = siteData.gallery || {};
   const fotoData = galleryData.foto || [];
   const videoData = galleryData.video || [];
@@ -21,9 +22,75 @@ export default function Galeri() {
     return () => window.removeEventListener('changeTab', handleTabChange);
   }, []);
 
+  const handleItemClick = (item: any, type: 'foto' | 'video') => {
+    const targetItem = typeof item === 'object' ? item : { id: item, title: 'Video Edukasi' };
+    const updatedList = (type === 'foto' ? fotoData : videoData).map((g: any) => {
+      const gId = typeof g === 'object' ? g.id : g;
+      const itemId = targetItem.id;
+      if (gId === itemId) {
+        const itemObj = typeof g === 'object' ? g : { id: g, title: 'Video Edukasi' };
+        return { ...itemObj, views: (itemObj.views || 0) + 1 };
+      }
+      return g;
+    });
+
+    const newGalleryData = {
+      ...galleryData,
+      [type]: updatedList
+    };
+
+    updateSection('gallery', newGalleryData);
+    setSelectedItem({ ...targetItem, type, views: (targetItem.views || 0) + 1 });
+  };
+
+  const handleLike = (itemId: any, type: 'foto' | 'video') => {
+    const updatedList = (type === 'foto' ? fotoData : videoData).map((g: any) => {
+      const gId = typeof g === 'object' ? g.id : g;
+      if (gId === itemId) {
+        const itemObj = typeof g === 'object' ? g : { id: g, title: 'Video Edukasi' };
+        const newLikes = (itemObj.likes || 0) + 1;
+        setSelectedItem((prev: any) => prev ? { ...prev, likes: newLikes } : null);
+        return { ...itemObj, likes: newLikes };
+      }
+      return g;
+    });
+
+    const newGalleryData = {
+      ...galleryData,
+      [type]: updatedList
+    };
+
+    updateSection('gallery', newGalleryData);
+    toast.success('Disukai!', { description: 'Dokumentasi berhasil disukai.' });
+  };
+
+  const handleShare = (itemId: any, type: 'foto' | 'video') => {
+    const shareUrl = `${window.location.origin}/#galeri`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      const updatedList = (type === 'foto' ? fotoData : videoData).map((g: any) => {
+        const gId = typeof g === 'object' ? g.id : g;
+        if (gId === itemId) {
+          const itemObj = typeof g === 'object' ? g : { id: g, title: 'Video Edukasi' };
+          const newShares = (itemObj.shares || 0) + 1;
+          setSelectedItem((prev: any) => prev ? { ...prev, shares: newShares } : null);
+          return { ...itemObj, shares: newShares };
+        }
+        return g;
+      });
+
+      const newGalleryData = {
+        ...galleryData,
+        [type]: updatedList
+      };
+
+      updateSection('gallery', newGalleryData);
+      toast.success('Tautan disalin!', { description: 'Tautan dokumentasi berhasil disalin.' });
+    });
+  };
+
   return (
     <section id="galeri" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-white relative border-t border-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Dokumentasi</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 font-display">Galeri Puskesmas</h2>
@@ -35,11 +102,27 @@ export default function Galeri() {
               <div className="max-h-[60vh] overflow-y-auto overflow-x-hidden custom-scrollbar pr-2 pb-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {fotoData.map((item: any) => (
-                  <div key={item.id} onClick={() => setSelectedItem({...item, type: 'foto'})} className="aspect-[4/3] bg-slate-100 rounded-3xl overflow-hidden border border-slate-200 flex items-center justify-center group relative cursor-pointer">
+                  <div key={item.id} onClick={() => handleItemClick(item, 'foto')} className="aspect-[4/3] bg-slate-100 rounded-3xl overflow-hidden border border-slate-200 flex items-center justify-center group relative cursor-pointer shadow-sm hover:shadow-md transition-shadow">
                     <img src={item.img || 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=800'} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1538108149393-fbbd81895a09?auto=format&fit=crop&q=80&w=800' }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                       <span className="text-white font-bold text-lg leading-tight mb-1">{item.title}</span>
-                      <span className="text-blue-300 text-sm font-semibold">{item.sub}</span>
+                      <span className="text-blue-300 text-sm font-semibold mb-3">{item.sub}</span>
+                      
+                      {/* Counter tags on hover */}
+                      <div className="flex items-center gap-3 text-white/80 text-xs font-semibold pt-2 border-t border-white/10">
+                        <span className="flex items-center gap-1">
+                          <Eye size={14} />
+                          {item.views || 0}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <ThumbsUp size={14} />
+                          {item.likes || 0}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Share2 size={14} />
+                          {item.shares || 0}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -50,19 +133,34 @@ export default function Galeri() {
           {activeTab === 'video' && (
             <motion.div key="video" initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}}>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                 {videoData.map((vid: any) => (
-                  <div key={vid.id || vid} onClick={() => setSelectedItem({ ...(typeof vid === 'object' ? vid : { id: vid, title: 'Video Edukasi' }), type: 'video' })} className="aspect-video bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 flex items-center justify-center relative group shadow-lg cursor-pointer">
-                    <Film size={48} className="text-slate-700" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 pl-1">
-                        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                      </div>
-                    </div>
-                    <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                       <span className="bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">{vid.title || 'Video Edukasi'}</span>
-                    </div>
-                  </div>
-                 ))}
+                 {videoData.map((vid: any) => {
+                   const vidObj = typeof vid === 'object' ? vid : { id: vid, title: 'Video Edukasi' };
+                   return (
+                     <div key={vidObj.id} onClick={() => handleItemClick(vidObj, 'video')} className="aspect-video bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 flex items-center justify-center relative group shadow-lg cursor-pointer">
+                       <Film size={48} className="text-slate-700" />
+                       <div className="absolute inset-0 flex items-center justify-center">
+                         <div className="w-16 h-16 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 pl-1">
+                           <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                         </div>
+                       </div>
+                       <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                          <span className="bg-black/55 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-semibold">{vidObj.title || 'Video Edukasi'}</span>
+                          
+                          {/* Minified counters on video card */}
+                          <div className="flex items-center gap-2 bg-black/55 backdrop-blur-sm px-3 py-1.5 rounded-full text-slate-300 text-xs">
+                             <span className="flex items-center gap-1">
+                               <Eye size={12} />
+                               {vidObj.views || 0}
+                             </span>
+                             <span className="flex items-center gap-1">
+                               <ThumbsUp size={12} />
+                               {vidObj.likes || 0}
+                             </span>
+                          </div>
+                       </div>
+                     </div>
+                   );
+                 })}
               </div>
             </motion.div>
           )}
@@ -76,6 +174,11 @@ export default function Galeri() {
         category={selectedItem?.type === 'foto' ? selectedItem?.sub || 'Galeri Foto' : 'Video Edukasi'}
         image={selectedItem?.type === 'foto' ? selectedItem?.img : undefined}
         content={(selectedItem?.content) || (selectedItem?.type === 'video' && selectedItem?.url ? `Link Video:\n${selectedItem.url}\n\n${selectedItem.content || ''}` : '')}
+        views={selectedItem?.views}
+        likes={selectedItem?.likes}
+        shares={selectedItem?.shares}
+        onLike={() => handleLike(selectedItem?.id, selectedItem?.type)}
+        onShare={() => handleShare(selectedItem?.id, selectedItem?.type)}
       />
     </section>
   );

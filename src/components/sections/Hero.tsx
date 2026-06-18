@@ -27,13 +27,19 @@ export default function Hero() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
+    const slideInterval = (heroData?.interval || 5) * 1000;
     const timer = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % sliderImages.length);
-    }, 5000);
+    }, slideInterval);
     return () => clearInterval(timer);
-  }, []);
+  }, [sliderImages.length, heroData?.interval]);
 
-  const stats = [
+  const statsFromCMS = heroData?.stats;
+  const stats = statsFromCMS && statsFromCMS.length > 0 ? statsFromCMS.map((s: any) => ({
+    label: s.label,
+    value: s.value,
+    icon: s.icon === 'Users' ? Users : s.icon === 'ShieldCheck' ? ShieldCheck : s.icon === 'Pill' ? Pill : Stethoscope
+  })) : [
     { label: "Tenaga Medis & Staff", value: "45+", icon: Stethoscope },
     { label: "Kunjungan /Bulan", value: "4.5k", icon: Users },
     { label: "Desa/Kel. Binaan", value: "4", icon: ShieldCheck },
@@ -43,11 +49,11 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden items-center flex min-h-screen"
+      className="relative pt-12 pb-10 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-24 overflow-hidden items-center flex h-[100svh] min-h-[100svh] lg:h-auto"
     >
       {/* Full Background Slider */}
       <div className="absolute inset-0 z-0 bg-slate-900">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence>
           <motion.img
             key={currentImageIndex}
             src={sliderImages[currentImageIndex]}
@@ -64,7 +70,7 @@ export default function Hero() {
       </div>
 
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-8 items-center">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -72,39 +78,39 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-2xl"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100/80 backdrop-blur-sm text-blue-800 text-sm font-semibold mb-6 border border-blue-200/50 shadow-sm">
-              <span className="relative flex h-2.5 w-2.5">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-100/80 backdrop-blur-sm text-blue-800 text-[9px] sm:text-sm font-semibold mb-2 sm:mb-5 border border-blue-200/50 shadow-sm leading-tight text-left">
+              <span className="relative flex h-1.5 w-1.5 sm:h-2.5 sm:w-2.5 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2.5 sm:w-2.5 bg-blue-500"></span>
               </span>
-              {heroData.subtitle}
+              <span>{heroData.subtitle || "Web Portal Informasi Puskesmas Lumpue Resmi Dibuka"}</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6 drop-shadow-sm font-display tracking-tight whitespace-pre-wrap">
+            <h1 className="text-2xl sm:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-2 sm:mb-4 drop-shadow-sm font-display tracking-tight whitespace-pre-wrap">
               {heroData.title}
-              <span className="block text-blue-600 mt-2 filter drop-shadow-sm">
+              <span className="block text-blue-600 mt-1 sm:mt-2 filter drop-shadow-sm">
                 {heroData.titleHighlight}
               </span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-slate-700 font-medium mb-8 leading-relaxed max-w-lg drop-shadow-sm">
+            <p className="text-xs sm:text-xl text-slate-700 font-medium mb-4 sm:mb-6 leading-relaxed max-w-lg drop-shadow-sm">
               {heroData.description}
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-slate-300/50 relative">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 pt-4 sm:pt-6 border-t border-slate-300/50 relative">
               {stats.map((stat, idx) => (
                 <div key={idx}>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2">
                     <stat.icon
-                      size={20}
-                      className="text-blue-600 hidden sm:block drop-shadow-sm"
+                      size={16}
+                      className="text-blue-600 hidden sm:block drop-shadow-sm shrink-0"
                     />
-                    <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 drop-shadow-sm">
+                    <span className="text-lg sm:text-3xl font-extrabold text-slate-900 drop-shadow-sm">
                       {stat.value}
                     </span>
                   </div>
-                  <span className="text-xs sm:text-sm font-semibold text-slate-700 drop-shadow-sm">
+                  <span className="text-[9px] sm:text-sm font-semibold text-slate-700 drop-shadow-sm leading-tight block">
                     {stat.label}
                   </span>
                 </div>
