@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Activity, ShieldCheck, Baby, Apple, Biohazard } from 'lucide-react';
+import { useCMS } from '../../context/CMSContext';
+
+const iconMapping: any = {
+  Activity, ShieldCheck, Baby, Apple, Biohazard
+};
 
 export default function ProgramUkm() {
+  const { siteData } = useCMS();
   const [activeTab, setActiveTab] = useState('promkes');
+
 
   useEffect(() => {
     const handleTabChange = (e: any) => {
@@ -63,6 +70,8 @@ export default function ProgramUkm() {
     }
   ];
 
+  const programData = siteData.programUkm || programs;
+
   return (
     <section id="program-ukm" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,10 +83,12 @@ export default function ProgramUkm() {
         <div className="flex flex-col gap-8 justify-center">
            <div className="bg-white border border-slate-100 p-6 md:p-10 rounded-3xl shadow-sm max-w-4xl mx-auto w-full max-h-[60vh] overflow-y-auto custom-scrollbar">
              <AnimatePresence mode="wait">
-               {programs.map(prog => activeTab === prog.id && (
+               {programData.map((prog: any) => {
+                 const IconComp = iconMapping[prog.icon] || Activity;
+                 return activeTab === prog.id && (
                  <motion.div key={prog.id} initial={{opacity: 0, x: 20}} animate={{opacity: 1, x: 0}} exit={{opacity: 0, x: -20}} className="space-y-6">
                     <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mb-6">
-                      <prog.icon size={32} />
+                      <IconComp size={32} />
                     </div>
                     <h3 className="text-3xl font-bold text-slate-900 font-display">{prog.title}</h3>
                     <p className="text-lg text-slate-600 leading-relaxed font-medium pb-4 border-b border-slate-100">{prog.desc}</p>
@@ -114,8 +125,9 @@ export default function ProgramUkm() {
                          </div>
                        </div>
                     </div>
-                 </motion.div>
-               ))}
+                  </motion.div>
+                 )
+               })}
              </AnimatePresence>
            </div>
         </div>

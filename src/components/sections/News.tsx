@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, CalendarDays, Tag } from 'lucide-react';
+import { useCMS } from '../../context/CMSContext';
 
 export default function News({ hideHeader }: { hideHeader?: boolean }) {
+  const { siteData } = useCMS();
+
   const articles = [
     {
       id: 1,
@@ -30,6 +33,8 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
     }
   ];
 
+  const newsData = siteData.news || articles;
+
   const content = (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {!hideHeader && (
@@ -49,7 +54,7 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
       )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articles.map((article, idx) => (
+          {newsData.map((article: any, idx: number) => (
             <motion.article 
               key={article.id}
               initial={{ opacity: 0, y: 20 }}

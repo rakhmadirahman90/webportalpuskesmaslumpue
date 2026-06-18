@@ -4,8 +4,8 @@ import { supabase } from '../lib/supabase';
 // Default initial data for the entire site
 const defaultSiteData = {
   hero: {
-    title: "Pelayanan Kesehatan",
-    titleHighlight: "Sepenuh Hati",
+    title: "Pelayanan Kesehatan\nSepenuh Hati",
+    titleHighlight: "",
     subtitle: "Sistem Pendaftaran Online Resmi Dibuka",
     description: "Fasilitas Pelayanan Kesehatan Tingkat Pertama (FKTP) bersertifikasi standar Kementerian Kesehatan RI. Cepat, tepat, dan ramah untuk keluarga Anda."
   },
@@ -26,22 +26,146 @@ const defaultSiteData = {
       { letter: 'P', text: 'Profesional dalam bekerja' },
       { letter: 'A', text: 'Akurat dalam mendiagnosa' },
       { letter: 'T', text: 'Tuntas dalam pengobatan' },
-    ]
+    ],
+    pegawaiData: {
+      'Dokter Umum': [
+        { name: 'dr. Andi Suryadi', role: 'Dokter Umum', nip: '198001012010011001', photo: 'https://randomuser.me/api/portraits/men/11.jpg' },
+        { name: 'dr. Budi Setiawan', role: 'Dokter Umum', nip: '198502022015021002', photo: 'https://randomuser.me/api/portraits/men/12.jpg' },
+        { name: 'dr. Citra Kirana', role: 'Dokter Umum', nip: '199003032018032003', photo: 'https://randomuser.me/api/portraits/women/11.jpg' }
+      ],
+      'Dokter Gigi': [
+        { name: 'drg. Diana Putri', role: 'Dokter Gigi', nip: '198804042014042004', photo: 'https://randomuser.me/api/portraits/women/12.jpg' }
+      ]
+    }
   },
-  services: {
-    dalamGedung: [
-      { title: 'Poli Umum', icon: 'stethoscope', count: '100+', label: 'Pasien/hari' },
-      { title: 'Poli Gigi', icon: 'tooth', count: '50+', label: 'Tindakan/Bulan' },
-      { title: 'KIA/KB', icon: 'baby', count: '24/7', label: 'Siaga Persalinan' },
-      { title: 'UGD 24 Jam', icon: 'ambulance', count: 'Fast', label: 'Respon Cepat' }
-    ]
-  },
-  news: [
-    { id: 1, title: 'Vaksinasi Massal 2026', date: 'Bulan ini', type: 'Berita' }
+  services: [
+    {
+      id: "umum",
+      title: "Poli Umum",
+      desc: "Layanan pemeriksaan kesehatan umum, konsultasi medis, dan pengobatan penyakit dasar langsung oleh dokter umum.",
+      icon: "Stethoscope",
+      popular: true
+    },
+    {
+      id: "gigi",
+      title: "Poli Gigi & Mulut",
+      desc: "Perawatan kesehatan gigi, cabut/tambal gigi dasar, dan edukasi kesehatan mulut untuk semua usia.",
+      icon: "Activity",
+      popular: false
+    },
+    {
+      id: "kia",
+      title: "KIA & KB",
+      desc: "Kesehatan Ibu dan Anak, pemeriksaan kehamilan (ANC), imunisasi, serta layanan Keluarga Berencana.",
+      icon: "Baby",
+      popular: true
+    },
+    {
+      id: "ugd",
+      title: "UGD 24 Jam",
+      desc: "Unit Gawat Darurat yang siaga 24/7 beserta layanan ambulan untuk penanganan kondisi kritis medis.",
+      icon: "Syringe",
+      popular: true
+    },
+    {
+      id: "lab",
+      title: "Laboratorium",
+      desc: "Fasilitas lab dasar untuk tes darah lengkap, urine, kolesterol, gula darah, dan pemeriksaan rutin lainnya.",
+      icon: "Microscope",
+      popular: false
+    },
+    {
+      id: "farmasi",
+      title: "Apotek/Farmasi",
+      desc: "Penyediaan obat-obatan esensial yang rasional dan terjamin mutunya sesuai resep dokter.",
+      icon: "Tablets",
+      popular: false
+    }
   ],
-  gallery: [
-    { id: 1, title: 'Kegiatan Posyandu', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600' }
-  ]
+  programUkm: [
+    { 
+      id: 'promkes', 
+      title: 'Promosi Kesehatan (Promkes)', 
+      icon: "Activity", 
+      desc: 'Edukasi dan penyuluhan kesehatan masyarakat untuk memberdayakan masyarakat agar mau dan mampu memelihara dan meningkatkan kesehatannya.',
+      kegiatan: ['Penyuluhan Keliling', 'Pembinaan Desa Siaga', 'Pemberdayaan Masyarakat di POSBINDU', 'Pengembangan PHBS di Rumah Tangga'],
+      target: 'Seluruh lapisan masyarakat',
+      jadwal: 'Senin, Rabu, Jumat'
+    },
+    { 
+      id: 'kesling', 
+      title: 'Kesehatan Lingkungan (Kesling)', 
+      icon: "ShieldCheck", 
+      desc: 'Pengawasan sanitasi lingkungan, tempat-tempat umum, industri, dan kualitas air minum.',
+      kegiatan: ['Inspeksi Sanitasi Tempat Umum (TTU)', 'Pembinaan Tempat Pengelolaan Makanan (TPM)', 'Surveilans Kualitas Air Minum', 'Pemicuan STBM (Sanitasi Total Berbasis Masyarakat)'],
+      target: 'Lingkungan komersil dan wilayah perumahan',
+      jadwal: 'Selasa dan Kamis'
+    },
+    { 
+      id: 'kiakb', 
+      title: 'KIA & KB', 
+      icon: "Baby", 
+      desc: 'Pemeriksaan ibu hamil, pelayanan posyandu balita, dan layanan serta edukasi keluarga berencana.',
+      kegiatan: ['Kelas Ibu Hamil', 'Pelayanan ANC, INC, dan PNC', 'Pemasangan & Pencabutan Implan/IUD', 'Imunisasi Dasar Lengkap'],
+      target: 'Ibu, Bayi, Balita, WUS, dan PUS',
+      jadwal: 'Setiap Hari Kerja'
+    },
+    { 
+      id: 'gizi', 
+      title: 'Gizi Masyarakat', 
+      icon: "Apple", 
+      desc: 'Pemantauan status gizi balita, penanganan stunting, edukasi gizi seimbang, dan pemberian makanan tambahan.',
+      kegiatan: ['Bulan Timbang Posyandu', 'Pemberian Makanan Tambahan (PMT) Pemulihan', 'Konseling Gizi Balita & Ibu Hamil KEK', 'Pemantauan Garam Beryodium'],
+      target: 'Anak Balita, Ibu Hamil',
+      jadwal: 'Sesuai Jadwal Posyandu'
+    },
+    { 
+      id: 'p2p', 
+      title: 'P2P', 
+      icon: "Biohazard", 
+      desc: 'Pelayanan imunisasi, surveilans epidemiologi, dan pengendalian penyakit menular seperti demam berdarah dan tuberkulosis.',
+      kegiatan: ['Pelacakan Kasus (Tracing)', 'Fogging Focus DBD', 'Kunjungan Rumah Pasien TB/Kusta', 'Vaksinasi Massal (BIAS)'],
+      target: 'Masyarakat Umum dan Suspek',
+      jadwal: 'Situasional & Rutin Harian'
+    }
+  ],
+  news: [
+    {
+      id: 1,
+      category: "Edukasi",
+      date: "12 Okt 2026",
+      title: "Waspada Demam Berdarah Dengue (DBD) di Musim Hujan",
+      image: "https://images.unsplash.com/photo-1584362917165-526a968579e8?q=80&w=800&auto=format&fit=crop",
+      excerpt: "Mari lakukan 3M Plus untuk mencegah perkembangbiakan nyamuk Aedes aegypti di lingkungan sekitar kita."
+    },
+    {
+      id: 2,
+      category: "Program KIA",
+      date: "08 Okt 2026",
+      title: "Pekan Imunisasi Nasional (PIN) Polio Telah Dimulai",
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
+      excerpt: "Lindungi buah hati dari ancaman virus Polio. Bawalah anak balita Anda ke Posyandu atau Puskesmas terdekat."
+    },
+    {
+      id: 3,
+      category: "Gizi Masyarakat",
+      date: "01 Okt 2026",
+      title: "Pentingnya Isi Piringku untuk Cegah Stunting Sejak Dini",
+      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop",
+      excerpt: "Memahami konsep gizi seimbang melalui pedoman Isi Piringku dari Kementerian Kesehatan."
+    }
+  ],
+  gallery: {
+    foto: [
+      { id: 1, title: 'Kegiatan Posyandu', sub: 'Layanan Balita', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600' },
+      { id: 2, title: 'Pemeriksaan Kesehatan Lengkap', sub: 'Layanan Umum', img: 'https://plus.unsplash.com/premium_photo-1661764835694-ee2643a1a364?auto=format&fit=crop&q=80&w=600' },
+      { id: 3, title: 'Edukasi Kesehatan Sekolah', sub: 'Kegiatan UKM', img: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=600' },
+      { id: 4, title: 'Layanan Gigi & Mulut', sub: 'Poli Gigi', img: 'https://images.unsplash.com/photo-1606811841689-1372dfcb1c76?auto=format&fit=crop&q=80&w=600' },
+      { id: 5, title: 'Penyuluhan Stunting', sub: 'Program Gizi', img: 'https://images.unsplash.com/photo-1536640712-4d4c36ef0e52?auto=format&fit=crop&q=80&w=600' },
+      { id: 6, title: 'Fasilitas Puskesmas', sub: 'Ruang Rawat', img: 'https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?auto=format&fit=crop&q=80&w=600' },
+    ],
+    video: [1, 2]
+  }
 };
 
 export const CMSContext = createContext<any>(null);

@@ -30,7 +30,7 @@ export default function Profile() {
     return () => window.removeEventListener('changeTab', handleTabChange);
   }, []);
 
-  const pegawaiData: Record<string, {name: string, role: string, nip?: string, photo?: string}[]> = {
+  const defaultPegawaiData: Record<string, {name: string, role: string, nip?: string, photo?: string}[]> = {
     'Dokter Umum': [
       { name: 'dr. Andi Suryadi', role: 'Dokter Umum', nip: '198001012010011001', photo: 'https://randomuser.me/api/portraits/men/11.jpg' },
       { name: 'dr. Budi Setiawan', role: 'Dokter Umum', nip: '198502022015021002', photo: 'https://randomuser.me/api/portraits/men/12.jpg' },
@@ -50,6 +50,8 @@ export default function Profile() {
     'Tenaga Farmasi': Array.from({length: 2}, (_, i) => ({ name: `Apoteker/Asisten ${i+1}`, role: 'Tenaga Farmasi', photo: `https://randomuser.me/api/portraits/${i % 2 === 0 ? 'women' : 'men'}/${i + 80}.jpg` })),
     'Tenaga Admin': Array.from({length: 4}, (_, i) => ({ name: `Staf Administrasi ${i+1}`, role: 'Tenaga Admin', photo: `https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i + 90}.jpg` })),
   };
+
+  const pegawaiData = profileData.pegawaiData || defaultPegawaiData;
 
   return (
     <section id="profil" className="min-h-[calc(100vh-80px)] xl:h-[calc(100vh-80px)] mt-20 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100 py-8 lg:py-12">

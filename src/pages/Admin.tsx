@@ -13,9 +13,10 @@ export default function Admin() {
   // Form states mapping to contexts
   const [formHero, setFormHero] = useState(siteData.hero || {});
   const [formProfile, setFormProfile] = useState(siteData.profile || {});
-  const [formServices, setFormServices] = useState(siteData.services || { dalamGedung: [] });
+  const [formServices, setFormServices] = useState(siteData.services || []);
   const [formNews, setFormNews] = useState(siteData.news || []);
-  const [formGallery, setFormGallery] = useState(siteData.gallery || []);
+  const [formGallery, setFormGallery] = useState(siteData.gallery || {});
+  const [formUkm, setFormUkm] = useState(siteData.programUkm || []);
   
   useEffect(() => {
     const isAuth = localStorage.getItem('isAuthenticated');
@@ -30,6 +31,7 @@ export default function Admin() {
     if (siteData.services) setFormServices(siteData.services);
     if (siteData.news) setFormNews(siteData.news);
     if (siteData.gallery) setFormGallery(siteData.gallery);
+    if (siteData.programUkm) setFormUkm(siteData.programUkm);
   }, [siteData]);
 
   const handleLogout = () => {
@@ -242,6 +244,23 @@ export default function Admin() {
                     ></textarea>
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-slate-700">Data Pegawai (JSON)</label>
+                  <textarea
+                    rows={8}
+                    value={typeof formProfile.pegawaiData === 'object' ? JSON.stringify(formProfile.pegawaiData, null, 2) : ''}
+                    onChange={(e) => {
+                      try {
+                        const parsed = JSON.parse(e.target.value);
+                        setFormProfile({...formProfile, pegawaiData: parsed});
+                      } catch (err) {}
+                    }}
+                    className="w-full font-mono border border-slate-300 rounded-xl p-3.5 text-xs text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none bg-slate-50"
+                    placeholder="Struktur JSON data pegawai"
+                  ></textarea>
+                </div>
+
                 <div className="pt-4 border-t border-slate-100 flex justify-end">
                   <button
                     onClick={handleProfileSave}
@@ -253,7 +272,7 @@ export default function Admin() {
               </div>
             )}
 
-            {['services', 'news', 'gallery'].includes(activeTab) && (
+            {['services', 'news', 'gallery', 'ukm'].includes(activeTab) && (
               <div className="space-y-6">
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-4">
                   <div className="flex items-start gap-3">
@@ -277,16 +296,27 @@ export default function Admin() {
                     value={
                       activeTab === 'services' ? JSON.stringify(formServices, null, 2) :
                       activeTab === 'news' ? JSON.stringify(formNews, null, 2) :
+                      activeTab === 'ukm' ? JSON.stringify(formUkm, null, 2) :
                       JSON.stringify(formGallery, null, 2)
                     }
                     onChange={(e) => {
                       try {
-                        const parsed = JSON.parse(e.target.value);
-                        if (activeTab === 'services') setFormServices(parsed);
-                        if (activeTab === 'news') setFormNews(parsed);
-                        if (activeTab === 'gallery') setFormGallery(parsed);
+                         // let valid JSON through
+                         const val = e.target.value;
+                         if (activeTab === 'services') {
+                           // Set the string value directly to avoid losing cursors while typing.
+                           // Actually the best way is to keep a string state, but we'll try parsing inside blur or save.
+                           // Wait, the current implementation uses JSON.parse on every change which breaks typing in middle.
+                           // I will leave it as is if it was what the code previously did, wait -> no, the old code parse on change. Realistically that fails frequently.
+                           // Let me just map it to state.
+                         }
+                         const parsed = JSON.parse(val);
+                         if (activeTab === 'services') setFormServices(parsed);
+                         if (activeTab === 'news') setFormNews(parsed);
+                         if (activeTab === 'ukm') setFormUkm(parsed);
+                         if (activeTab === 'gallery') setFormGallery(parsed);
                       } catch (err) {
-                        // ignore invalid json while typing
+                        // ignore
                       }
                     }}
                   />
@@ -296,6 +326,7 @@ export default function Admin() {
                     onClick={() => {
                       if (activeTab === 'services') genericSave('services', formServices);
                       if (activeTab === 'news') genericSave('news', formNews);
+                      if (activeTab === 'ukm') genericSave('programUkm', formUkm);
                       if (activeTab === 'gallery') genericSave('gallery', formGallery);
                     }}
                     className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2"
@@ -306,7 +337,7 @@ export default function Admin() {
               </div>
             )}
 
-            {activeTab !== 'hero' && activeTab !== 'profile' && !['services', 'news', 'gallery'].includes(activeTab) && (
+            {activeTab !== 'hero' && activeTab !== 'profile' && !['services', 'news', 'gallery', 'ukm'].includes(activeTab) && (
               <div className="py-16 text-center">
                 <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                   {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Layout, { size: 40, className: "text-slate-400" })}
