@@ -46,16 +46,57 @@ const defaultSiteData = {
 export const CMSContext = createContext<any>(null);
 
 export function CMSProvider({ children }: { children: ReactNode }) {
-  const [siteData, setSiteData] = useState(() => {
-    const saved = localStorage.getItem('cms_siteData');
-    return saved ? JSON.parse(saved) : defaultSiteData;
-  });
+  const [siteData, setSiteData] = useState<any>(defaultSiteData);
+  const [loading, setLoading] = useState(true);
 
-  const updateSection = (section: string, data: any) => {
+  // Fetch from the server on mount
+  useEffect(() => {
+    fetch('/api/site-data')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.error) {
+          setSiteData({
+            hero: data.hero || defaultSiteData.hero,
+            profile: data.profile || defaultSiteData.profile,
+            services: data.services || defaultSiteData.services,
+            news: data.news || defaultSiteData.news,
+            gallery: data.gallery || defaultSiteData.gallery,
+          });
+        }
+      })
+      .catch((err) => console.error('Failed to load site data', err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const updateSection = async (section: string, data: any) => {
+    // Optimistic update locally
     const newData = { ...siteData, [section]: data };
     setSiteData(newData);
-    localStorage.setItem('cms_siteData', JSON.stringify(newData));
+    
+    // Remote update
+    const token = localStorage.getItem('auth_token');
+    try {
+      const response = await fetch('/api/site-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ section, data })
+      });
+      if (!response.ok) {
+        console.error('Failed to save to database');
+        alert('Gagal menyimpan ke database. Anda mungkin belum login dengan benar.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error koneksi saat menyimpan!');
+    }
   };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
 
   return (
     <CMSContext.Provider value={{ siteData, updateSection }}>
