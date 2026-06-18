@@ -2,9 +2,7 @@ import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { requireAuth, AuthRequest } from './src/middleware/auth';
-import { db } from './src/db';
-import { cmsSettings, users, admins } from './src/db/schema';
-import { eq } from 'drizzle-orm';
+import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -15,14 +13,29 @@ async function startServer() {
   app.use(express.json());
 
   const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key-for-dev';
+  
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.warn("WARNING: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not set.");
+  }
+  
+  const supabase = createClient(
+    process.env.SUPABASE_URL || '',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+  );
 
   // Seed default admin if none exists
   try {
-    const adminRows = await db.select().from(admins);
-    if (adminRows.length === 0) {
+    const { data: adminRows, error: findErr } = await supabase.from('admins').select('*');
+    if (findErr) {
+      console.warn("Supabase check failed (maybe tables not created yet).", findErr.message);
+    } else if (adminRows && adminRows.length === 0) {
       const hash = await bcrypt.hash('admin123', 10);
-      await db.insert(admins).values({ username: 'admin', password: hash });
-      console.log('Default admin seeded.');
+      const { error: insErr } = await supabase.from('admins').insert([{ username: 'admin', password: hash }]);
+      if (insErr) {
+        console.error("Failed to seed admin:", insErr);
+      } else {
+        console.log('Default admin seeded.');
+      }
     }
   } catch (err) {
     console.error('Failed to seed admin', err);
@@ -31,8 +44,12 @@ async function startServer() {
   app.post('/api/login', async (req, res) => {
     try {
       const { username, password } = req.body;
-      const adminRows = await db.select().from(admins).where(eq(admins.username, username));
-      if (adminRows.length === 0) {
+      const { data: adminRows, error } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('username', username);
+        
+      if (error || !adminRows || adminRows.length === 0) {
         return res.status(401).json({ error: 'Username atau password salah' });
       }
 
@@ -54,8 +71,14 @@ async function startServer() {
   // Public endpoint to get site data
   app.get('/api/site-data', async (req, res) => {
     try {
-      const result = await db.select().from(cmsSettings).where(eq(cmsSettings.id, 'default'));
-      if (result.length > 0) {
+      const { data: result, error } = await supabase
+        .from('cms_settings')
+        .select('*')
+        .eq('id', 'default');
+      
+      if (error) throw error;
+
+      if (result && result.length > 0) {
         res.json(result[0]);
       } else {
         res.json(null);
@@ -71,17 +94,27 @@ async function startServer() {
     try {
       const { section, data } = req.body;
       
-      const current = await db.select().from(cmsSettings).where(eq(cmsSettings.id, 'default'));
+      const { data: current, error: currentErr } = await supabase
+        .from('cms_settings')
+        .select('*')
+        .eq('id', 'default');
+        
+      if (currentErr) throw currentErr;
       
       let updatePayload: any = {};
       
-      if (current.length === 0) {
+      if (!current || current.length === 0) {
         // Initial insert
         updatePayload = { id: 'default', [section]: data };
-        await db.insert(cmsSettings).values(updatePayload);
+        const { error: insErr } = await supabase.from('cms_settings').insert([updatePayload]);
+        if (insErr) throw insErr;
       } else {
-        updatePayload = { [section]: data, updatedAt: new Date() };
-        await db.update(cmsSettings).set(updatePayload).where(eq(cmsSettings.id, 'default'));
+        updatePayload = { [section]: data, updated_at: new Date().toISOString() };
+        const { error: upErr } = await supabase
+          .from('cms_settings')
+          .update(updatePayload)
+          .eq('id', 'default');
+        if (upErr) throw upErr;
       }
       
       res.json({ success: true });
