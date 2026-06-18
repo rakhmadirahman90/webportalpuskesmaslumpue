@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import ImageUpload from '../../components/ImageUpload';
+import { toast } from 'sonner';
 
 export default function AdminGallery() {
   const { siteData, updateSection } = useCMS();
@@ -14,7 +15,9 @@ export default function AdminGallery() {
 
   const handleSave = () => {
     updateSection('gallery', data);
-    alert('Tersimpan!');
+    toast.success('Data Berhasil Disimpan!', {
+      description: 'Pengaturan galeri telah diperbarui.'
+    });
   };
 
   const handleAdd = () => {

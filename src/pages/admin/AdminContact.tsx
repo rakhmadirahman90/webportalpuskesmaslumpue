@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Save } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import ImageUpload from '../../components/ImageUpload';
+import { toast } from 'sonner';
 
 export default function AdminContact() {
   const { siteData, updateSection } = useCMS();
@@ -9,7 +10,9 @@ export default function AdminContact() {
 
   const handleSave = () => {
     updateSection('kontak', data);
-    alert('Tersimpan!');
+    toast.success('Data Berhasil Disimpan!', {
+      description: 'Pengaturan kontak telah diperbarui.'
+    });
   };
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import { toast } from 'sonner';
 
 export default function AdminUkm() {
   const { siteData, updateSection } = useCMS();
@@ -11,7 +12,9 @@ export default function AdminUkm() {
 
   const handleSave = () => {
     updateSection('programUkm', data);
-    alert('Tersimpan!');
+    toast.success('Data Berhasil Disimpan!', {
+      description: 'Pengaturan program UKM telah diperbarui.'
+    });
   };
 
   const handleAdd = () => {

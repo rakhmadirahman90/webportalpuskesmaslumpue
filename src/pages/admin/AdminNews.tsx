@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import ImageUpload from '../../components/ImageUpload';
+import { toast } from 'sonner';
 
 export default function AdminNews() {
   const { siteData, updateSection } = useCMS();
@@ -12,7 +13,9 @@ export default function AdminNews() {
 
   const handleSave = () => {
     updateSection('news', data);
-    alert('Tersimpan!');
+    toast.success('Data Berhasil Disimpan!', {
+      description: 'Pengaturan berita dan publikasi telah diperbarui.'
+    });
   };
 
   const handleAdd = () => {

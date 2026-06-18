@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCMS } from '../context/CMSContext';
 import { LogOut, Home, User as UserIcon, Layout, Calendar, Newspaper, Image, HeartPulse, Share2, Phone, CheckCircle2, Save, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { toast } from 'sonner';
 import AdminServices from './admin/AdminServices';
 import AdminNews from './admin/AdminNews';
 import AdminUkm from './admin/AdminUkm';
@@ -15,15 +16,9 @@ export default function Admin() {
   const navigate = useNavigate();
   const { siteData, updateSection } = useCMS();
   const [activeTab, setActiveTab] = useState('hero');
-  const [toastMessage, setToastMessage] = useState('');
 
   // Form states mapping to contexts
   const [formHero, setFormHero] = useState(siteData.hero || {});
-  const [formProfile, setFormProfile] = useState(siteData.profile || {});
-  const [formServices, setFormServices] = useState(siteData.services || []);
-  const [formNews, setFormNews] = useState(siteData.news || []);
-  const [formGallery, setFormGallery] = useState(siteData.gallery || {});
-  const [formUkm, setFormUkm] = useState(siteData.programUkm || []);
   
   useEffect(() => {
     const isAuth = localStorage.getItem('isAuthenticated');
@@ -34,11 +29,6 @@ export default function Admin() {
 
   useEffect(() => {
     if (siteData.hero) setFormHero(siteData.hero);
-    if (siteData.profile) setFormProfile(siteData.profile);
-    if (siteData.services) setFormServices(siteData.services);
-    if (siteData.news) setFormNews(siteData.news);
-    if (siteData.gallery) setFormGallery(siteData.gallery);
-    if (siteData.programUkm) setFormUkm(siteData.programUkm);
   }, [siteData]);
 
   const handleLogout = () => {
@@ -47,25 +37,9 @@ export default function Admin() {
     navigate('/login');
   };
 
-  const showToast = (message: string) => {
-    setToastMessage(message);
-    setTimeout(() => setToastMessage(''), 3000);
-  };
-
   const handleHeroSave = () => {
     updateSection('hero', formHero);
-    showToast('Pengaturan Beranda (Hero) berhasil disimpan!');
-  };
-
-  const handleProfileSave = () => {
-    updateSection('profile', formProfile);
-    showToast('Pengaturan Profil berhasil disimpan!');
-  };
-
-  const genericSave = (section: string, data: any) => {
-    updateSection(section, data);
-    const tabName = tabs.find(t => t.id === section)?.name || section;
-    showToast(`Pengaturan ${tabName} berhasil disimpan!`);
+    toast.success('Pengaturan Beranda (Hero) berhasil disimpan!');
   };
 
   const tabs = [
@@ -215,7 +189,7 @@ export default function Admin() {
             {activeTab === 'contact' && <AdminContact />}
             {activeTab === 'socials' && <AdminSocials />}
 
-            {activeTab !== 'hero' && activeTab !== 'profile' && !['services', 'news', 'gallery', 'ukm', 'contact', 'socials'].includes(activeTab) && (
+            {['hero', 'profile', 'services', 'news', 'gallery', 'ukm', 'contact', 'socials'].indexOf(activeTab) === -1 && (
               <div className="py-16 text-center">
                 <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                   {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Layout, { size: 40, className: "text-slate-400" })}
@@ -229,22 +203,6 @@ export default function Admin() {
           </motion.div>
         </div>
       </main>
-
-      {/* Floating Toast Notification */}
-      <AnimatePresence>
-        {toastMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 bg-slate-900 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 font-medium text-sm"
-          >
-            <CheckCircle2 className="text-green-400" size={20} />
-            {toastMessage}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

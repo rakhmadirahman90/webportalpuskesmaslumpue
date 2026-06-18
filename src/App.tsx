@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import { CMSProvider } from './context/CMSContext';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -66,6 +67,7 @@ function PublicLayout() {
 export default function App() {
   return (
     <CMSProvider>
+      <Toaster position="top-right" richColors />
       <Router>
         <Routes>
           <Route path="/" element={<PublicLayout />} />

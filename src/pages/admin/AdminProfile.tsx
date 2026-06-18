@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Save, Plus, Trash2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import ImageUpload from '../../components/ImageUpload';
+import { toast } from 'sonner';
 
 export default function AdminProfile() {
   const { siteData, updateSection } = useCMS();
@@ -9,7 +10,9 @@ export default function AdminProfile() {
 
   const handleSave = () => {
     updateSection('profile', data);
-    alert('Tersimpan!');
+    toast.success('Data Berhasil Disimpan!', {
+      description: 'Pengaturan profil instansi telah diperbarui.'
+    });
   };
 
   const handleMisiChange = (idx: number, val: string) => {

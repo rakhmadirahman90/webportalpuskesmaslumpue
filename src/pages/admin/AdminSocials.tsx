@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Save, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import { toast } from 'sonner';
 
 export default function AdminSocials() {
   const { siteData, updateSection } = useCMS();
@@ -11,7 +12,9 @@ export default function AdminSocials() {
 
   const handleSave = () => {
     updateSection('sosialMedia', data);
-    alert('Tersimpan!');
+    toast.success('Data Berhasil Disimpan!', {
+      description: 'Pengaturan media sosial telah diperbarui.'
+    });
   };
 
   const handleAdd = () => {

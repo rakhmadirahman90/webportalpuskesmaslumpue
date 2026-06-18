@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
+import { toast } from 'sonner';
 
 // Default initial data for the entire site
 const defaultSiteData = {
@@ -265,7 +266,9 @@ export function CMSProvider({ children }: { children: ReactNode }) {
       }
     } catch (err) {
       console.error(err);
-      alert('Error koneksi saat menyimpan!');
+      toast.error('Gagal Menyimpan Data!', {
+        description: 'Terjadi masalah pada koneksi database.'
+      });
     }
   };
 
