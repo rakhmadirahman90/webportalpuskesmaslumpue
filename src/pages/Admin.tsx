@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCMS } from '../context/CMSContext';
-import { LogOut, Home, User as UserIcon, Layout, Calendar, Newspaper, Image, HeartPulse, Share2, Phone, CheckCircle2, Save, Activity } from 'lucide-react';
+import { LogOut, Home, User as UserIcon, Layout, Calendar, Newspaper, Image, HeartPulse, Share2, Phone, CheckCircle2, Save, Activity, Trash2, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
-import AdminServices from './admin/AdminServices';
+import ImageUpload from '../components/ImageUpload';
 import AdminNews from './admin/AdminNews';
 import AdminUkm from './admin/AdminUkm';
 import AdminGallery from './admin/AdminGallery';
@@ -45,8 +45,6 @@ export default function Admin() {
   const tabs = [
     { id: 'hero', name: 'Beranda (Hero)', icon: Home },
     { id: 'profile', name: 'Profil', icon: UserIcon },
-    { id: 'services', name: 'Layanan', icon: HeartPulse },
-    { id: 'schedule', name: 'Jadwal', icon: Calendar },
     { id: 'news', name: 'Publikasi', icon: Newspaper },
     { id: 'ukm', name: 'Program UKM', icon: Layout },
     { id: 'gallery', name: 'Galeri', icon: Image },
@@ -170,7 +168,40 @@ export default function Admin() {
                     placeholder="Tulis deskripsi atau sambutan di sini..."
                   ></textarea>
                 </div>
-                <div className="pt-4 border-t border-slate-100 flex justify-end">
+                <div className="space-y-4 pt-4 border-t border-slate-100">
+                  <h3 className="font-bold text-lg">Slider Gambar (Hero)</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {(formHero.sliderImages || []).map((imgUrl: string, idx: number) => (
+                       <div key={idx} className="bg-slate-50 border p-4 rounded-xl flex flex-col gap-3">
+                         <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm font-semibold text-slate-700">Gambar {idx + 1}</span>
+                            <button 
+                               onClick={() => setFormHero({...formHero, sliderImages: formHero.sliderImages.filter((_: string, i: number) => i !== idx)})} 
+                               className="text-red-500 hover:bg-red-100 p-1.5 rounded"
+                            >
+                               <Trash2 size={16} />
+                            </button>
+                         </div>
+                         <ImageUpload
+                            value={imgUrl}
+                            onChange={(val) => {
+                               const newSlider = [...formHero.sliderImages];
+                               newSlider[idx] = val;
+                               setFormHero({...formHero, sliderImages: newSlider});
+                            }}
+                         />
+                       </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setFormHero({...formHero, sliderImages: [...(formHero.sliderImages || []), '']})}
+                    className="flex justify-center items-center gap-2 w-full mt-4 bg-slate-100 text-slate-700 px-4 py-3 rounded-xl border border-slate-200 hover:bg-slate-200"
+                  >
+                    <Plus size={18} /> Tambah Gambar Slider
+                  </button>
+                </div>
+                
+                <div className="pt-4 border-t border-slate-100 flex justify-end mt-6">
                   <button
                     onClick={handleHeroSave}
                     className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 w-full sm:w-auto shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2"
@@ -182,14 +213,13 @@ export default function Admin() {
             )}
             
             {activeTab === 'profile' && <AdminProfile />}
-            {activeTab === 'services' && <AdminServices />}
             {activeTab === 'news' && <AdminNews />}
             {activeTab === 'ukm' && <AdminUkm />}
             {activeTab === 'gallery' && <AdminGallery />}
             {activeTab === 'contact' && <AdminContact />}
             {activeTab === 'socials' && <AdminSocials />}
 
-            {['hero', 'profile', 'services', 'news', 'gallery', 'ukm', 'contact', 'socials'].indexOf(activeTab) === -1 && (
+            {['hero', 'profile', 'news', 'gallery', 'ukm', 'contact', 'socials'].indexOf(activeTab) === -1 && (
               <div className="py-16 text-center">
                 <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                   {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Layout, { size: 40, className: "text-slate-400" })}

@@ -7,12 +7,14 @@ export default function Hero() {
   const { siteData } = useCMS();
   const heroData = siteData.hero;
 
-  const sliderImages = [
-    "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?q=80&w=2000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2000&auto=format&fit=crop"
-  ];
+  const sliderImages = heroData?.sliderImages && heroData.sliderImages.length > 0 
+    ? heroData.sliderImages 
+    : [
+      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?q=80&w=2000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2000&auto=format&fit=crop"
+    ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
