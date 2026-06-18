@@ -1,25 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Clock, User, AlertCircle } from 'lucide-react';
+import { useCMS } from '../../context/CMSContext';
 
 export default function Schedule() {
   const [activeTab, setActiveTab] = useState<'umum' | 'spesialis' | 'kia'>('umum');
+  const { siteData } = useCMS();
 
-  const schedules = {
-    umum: [
-      { name: "dr. Arief Rahman", poly: "Poli Umum 1", days: "Senin - Kamis", hours: "08:00 - 14:00" },
-      { name: "dr. Arief Rahman", poly: "Poli Umum 1", days: "Jumat", hours: "08:00 - 11:30" },
-      { name: "dr. Siti Aminah", poly: "Poli Umum 2", days: "Senin - Sabtu", hours: "08:00 - 13:00" },
-      { name: "drg. Budi Santoso", poly: "Poli Gigi", days: "Senin, Rabu, Jumat", hours: "08:00 - 12:00" },
-    ],
-    spesialis: [
-      { name: "dr. Maya Indah, Sp.A", poly: "Poli Anak", days: "Selasa & Kamis", hours: "09:00 - 12:00" },
-      { name: "dr. Hendra, Sp.PD", poly: "Poli Penyakit Dalam", days: "Senin & Rabu", hours: "10:00 - 13:00" },
-    ],
-    kia: [
-      { name: "Bidan Sinta, Amd.Keb", poly: "Poli KIA", days: "Senin - Sabtu", hours: "08:00 - 13:00" },
-      { name: "Bidan Ningsih, S.ST", poly: "Poli KB / Imunisasi", days: "Selasa & Kamis", hours: "08:00 - 12:00" },
-    ]
+  const schedules = siteData?.jadwal || {
+    umum: [],
+    spesialis: [],
+    kia: []
   };
 
   return (

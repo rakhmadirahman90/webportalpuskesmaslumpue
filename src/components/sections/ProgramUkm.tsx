@@ -70,7 +70,7 @@ export default function ProgramUkm() {
     }
   ];
 
-  const programData = siteData.programUkm || programs;
+  const programData = Array.isArray(siteData?.programUkm) ? siteData.programUkm : programs;
 
   return (
     <section id="program-ukm" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">

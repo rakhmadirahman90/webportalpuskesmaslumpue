@@ -4,7 +4,7 @@ import { useCMS } from '../../context/CMSContext';
 
 export default function Fasilitas() {
   const { siteData } = useCMS();
-  const fasilitasData = siteData?.fasilitas || [];
+  const fasilitasData = Array.isArray(siteData?.fasilitas) ? siteData.fasilitas : [];
 
   return (
     <section id="fasilitas" className="py-20 bg-white relative">

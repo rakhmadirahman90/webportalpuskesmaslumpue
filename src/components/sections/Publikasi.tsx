@@ -20,7 +20,7 @@ export default function Publikasi() {
     return () => window.removeEventListener('changeTab', handleTabChange);
   }, []);
 
-  const pengumumanData = siteData.pengumuman || [];
+  const pengumumanData = Array.isArray(siteData?.pengumuman) ? siteData.pengumuman : [];
 
   return (
     <section id="publikasi" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative border-t border-slate-100">

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCMS } from '../context/CMSContext';
-import { LogOut, Home, User as UserIcon, Layout, Calendar, Newspaper, Image, HeartPulse, Share2, Phone, CheckCircle2, Save, Activity, Trash2, Plus } from 'lucide-react';
+import { LogOut, Home, User as UserIcon, Layout, Calendar, Newspaper, Image, HeartPulse, Share2, Phone, CheckCircle2, Save, Activity, Trash2, Plus, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 import ImageUpload from '../components/ImageUpload';
 import AdminNews from './admin/AdminNews';
 import AdminPengumuman from './admin/AdminPengumuman';
 import AdminFasilitas from './admin/AdminFasilitas';
+import AdminServices from './admin/AdminServices';
 import AdminTimMedis from './admin/AdminTimMedis';
+import AdminFaq from './admin/AdminFaq';
+import AdminJadwal from './admin/AdminJadwal';
 import AdminUkm from './admin/AdminUkm';
 import AdminGallery from './admin/AdminGallery';
 import AdminContact from './admin/AdminContact';
@@ -48,12 +51,15 @@ export default function Admin() {
   const tabs = [
     { id: 'hero', name: 'Beranda (Hero)', icon: Home },
     { id: 'profile', name: 'Profil', icon: UserIcon },
+    { id: 'services', name: 'Layanan Utama', icon: HeartPulse },
     { id: 'fasilitas', name: 'Fasilitas', icon: HeartPulse },
     { id: 'tim-medis', name: 'Tenaga Medis', icon: Activity },
+    { id: 'jadwal', name: 'Jadwal Pelayanan', icon: Calendar },
     { id: 'news', name: 'Berita & Artikel', icon: Newspaper },
     { id: 'pengumuman', name: 'Pengumuman', icon: Newspaper },
     { id: 'ukm', name: 'Program UKM', icon: Layout },
     { id: 'gallery', name: 'Galeri', icon: Image },
+    { id: 'faq', name: 'FAQ', icon: HelpCircle },
     { id: 'socials', name: 'Media Sosial', icon: Share2 },
     { id: 'contact', name: 'Kontak', icon: Phone },
   ];
@@ -219,16 +225,19 @@ export default function Admin() {
             )}
             
             {activeTab === 'profile' && <AdminProfile />}
+            {activeTab === 'services' && <AdminServices />}
             {activeTab === 'fasilitas' && <AdminFasilitas />}
             {activeTab === 'tim-medis' && <AdminTimMedis />}
+            {activeTab === 'jadwal' && <AdminJadwal />}
             {activeTab === 'news' && <AdminNews />}
             {activeTab === 'pengumuman' && <AdminPengumuman />}
+            {activeTab === 'faq' && <AdminFaq />}
             {activeTab === 'ukm' && <AdminUkm />}
             {activeTab === 'gallery' && <AdminGallery />}
             {activeTab === 'contact' && <AdminContact />}
             {activeTab === 'socials' && <AdminSocials />}
 
-            {['hero', 'profile', 'fasilitas', 'tim-medis', 'news', 'pengumuman', 'gallery', 'ukm', 'contact', 'socials'].indexOf(activeTab) === -1 && (
+            {['hero', 'profile', 'services', 'fasilitas', 'tim-medis', 'jadwal', 'news', 'pengumuman', 'faq', 'gallery', 'ukm', 'contact', 'socials'].indexOf(activeTab) === -1 && (
               <div className="py-16 text-center">
                 <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                   {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Layout, { size: 40, className: "text-slate-400" })}

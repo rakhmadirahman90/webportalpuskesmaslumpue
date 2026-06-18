@@ -4,7 +4,7 @@ import { useCMS } from '../../context/CMSContext';
 
 export default function TimMedis() {
   const { siteData } = useCMS();
-  const timMedisData = siteData?.timMedis || [];
+  const timMedisData = Array.isArray(siteData?.timMedis) ? siteData.timMedis : [];
 
   return (
     <section id="tim-medis" className="py-20 bg-slate-50 relative border-t border-slate-100">

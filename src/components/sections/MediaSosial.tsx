@@ -6,7 +6,7 @@ import { useCMS } from '../../context/CMSContext';
 export default function MediaSosial() {
   const [activeTab, setActiveTab] = useState('instagram');
   const { siteData } = useCMS();
-  const sosialData = siteData.sosialMedia || [
+  const sosialData = Array.isArray(siteData?.sosialMedia) ? siteData.sosialMedia : [
     { title: "Facebook", username: "Puskesmas Lumpue", url: "https://facebook.com", icon: "Facebook" },
     { title: "Instagram", username: "@puskesmaslumpue", url: "https://instagram.com", icon: "Instagram" },
     { title: "YouTube", username: "PKM Lumpue", url: "https://youtube.com", icon: "Youtube" }

@@ -77,44 +77,58 @@ const defaultSiteData = {
   services: [
     {
       id: "umum",
-      title: "Poli Umum",
-      desc: "Layanan pemeriksaan kesehatan umum, konsultasi medis, dan pengobatan penyakit dasar langsung oleh dokter umum.",
+      title: "Poliklinik Umum",
+      desc: "Layanan pemeriksaan kesehatan umum, konsultasi medis, dan pengobatan penyakit dasar oleh dokter umum berpengalaman dengan pendekatan holistik.",
       icon: "Stethoscope",
       popular: true
     },
     {
       id: "gigi",
-      title: "Poli Gigi & Mulut",
-      desc: "Perawatan kesehatan gigi, cabut/tambal gigi dasar, dan edukasi kesehatan mulut untuk semua usia.",
+      title: "Poliklinik Gigi & Mulut",
+      desc: "Perawatan kesehatan gigi meliputi cabut, tambal, pembersihan karang gigi (scaling), dan pelayanan darurat sakit gigi untuk semua usia.",
       icon: "Activity",
-      popular: false
+      popular: true
     },
     {
       id: "kia",
       title: "KIA & KB",
-      desc: "Kesehatan Ibu dan Anak, pemeriksaan kehamilan (ANC), imunisasi, serta layanan Keluarga Berencana.",
+      desc: "Kesehatan Ibu dan Anak, melayani pemeriksaan kehamilan (ANC terpadu), persalinan, nifas, serta layanan berbagai metode Keluarga Berencana.",
       icon: "Baby",
       popular: true
     },
     {
       id: "ugd",
       title: "UGD 24 Jam",
-      desc: "Unit Gawat Darurat yang siaga 24/7 beserta layanan ambulan untuk penanganan kondisi kritis medis.",
+      desc: "Unit Gawat Darurat yang siaga 24/7 beserta layanan ambulan cepat tanggap untuk penanganan kondisi kritis medis, kecelakaan, dan rujukan bidan.",
       icon: "Syringe",
       popular: true
     },
     {
       id: "lab",
-      title: "Laboratorium",
-      desc: "Fasilitas lab dasar untuk tes darah lengkap, urine, kolesterol, gula darah, dan pemeriksaan rutin lainnya.",
+      title: "Laboratorium Terpadu",
+      desc: "Fasilitas lab memadai untuk tes darah lengkap, urine, kolesterol, asam urat, gula darah, tes kehamilan, dan pemeriksaan rutin penyakit endemik.",
       icon: "Microscope",
       popular: false
     },
     {
       id: "farmasi",
-      title: "Apotek/Farmasi",
-      desc: "Penyediaan obat-obatan esensial yang rasional dan terjamin mutunya sesuai resep dokter.",
+      title: "Apotek & Farmasi",
+      desc: "Penyediaan obat-obatan esensial yang rasional dan terjamin mutunya sesuai resep dokter, dilengkapi dengan konsultasi informasi obat (PIO).",
       icon: "Tablets",
+      popular: false
+    },
+    {
+      id: "lansia",
+      title: "Poliklinik Lansia",
+      desc: "Layanan khusus untuk pasien lanjut usia dengan fasilitas ramah lansia, bebas antrean berdiri, dan pemeriksaan berkala penyakit degeneratif.",
+      icon: "HeartPulse",
+      popular: false
+    },
+    {
+      id: "gizi",
+      title: "Klinik Konsultasi Gizi",
+      desc: "Layanan konseling ahli gizi untuk anak beresiko stunting, penderita diabetes melitus, hipertensi, obesitas, ibu hamil KEK, dan remaja.",
+      icon: "Apple",
       popular: false
     }
   ],
@@ -213,17 +227,52 @@ const defaultSiteData = {
     ]
   },
   fasilitas: [
-    { id: 1, title: 'Ruang UGD 24 Jam', desc: 'Pelayanan gawat darurat yang siaga 24 jam dengan peralatan lengkap.', img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800' },
-    { id: 2, title: 'Ruang Rawat Inap', desc: 'Fasilitas rawat inap yang nyaman dan bersih untuk pemulihan pasien.', img: 'https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?auto=format&fit=crop&q=80&w=800' },
-    { id: 3, title: 'Laboratorium', desc: 'Peralatan lab modern untuk pengecekan darah, urin, dan tes lainnya.', img: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&q=80&w=800' },
-    { id: 4, title: 'Apotek', desc: 'Penyediaan obat-obatan lengkap sesuai dengan resep dokter.', img: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&q=80&w=800' }
+    { id: 1, title: 'Ruang UGD 24 Jam', desc: 'Pelayanan gawat darurat yang siaga penuh selama 24 jam dengan tim medis tanggap darurat dan peralatan medis lengkap standar kementerian kesehatan.', img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800' },
+    { id: 2, title: 'Ruang Rawat Inap', desc: 'Fasilitas rawat inap yang dirancang senyaman mungkin untuk mempercepat masa pemulihan pasien, dilengkapi dengan pendingin ruangan dan pemantauan dokter 24 jam.', img: 'https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?auto=format&fit=crop&q=80&w=800' },
+    { id: 3, title: 'Laboratorium Klinik', desc: 'Laboratorium untuk pengecekan sampel darah lengkap, urine, dahak, kolesterol, dan gula darah dengan mesin diagnosa terkini.', img: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&q=80&w=800' },
+    { id: 4, title: 'Apotek & Farmasi Terpadu', desc: 'Penyediaan obat-obatan esensial maupun generik yang cukup, dilayani oleh apoteker berlisensi untuk menjamin ketepatan dosis dan edukasi pasien.', img: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&q=80&w=800' },
+    { id: 5, title: 'Ruang Tumbuh Kembang Anak (KIA)', desc: 'Ruangan khusus untuk memantau tumbuh kembang balita dan balita, dilengkapi dengan fasilitas bermain yang aman dan edukatif.', img: 'https://images.unsplash.com/photo-1519494332028-21d9fc6d6ff0?auto=format&fit=crop&q=80&w=800' },
+    { id: 6, title: 'Pusat Vaksinasi', desc: 'Fasilitas terpisah khusus bagi pendaftaran dan pemberian imunisasi rutin maupun vaksin darurat dalam skala populasi besar.', img: 'https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&q=80&w=800' }
   ],
   timMedis: [
-    { id: 1, name: 'Dr. Andi Pratama', role: 'Dokter Umum', img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400' },
-    { id: 2, name: 'Drg. Siti Aminah', role: 'Dokter Gigi', img: 'https://images.unsplash.com/photo-1594824432258-fcc73177894a?auto=format&fit=crop&q=80&w=400' },
-    { id: 3, name: 'Bdn. Rina Mulyati', role: 'Bidan Koordinator', img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400' },
-    { id: 4, name: 'Ns. Budi Santoso', role: 'Perawat Utama', img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400' }
-  ]
+    { id: 1, name: 'dr. Andi Suryadi, Sp.PD', role: 'Dokter Spesialis Penyakit Dalam', img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400' },
+    { id: 2, name: 'drg. Diana Putri', role: 'Dokter Gigi Spesialis Ortodonsia', img: 'https://images.unsplash.com/photo-1594824432258-fcc73177894a?auto=format&fit=crop&q=80&w=400' },
+    { id: 3, name: 'dr. Budi Setiawan', role: 'Dokter Umum Kepala UGD', img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400' },
+    { id: 4, name: 'dr. Citra Kirana, Sp.A', role: 'Dokter Spesialis Anak', img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400' },
+    { id: 5, name: 'Bdn. Rina Mulyati, S.ST., M.Keb', role: 'Bidan Koordinator KIA', img: 'https://images.unsplash.com/photo-1584043720379-b56cd9199c94?auto=format&fit=crop&q=80&w=400' },
+    { id: 6, name: 'Ns. Fitriani, S.Kep', role: 'Perawat Penanggung Jawab Rawat Inap', img: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=400' },
+    { id: 7, name: 'Apt. Muhammad Ihsan, S.Farm', role: 'Apoteker Penanggung Jawab', img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400' },
+    { id: 8, name: 'Dra. Yulianti, M.Gizi', role: 'Ahli Gizi Klinis', img: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=400' }
+  ],
+  faqs: [
+    { id: 1, question: "Kapan jam operasional Puskesmas?", answer: "Pelayanan rawat jalan (Poliklinik Umum, Gigi, KIA, Spesialis) buka setiap hari Senin-Kamis mulai pukul 08:00 - 14:00 WITA, Jumat pukul 08:00 - 11:30 WITA, dan Sabtu pukul 08:00 - 13:00 WITA. IGD, Rawat Inap, dan Ruang Bersalin tetap beroperasi 24 Jam setiap hari tanpa libur." },
+    { id: 2, question: "Apakah bisa mendaftar menggunakan BPJS Kesehatan dan apakah gratis?", answer: "Ya, kami melayani pasien BPJS Kesehatan secara gratis asalkan berobat sesuai prosedur. Pastikan Faskes Tingkat Pertama (FKTP) Anda terdaftar di Puskesmas kami. Jangan lupa untuk membawa Kartu BPJS/KIS asli atau digital melalui aplikasi Mobile JKN serta KTP/KK saat berobat." },
+    { id: 3, question: "Bagaimana cara mendapat rujukan ke Rumah Sakit?", answer: "Surat rujukan ke Rumah Sakit hanya dapat diberikan atas indikasi medis dari dokter pemeriksa di Puskesmas, bukan atas permintaan sendiri (kecuali gawat darurat). Rujukan ditujukan pada fasilitas kesehatan tingkat lanjut sesuai dengan sistem rujukan berjenjang BPJS." },
+    { id: 4, question: "Apakah Puskesmas melayani tes laboratorium dan tes golongan darah?", answer: "Tentu. Layanan Laboratorium kami menyediakan fasilitas pengecekan lengkap termasuk sel darah rutin, tes golongan darah, tes asam urat, kolesterol, gula darah puasa, tes widal (tifus), tes urine, hingga pemeriksaan dahak TB Paru." },
+    { id: 5, question: "Apakah bisa mendaftar BPJS baru atau pindah Faskes di Puskesmas?", answer: "Tidak bisa. Pendaftaran anggota BPJS baru maupun perpindahan Fasilitas Kesehatan Tingkat Pertama (FKTP) hanya bisa dilakukan di Kantor BPJS Kesehatan setempat atau secara mandiri melalui aplikasi Mobile JKN." },
+    { id: 6, question: "Bagaimana cara mendapatkan layanan Home Care (Kunjungan Rumah)?", answer: "Layanan Home Care 'Perkesmas' dikhususkan bagi pasien lansia bedridden (terbaring di tempat tidur), penyakit kronis, dan balita gizi buruk. Keluarga dapat melapor ke Perawat Wilayah masing-masing kelurahan atau melalui nomor Hotline Puskesmas." }
+  ],
+  jadwal: {
+    umum: [
+      { id: 1, name: "dr. Arief Rahman", poly: "Poli Umum 1", days: "Senin - Kamis", hours: "08:00 - 14:00" },
+      { id: 2, name: "dr. Arief Rahman", poly: "Poli Umum 1", days: "Jumat", hours: "08:00 - 11:30" },
+      { id: 3, name: "dr. Siti Aminah", poly: "Poli Umum 2", days: "Senin - Sabtu", hours: "08:00 - 13:00" },
+      { id: 4, name: "dr. Budi Setiawan", poly: "Poli Lansia", days: "Senin, Rabu, Jumat", hours: "08:00 - 12:00" },
+      { id: 5, name: "drg. Diana Putri", poly: "Poli Gigi", days: "Senin - Kamis", hours: "08:00 - 13:30" },
+      { id: 6, name: "drg. Fatihah Rizki", poly: "Poli Gigi Anak", days: "Jumat & Sabtu", hours: "08:00 - 11:30" }
+    ],
+    spesialis: [
+      { id: 7, name: "dr. Maya Indah, Sp.A", poly: "Poli Anak Spesialistik", days: "Selasa & Kamis", hours: "09:00 - 12:00" },
+      { id: 8, name: "dr. Hendra, Sp.PD", poly: "Poli Penyakit Dalam Khusus Kronis", days: "Senin & Rabu", hours: "10:00 - 13:00" },
+      { id: 9, name: "dr. Ratna, Sp.OG", poly: "Poli Kandungan Khusus", days: "Jumat", hours: "08:30 - 11:00" }
+    ],
+    kia: [
+      { id: 10, name: "Bdn. Rina Mulyati, M.Keb", poly: "Poli KIA (Ibu Hamil/ANC)", days: "Senin - Sabtu", hours: "08:00 - 13:00" },
+      { id: 11, name: "Bidan Ningsih, S.ST", poly: "Klinik KB & Konsultasi Reproduksi", days: "Selasa & Kamis", hours: "08:00 - 12:00" },
+      { id: 12, name: "Bidan Sinta, Amd.Keb", poly: "Klinik Imunisasi Balita Dasar", days: "Rabu", hours: "08:00 - 12:00" },
+      { id: 13, name: "Dra. Yulianti, M.Gizi", poly: "Klinik Konsultasi Gizi / Stunting", days: "Senin, Rabu, Jumat", hours: "09:00 - 12:00" }
+    ]
+  }
 };
 
 export const CMSContext = createContext<any>(null);
@@ -255,6 +304,8 @@ export function CMSProvider({ children }: { children: ReactNode }) {
             gallery: remoteData.gallery || defaultSiteData.gallery,
             fasilitas: remoteData.fasilitas || defaultSiteData.fasilitas,
             timMedis: remoteData.timMedis || defaultSiteData.timMedis,
+            faqs: remoteData.faqs || defaultSiteData.faqs,
+            jadwal: remoteData.jadwal || defaultSiteData.jadwal,
           });
         }
       } catch (err) {

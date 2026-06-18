@@ -57,7 +57,7 @@ export default function Services() {
     }
   ];
 
-    const servicesData = siteData.services || services;
+    const servicesData = Array.isArray(siteData?.services) ? siteData.services : services;
 
     return (
         <section id="layanan" className="min-h-[calc(100vh-80px)] mt-20 py-12 flex flex-col justify-center bg-slate-50 relative">

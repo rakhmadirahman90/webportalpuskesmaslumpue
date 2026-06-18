@@ -35,7 +35,7 @@ export default function News({ hideHeader }: { hideHeader?: boolean }) {
     }
   ];
 
-  const newsData = siteData.news || articles;
+  const newsData = Array.isArray(siteData?.news) ? siteData.news : articles;
 
   const content = (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

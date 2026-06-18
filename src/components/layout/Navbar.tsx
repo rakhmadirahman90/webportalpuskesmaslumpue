@@ -91,6 +91,11 @@ export default function Navbar({ activePage }: { activePage?: string }) {
       ]
     },
     { 
+      name: 'FAQ', 
+      href: '#faq',
+      page: 'faq'
+    },
+    { 
       name: 'Media Sosial', 
       href: '#media-sosial',
       page: 'media-sosial',
@@ -148,7 +153,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
                         {link.subLinks.map(sub => (
                            <a 
                              key={sub.name} 
-                             href={link.href} 
+                             href={sub.href ? sub.href : link.href} 
                              onClick={() => handleSubMenuClick(sub.href ? sub.href.substring(1) : link.page, sub.tabId)} 
                              className="px-5 py-3.5 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700 font-semibold border-b border-slate-50 last:border-0 transition-colors"
                            >
@@ -266,7 +271,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
                                   return (
                                      <a 
                                        key={sub.name} 
-                                       href={link.href} 
+                                       href={sub.href ? sub.href : link.href} 
                                        onClick={(e) => {
                                          handleSubMenuClick(sub.href ? sub.href.substring(1) : link.page, sub.tabId);
                                        }} 
