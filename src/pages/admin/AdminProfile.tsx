@@ -162,10 +162,10 @@ export default function AdminProfile() {
             <div className="space-y-3">
               <label className="block text-sm font-semibold text-slate-700">Pernyataan Visi</label>
               <textarea
-                rows={2}
+                rows={3}
                 value={data.visi || ''}
                 onChange={(e) => setData({...data, visi: e.target.value})}
-                className="w-full border border-slate-300 rounded-xl p-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-sans font-semibold text-slate-800"
+                className="w-full border border-slate-300 rounded-xl p-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-sans font-semibold text-slate-800 resize-y min-h-[80px]"
               />
             </div>
             <div className="space-y-4 pt-4 border-t border-slate-100">
@@ -176,8 +176,8 @@ export default function AdminProfile() {
                     {idx + 1}
                   </span>
                   <textarea
-                    rows={2}
-                    className="flex-grow border border-slate-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
+                    rows={3}
+                    className="flex-grow border border-slate-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-y min-h-[80px] leading-relaxed bg-white"
                     value={m}
                     onChange={e => handleMisiChange(idx, e.target.value)}
                   />
@@ -263,8 +263,8 @@ export default function AdminProfile() {
                       />
                     </div>
                     <textarea 
-                      rows={2}
-                      className="w-full border border-slate-300 p-3 rounded-xl text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500/10 resize-none" 
+                      rows={3}
+                      className="w-full border border-slate-300 p-3 rounded-xl text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500/10 resize-y min-h-[90px] leading-relaxed" 
                       value={t.desc} 
                       placeholder="Deskripsi penjabaran" 
                       onChange={e => handleTataNilaiChange(idx, 'desc', e.target.value)} 
