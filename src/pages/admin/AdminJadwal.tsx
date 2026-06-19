@@ -114,18 +114,18 @@ export default function AdminJadwal() {
 
       <div className="grid gap-4">
         {data[activeTab]?.map((item: any, idx: number) => (
-          <div key={idx} className="border p-4 rounded bg-slate-50 relative group">
-            <div className="pr-16">
-              <div className="font-bold text-slate-800 text-lg mb-1">{item.name}</div>
-              <div className="text-blue-600 font-semibold mb-2">{item.poly}</div>
-              <div className="flex gap-4 text-sm text-slate-600">
-                <div className="bg-white border px-2 py-1 rounded">🗓 {item.days}</div>
-                <div className="bg-white border px-2 py-1 rounded">⏰ {item.hours}</div>
+          <div key={idx} className="border border-slate-200/80 p-4 rounded-xl bg-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative">
+            <div className="min-w-0 flex-1">
+              <div className="font-bold text-slate-800 text-base sm:text-lg mb-1 break-words leading-snug">{item.name}</div>
+              <div className="text-blue-600 font-bold text-xs sm:text-sm uppercase tracking-wide mb-2">{item.poly}</div>
+              <div className="flex gap-2.5 text-xs text-slate-605 flex-wrap">
+                <div className="bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg">🗓 {item.days}</div>
+                <div className="bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg">⏰ {item.hours}</div>
               </div>
             </div>
-            <div className="absolute top-4 right-4 flex gap-2">
-              <button onClick={() => handleEdit(item)} className="p-1.5 text-blue-600 bg-white hover:bg-blue-50 rounded border"><Edit2 size={14}/></button>
-              <button onClick={() => handleDelete(item.id)} className="p-1.5 text-red-600 bg-white hover:bg-red-50 rounded border"><Trash2 size={14}/></button>
+            <div className="flex gap-2 w-full sm:w-auto justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200/50">
+              <button onClick={() => handleEdit(item)} className="p-2 text-blue-600 bg-white hover:bg-blue-50 hover:text-blue-700 rounded-lg border border-slate-200 flex items-center gap-1 text-xs font-bold cursor-pointer transition px-3"><Edit2 size={13}/> Edit</button>
+              <button onClick={() => handleDelete(item.id)} className="p-2 text-red-600 bg-white hover:bg-red-50 hover:text-red-700 rounded-lg border border-slate-200 flex items-center gap-1 text-xs font-bold cursor-pointer transition px-3"><Trash2 size={13}/> Hapus</button>
             </div>
           </div>
         ))}

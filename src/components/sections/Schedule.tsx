@@ -60,8 +60,8 @@ export default function Schedule() {
               ))}
             </div>
 
-            {/* Table Content */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            {/* Table Content - Desktop and Tablet */}
+            <div className="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -111,6 +111,52 @@ export default function Schedule() {
               {/* Empty state fallback if none */}
               {schedules[activeTab].length === 0 && (
                 <div className="p-12 text-center text-slate-500">
+                  Tidak ada jadwal tersedia untuk kategori ini.
+                </div>
+              )}
+            </div>
+
+            {/* Card Content - Mobile Screen Viewports */}
+            <div className="block md:hidden space-y-4">
+              {schedules[activeTab].map((item, idx) => (
+                <motion.div 
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  key={idx} 
+                  className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col gap-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                      <User size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-extrabold text-slate-950 leading-snug break-words">{item.name}</h4>
+                      <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider mt-1">{item.poly}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100 text-xs">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Hari Praktik</span>
+                      <div className="flex items-center gap-1.5 text-slate-750 font-bold">
+                        <Calendar size={13} className="text-slate-400 shrink-0" />
+                        <span className="break-words leading-none">{item.days}</span>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Jam Praktik</span>
+                      <div className="flex items-center gap-1.5 text-slate-750 font-bold">
+                        <Clock size={13} className="text-slate-400 shrink-0" />
+                        <span className="break-words leading-none">{item.hours}</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {schedules[activeTab].length === 0 && (
+                <div className="p-8 text-center text-slate-500 bg-slate-50 border border-slate-150 rounded-2xl">
                   Tidak ada jadwal tersedia untuk kategori ini.
                 </div>
               )}

@@ -263,18 +263,18 @@ export default function Admin() {
             {/* Header Logo Management Quick Menu */}
             <button
               onClick={() => setActiveTab("branding")}
-              className="flex items-center gap-2 bg-slate-50 border border-slate-200/60 hover:bg-slate-100 hover:border-slate-300 p-1.5 pr-3 rounded-xl transition-all cursor-pointer text-left focus:ring-2 focus:ring-blue-500/20 outline-none shrink-0"
+              className="flex items-center gap-1 sm:gap-2 bg-slate-50 border border-slate-200/60 hover:bg-slate-100 hover:border-slate-300 p-1 sm:p-1.5 sm:pr-3 rounded-xl transition-all cursor-pointer text-left focus:ring-2 focus:ring-blue-500/20 outline-none shrink-0"
               title="Kelola Logo & Tema pada Header Admin secara lengkap"
             >
-              <div className="w-8 h-8 rounded-lg bg-white p-1 flex items-center justify-center shrink-0 border border-slate-100">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white p-1 flex items-center justify-center shrink-0 border border-slate-100">
                 <img
                   src={siteData?.kontak?.logoUrl || "/logo.png?v=2"}
                   alt="Header Logo"
-                  className="w-6 h-6 object-contain"
+                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
                   referrerPolicy="no-referrer"
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col hidden sm:flex">
                 <span className="text-[9px] font-bold text-blue-600 uppercase tracking-wider leading-none">Logo & Tema</span>
                 <span className="text-[10px] font-semibold text-slate-500 leading-none mt-0.5">Kelola Branding</span>
               </div>

@@ -126,7 +126,7 @@ export default function AdminProfile() {
       {/* Main tab panel render */}
       <div className="min-h-[400px]">
         {activeSubTab === 'selayang-pandang' && (
-          <div className="space-y-4 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="space-y-4 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
             <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <Info size={20} />
@@ -149,7 +149,7 @@ export default function AdminProfile() {
         )}
 
         {activeSubTab === 'visi-misi' && (
-          <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
             <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <Target size={20} />
@@ -200,7 +200,7 @@ export default function AdminProfile() {
         )}
 
         {activeSubTab === 'tujuan' && (
-          <div className="space-y-4 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="space-y-4 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
             <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <Flag size={20} />
@@ -226,7 +226,7 @@ export default function AdminProfile() {
           const acronym = (data.tataNilai || []).map((t: any) => t.letter || '').filter(Boolean).join('.').toUpperCase();
           const jargon = (data.tataNilai || []).map((t: any) => t.letter || '').filter(Boolean).join('').toLowerCase();
           return (
-            <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                   <Star size={20} />
@@ -238,7 +238,7 @@ export default function AdminProfile() {
               </div>
               <div className="grid gap-6">
                 {(data.tataNilai || []).map((t: any, idx: number) => (
-                  <div key={idx} className="bg-slate-50 border border-slate-150 p-5 rounded-2xl relative shadow-sm hover:border-slate-300 transition-all duration-300">
+                  <div key={idx} className="bg-slate-50 border border-slate-150 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl relative shadow-sm hover:border-slate-300 transition-all duration-300">
                     <button
                       type="button"
                       onClick={() => removeTataNilai(idx)}
@@ -299,7 +299,7 @@ export default function AdminProfile() {
         {activeSubTab === 'motto' && (() => {
           const acronym = (data.motto || []).map((m: any) => m.letter || '').filter(Boolean).join('.').toUpperCase();
           return (
-            <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                   <HeartHandshake size={20} />
@@ -361,7 +361,7 @@ export default function AdminProfile() {
         })()}
 
         {activeSubTab === 'kebijakan-mutu' && (
-          <div className="space-y-4 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="space-y-4 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
             <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <ShieldCheck size={20} />
@@ -384,7 +384,7 @@ export default function AdminProfile() {
         )}
 
         {activeSubTab === 'struktur' && (
-          <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
             <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <Network size={20} />
@@ -395,7 +395,7 @@ export default function AdminProfile() {
               </div>
             </div>
             
-            <div className="bg-blue-50 border border-blue-100 p-5 rounded-2xl">
+            <div className="bg-blue-50 border border-blue-100 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl">
               <h4 className="font-bold text-blue-800 mb-3 text-sm uppercase tracking-wider select-none">Kepala Puskesmas</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                 <div className="space-y-1">
@@ -418,7 +418,7 @@ export default function AdminProfile() {
               <h4 className="font-bold text-slate-700 select-none">Daftar Pengurus Jajaran</h4>
               <div className="space-y-4">
                 {(data.strukturOrganisasi?.pengurus || []).map((p: any, idx: number) => (
-                  <div key={idx} className="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex flex-col gap-3 relative">
+                  <div key={idx} className="bg-slate-50 border border-slate-250 p-3 sm:p-4 rounded-xl sm:rounded-2xl flex flex-col gap-3 relative">
                     <div className="flex justify-between items-center">
                        <h5 className="font-bold text-xs text-blue-600 uppercase tracking-widest select-none">Pengurus {idx + 1}</h5>
                        <button 
@@ -460,7 +460,7 @@ export default function AdminProfile() {
         )}
 
         {activeSubTab === 'pegawai' && (
-          <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
             <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <Users size={20} />
@@ -472,10 +472,10 @@ export default function AdminProfile() {
             </div>
             
             <div className="space-y-6">
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2.5">
                 <input 
                   id="new-role-input"
-                  className="border border-slate-300 p-3 rounded-xl text-sm w-64 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all font-semibold" 
+                  className="border border-slate-300 p-3 rounded-xl text-sm w-full sm:w-64 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all font-semibold bg-white" 
                   placeholder="Nama Divisi/Poli Baru" 
                 />
                 <button 
@@ -486,7 +486,7 @@ export default function AdminProfile() {
                        input.value = '';
                     }
                   }} 
-                  className="bg-blue-600 text-white px-5 py-3 flex items-center gap-2 rounded-xl text-sm font-bold hover:bg-blue-700 transition"
+                  className="bg-blue-600 text-white px-5 py-3 flex items-center justify-center gap-2 rounded-xl text-sm font-bold hover:bg-blue-700 transition shrink-0 cursor-pointer"
                 >
                   <Plus size={16}/> Tambah Divisi
                 </button>
