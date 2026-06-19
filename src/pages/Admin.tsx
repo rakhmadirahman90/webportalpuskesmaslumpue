@@ -243,7 +243,7 @@ export default function Admin() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto w-full relative h-screen">
+      <main className="flex-1 min-w-0 overflow-y-auto w-full relative h-screen">
         <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 sm:px-6 md:px-8 md:py-5 flex items-center justify-between sticky top-0 z-30 w-full">
           <div className="flex items-center gap-2">
             <button

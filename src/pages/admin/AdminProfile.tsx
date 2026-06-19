@@ -226,37 +226,37 @@ export default function AdminProfile() {
           const acronym = (data.tataNilai || []).map((t: any) => t.letter || '').filter(Boolean).join('.').toUpperCase();
           const jargon = (data.tataNilai || []).map((t: any) => t.letter || '').filter(Boolean).join('').toLowerCase();
           return (
-            <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
+            <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3 sm:p-6 md:p-8 shadow-xs w-full max-w-full overflow-hidden">
               <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                   <Star size={20} />
                 </div>
-                <div>
-                  <h4 className="font-bold text-slate-900 font-display">Tata Nilai {acronym ? `(${acronym})` : '(S.I.G.A.P)'}</h4>
-                  <p className="text-slate-500 text-xs">Sesuaikan jargon operasional {jargon || 'sigap'} untuk personil medis.</p>
+                <div className="min-w-0">
+                  <h4 className="font-bold text-slate-900 font-display text-sm sm:text-base truncate">Tata Nilai {acronym ? `(${acronym})` : '(S.I.G.A.P)'}</h4>
+                  <p className="text-slate-500 text-[10px] sm:text-xs truncate">Sesuaikan jargon operasional {jargon || 'sigap'} untuk personil medis.</p>
                 </div>
               </div>
-              <div className="grid gap-6">
+              <div className="grid gap-4 sm:gap-6 w-full max-w-full min-w-0">
                 {(data.tataNilai || []).map((t: any, idx: number) => (
-                  <div key={idx} className="bg-slate-50 border border-slate-150 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl relative shadow-sm hover:border-slate-300 transition-all duration-300">
+                  <div key={idx} className="bg-slate-50 border border-slate-150 p-3 sm:p-5 rounded-xl sm:rounded-2xl relative shadow-sm hover:border-slate-300 transition-all duration-300 w-full min-w-0 overflow-hidden">
                     <button
                       type="button"
                       onClick={() => removeTataNilai(idx)}
-                      className="absolute top-4 right-4 bg-red-50 text-red-600 hover:bg-red-100 p-2 rounded-xl transition-colors shrink-0 cursor-pointer"
+                      className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-red-50 text-red-600 hover:bg-red-100 p-1.5 sm:p-2 rounded-xl transition-colors shrink-0 cursor-pointer"
                       title="Hapus poin tata nilai"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </button>
-                    <div className="flex gap-3 mb-3 pr-8">
+                    <div className="flex gap-2 sm:gap-3 mb-3 pr-8 sm:pr-10">
                       <input 
-                        className="w-12 border border-slate-300 p-2 rounded-xl text-center font-extrabold text-blue-600 bg-white uppercase" 
+                        className="w-10 sm:w-12 border border-slate-300 p-1.5 sm:p-2 rounded-xl text-center font-extrabold text-blue-600 bg-white uppercase text-xs sm:text-sm shrink-0 select-none" 
                         maxLength={2}
                         value={t.letter} 
                         onChange={e => handleTataNilaiChange(idx, 'letter', e.target.value.toUpperCase())} 
                         placeholder="Huruf"
                       />
                       <input 
-                        className="flex-grow border border-slate-300 p-2 px-3 rounded-xl font-bold bg-white outline-none focus:ring-2 focus:ring-blue-500/10" 
+                        className="flex-grow min-w-0 border border-slate-300 p-1.5 sm:p-2 px-2.5 sm:px-3 rounded-xl font-bold bg-white outline-none focus:ring-2 focus:ring-blue-500/10 text-xs sm:text-sm text-slate-800" 
                         value={t.title} 
                         placeholder="Judul Tata Nilai" 
                         onChange={e => handleTataNilaiChange(idx, 'title', e.target.value)} 
@@ -264,7 +264,7 @@ export default function AdminProfile() {
                     </div>
                     <textarea 
                       rows={3}
-                      className="w-full border border-slate-300 p-3 rounded-xl text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500/10 resize-y min-h-[90px] leading-relaxed" 
+                      className="w-full min-w-0 border border-slate-300 p-2.5 sm:p-3 rounded-xl text-xs sm:text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500/10 resize-y min-h-[80px] sm:min-h-[90px] leading-relaxed text-slate-700" 
                       value={t.desc} 
                       placeholder="Deskripsi penjabaran" 
                       onChange={e => handleTataNilaiChange(idx, 'desc', e.target.value)} 
@@ -276,7 +276,7 @@ export default function AdminProfile() {
                   <button 
                     type="button"
                     onClick={addTataNilai} 
-                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2.5 rounded-xl font-bold transition inline-flex items-center gap-1.5 cursor-pointer w-fit"
+                    className="text-[10px] sm:text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl font-bold transition inline-flex items-center gap-1.5 cursor-pointer w-fit"
                   >
                     <Plus size={14} /> Tambah Tata Nilai
                   </button>
@@ -286,7 +286,7 @@ export default function AdminProfile() {
                   <button 
                     type="button"
                     onClick={() => setData({...data, tataNilai: [{letter:'S', title:'Senyum', desc:''}]})} 
-                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2.5 rounded-xl font-bold transition inline-block w-fit"
+                    className="text-[10px] sm:text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl font-bold transition inline-block w-fit"
                   >
                     Buat Tata Nilai Baru
                   </button>
@@ -299,28 +299,28 @@ export default function AdminProfile() {
         {activeSubTab === 'motto' && (() => {
           const acronym = (data.motto || []).map((m: any) => m.letter || '').filter(Boolean).join('.').toUpperCase();
           return (
-            <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xs">
+            <div className="space-y-6 bg-white border border-slate-200 rounded-2xl p-3 sm:p-6 md:p-8 shadow-xs w-full max-w-full overflow-hidden">
               <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                   <HeartHandshake size={20} />
                 </div>
-                <div>
-                  <h4 className="font-bold text-slate-900 font-display">Motto Layananku {acronym ? `(${acronym})` : '(C.E.P.A.T)'}</h4>
-                  <p className="text-slate-500 text-xs">Pendidikan etos kerja utama untuk seluruh perwakilan faskes.</p>
+                <div className="min-w-0">
+                  <h4 className="font-bold text-slate-900 font-display text-sm sm:text-base truncate">Motto Layananku {acronym ? `(${acronym})` : '(C.E.P.A.T)'}</h4>
+                  <p className="text-slate-500 text-[10px] sm:text-xs truncate">Pendidikan etos kerja utama untuk seluruh perwakilan faskes.</p>
                 </div>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 w-full max-w-full min-w-0">
                 {(data.motto || []).map((m: any, idx: number) => (
-                  <div key={idx} className="flex gap-3 mb-2 items-center relative pr-12 group">
+                  <div key={idx} className="flex gap-2 sm:gap-3 mb-2.5 items-center relative pr-8 sm:pr-12 group w-full min-w-0">
                     <input 
-                      className="w-12 border border-slate-300 rounded-xl p-2.5 text-sm text-center font-extrabold text-blue-600 bg-white uppercase" 
+                      className="w-10 sm:w-12 border border-slate-300 rounded-xl p-1.5 sm:p-2.5 text-xs sm:text-sm text-center font-extrabold text-blue-600 bg-white uppercase shrink-0" 
                       maxLength={2}
                       value={m.letter} 
                       onChange={e => handleMottoChange(idx, 'letter', e.target.value.toUpperCase())} 
-                      placeholder="Huruf"
+                      placeholder="Hr"
                     />
                     <input 
-                      className="flex-grow border border-slate-300 rounded-xl p-2.5 px-3.5 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none" 
+                      className="flex-grow min-w-0 border border-slate-300 rounded-xl p-1.5 sm:p-2.5 px-2.5 sm:px-3.5 text-xs sm:text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none bg-white font-semibold text-slate-800" 
                       value={m.text} 
                       onChange={e => handleMottoChange(idx, 'text', e.target.value)} 
                       placeholder="Pernyataan etos kerja"
@@ -328,10 +328,10 @@ export default function AdminProfile() {
                     <button
                       type="button"
                       onClick={() => removeMotto(idx)}
-                      className="absolute right-0 bg-red-50 text-red-600 hover:bg-red-100 p-2.5 rounded-xl transition-colors shrink-0 cursor-pointer"
+                      className="absolute right-0 bg-red-50 text-red-600 hover:bg-red-100 p-1.5 sm:p-2 rounded-xl transition-colors shrink-0 cursor-pointer"
                       title="Hapus motto"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 ))}
@@ -340,7 +340,7 @@ export default function AdminProfile() {
                   <button 
                     type="button"
                     onClick={addMotto} 
-                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2.5 rounded-xl font-bold transition inline-flex items-center gap-1.5 cursor-pointer w-fit"
+                    className="text-[10px] sm:text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl font-bold transition inline-flex items-center gap-1.5 cursor-pointer w-fit"
                   >
                     <Plus size={14} /> Tambah Moto Poin
                   </button>
@@ -350,7 +350,7 @@ export default function AdminProfile() {
                   <button 
                     type="button"
                     onClick={() => setData({...data, motto: [{letter:'C', text:''}]})} 
-                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl font-semibold transition"
+                    className="text-[10px] sm:text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-3.5 py-2 sm:px-4 sm:py-2 rounded-xl font-semibold transition"
                   >
                     Buat Motto Baru
                   </button>
