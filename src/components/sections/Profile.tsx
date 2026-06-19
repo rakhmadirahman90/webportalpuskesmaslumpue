@@ -220,7 +220,14 @@ export default function Profile({ activeTab: propActiveTab }: ProfileProps) {
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-black tracking-wider uppercase mx-auto">
                   <Star size={14} className="stroke-[3]" /> Norma & Budaya
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-display">Tata Nilai S.I.G.A.P</h3>
+                {(() => {
+                  const acronym = (profileData.tataNilai || []).map((t: any) => t.letter || '').filter(Boolean).join('.').toUpperCase();
+                  return (
+                    <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-display">
+                      Tata Nilai {acronym || "S.I.G.A.P"}
+                    </h3>
+                  );
+                })()}
                 <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                   Prinsip-prinsip luhur yang menjadi pedoman perilaku setiap insan medis dan administrasi kami dalam berinteraksi dengan pasien dan masyarakat.
                 </p>
@@ -256,7 +263,14 @@ export default function Profile({ activeTab: propActiveTab }: ProfileProps) {
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-black tracking-wider uppercase mx-auto">
                   <HeartHandshake size={14} className="stroke-[3]" /> Motto Utama
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-display">Motto Layananku C.E.P.A.T</h3>
+                {(() => {
+                  const acronym = (profileData.motto || []).map((m: any) => m.letter || '').filter(Boolean).join('.').toUpperCase();
+                  return (
+                    <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-display">
+                      Motto Layananku {acronym || "C.E.P.A.T"}
+                    </h3>
+                  );
+                })()}
                 <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                   Kami senantiasa berpedoman pada komitmen respon dini, kesigapan, keramahan, dan kepuasan penerima manfaat.
                 </p>

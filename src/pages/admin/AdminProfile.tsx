@@ -60,6 +60,34 @@ export default function AdminProfile() {
     setData({...data, tataNilai: newTata});
   };
 
+  const addTataNilai = () => {
+    setData({
+      ...data,
+      tataNilai: [...(data.tataNilai || []), { letter: '', title: '', desc: '' }]
+    });
+  };
+
+  const removeTataNilai = (idx: number) => {
+    setData({
+      ...data,
+      tataNilai: (data.tataNilai || []).filter((_: any, i: number) => i !== idx)
+    });
+  };
+
+  const addMotto = () => {
+    setData({
+      ...data,
+      motto: [...(data.motto || []), { letter: '', text: '' }]
+    });
+  };
+
+  const removeMotto = (idx: number) => {
+    setData({
+      ...data,
+      motto: (data.motto || []).filter((_: any, i: number) => i !== idx)
+    });
+  };
+
   const setStruktur = (field: string, val: any) => setData({...data, strukturOrganisasi: {...(data.strukturOrganisasi || {}), [field]: val}});
   
   const handlePengurusChange = (idx: number, field: string, val: string) => {
@@ -194,91 +222,143 @@ export default function AdminProfile() {
           </div>
         )}
 
-        {activeSubTab === 'tata-nilai' && (
-          <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
-            <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <Star size={20} />
+        {activeSubTab === 'tata-nilai' && (() => {
+          const acronym = (data.tataNilai || []).map((t: any) => t.letter || '').filter(Boolean).join('.').toUpperCase();
+          const jargon = (data.tataNilai || []).map((t: any) => t.letter || '').filter(Boolean).join('').toLowerCase();
+          return (
+            <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+              <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <Star size={20} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 font-display">Tata Nilai {acronym ? `(${acronym})` : '(S.I.G.A.P)'}</h4>
+                  <p className="text-slate-500 text-xs">Sesuaikan jargon operasional {jargon || 'sigap'} untuk personil medis.</p>
+                </div>
               </div>
-              <div>
-                <h4 className="font-bold text-slate-900">Tata Nilai (S.I.G.A.P)</h4>
-                <p className="text-slate-500 text-xs">Sesuaikan jargon operasional sigap untuk personil medis.</p>
-              </div>
-            </div>
-            <div className="grid gap-6">
-              {(data.tataNilai || []).map((t: any, idx: number) => (
-                <div key={idx} className="bg-slate-50 border border-slate-150 p-5 rounded-2xl relative shadow-sm">
-                  <div className="flex gap-3 mb-3">
-                    <input 
-                      className="w-12 border border-slate-300 p-2 rounded-xl text-center font-extrabold text-blue-600 bg-white" 
-                      value={t.letter} 
-                      onChange={e => handleTataNilaiChange(idx, 'letter', e.target.value)} 
-                    />
-                    <input 
-                      className="flex-grow border border-slate-300 p-2 px-3 rounded-xl font-bold bg-white outline-none focus:ring-2 focus:ring-blue-500/10" 
-                      value={t.title} 
-                      placeholder="Judul Tata Nilai" 
-                      onChange={e => handleTataNilaiChange(idx, 'title', e.target.value)} 
+              <div className="grid gap-6">
+                {(data.tataNilai || []).map((t: any, idx: number) => (
+                  <div key={idx} className="bg-slate-50 border border-slate-150 p-5 rounded-2xl relative shadow-sm hover:border-slate-300 transition-all duration-300">
+                    <button
+                      type="button"
+                      onClick={() => removeTataNilai(idx)}
+                      className="absolute top-4 right-4 bg-red-50 text-red-600 hover:bg-red-100 p-2 rounded-xl transition-colors shrink-0 cursor-pointer"
+                      title="Hapus poin tata nilai"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                    <div className="flex gap-3 mb-3 pr-8">
+                      <input 
+                        className="w-12 border border-slate-300 p-2 rounded-xl text-center font-extrabold text-blue-600 bg-white uppercase" 
+                        maxLength={2}
+                        value={t.letter} 
+                        onChange={e => handleTataNilaiChange(idx, 'letter', e.target.value.toUpperCase())} 
+                        placeholder="Huruf"
+                      />
+                      <input 
+                        className="flex-grow border border-slate-300 p-2 px-3 rounded-xl font-bold bg-white outline-none focus:ring-2 focus:ring-blue-500/10" 
+                        value={t.title} 
+                        placeholder="Judul Tata Nilai" 
+                        onChange={e => handleTataNilaiChange(idx, 'title', e.target.value)} 
+                      />
+                    </div>
+                    <textarea 
+                      rows={2}
+                      className="w-full border border-slate-300 p-3 rounded-xl text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500/10 resize-none" 
+                      value={t.desc} 
+                      placeholder="Deskripsi penjabaran" 
+                      onChange={e => handleTataNilaiChange(idx, 'desc', e.target.value)} 
                     />
                   </div>
-                  <textarea 
-                    rows={2}
-                    className="w-full border border-slate-300 p-3 rounded-xl text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500/10 resize-none" 
-                    value={t.desc} 
-                    placeholder="Deskripsi penjabaran" 
-                    onChange={e => handleTataNilaiChange(idx, 'desc', e.target.value)} 
-                  />
+                ))}
+                
+                <div className="pt-2 flex gap-3">
+                  <button 
+                    type="button"
+                    onClick={addTataNilai} 
+                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2.5 rounded-xl font-bold transition inline-flex items-center gap-1.5 cursor-pointer w-fit"
+                  >
+                    <Plus size={14} /> Tambah Tata Nilai
+                  </button>
                 </div>
-              ))}
-              {!(data.tataNilai) && (
-                <button 
-                  onClick={() => setData({...data, tataNilai: [{letter:'S', title:'Senyum', desc:''}]})} 
-                  className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2.5 rounded-xl font-bold transition inline-block w-fit"
-                >
-                  Buat Tata Nilai Baru
-                </button>
-              )}
-            </div>
-          </div>
-        )}
 
-        {activeSubTab === 'motto' && (
-          <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
-            <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <HeartHandshake size={20} />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900">Motto Layananku (C.E.P.A.T)</h4>
-                <p className="text-slate-500 text-xs">Pendidikan etos kerja utama untuk seluruh perwakilan faskes.</p>
+                {!(data.tataNilai && data.tataNilai.length > 0) && (
+                  <button 
+                    type="button"
+                    onClick={() => setData({...data, tataNilai: [{letter:'S', title:'Senyum', desc:''}]})} 
+                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2.5 rounded-xl font-bold transition inline-block w-fit"
+                  >
+                    Buat Tata Nilai Baru
+                  </button>
+                )}
               </div>
             </div>
-            <div className="space-y-4">
-              {(data.motto || []).map((m: any, idx: number) => (
-                <div key={idx} className="flex gap-3 mb-2 items-center">
-                  <input 
-                    className="w-12 border border-slate-300 rounded-xl p-2.5 text-sm text-center font-extrabold text-blue-600 bg-slate-50" 
-                    value={m.letter} 
-                    onChange={e => handleMottoChange(idx, 'letter', e.target.value)} 
-                  />
-                  <input 
-                    className="flex-grow border border-slate-300 rounded-xl p-2.5 px-3.5 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none" 
-                    value={m.text} 
-                    onChange={e => handleMottoChange(idx, 'text', e.target.value)} 
-                  />
+          );
+        })()}
+
+        {activeSubTab === 'motto' && (() => {
+          const acronym = (data.motto || []).map((m: any) => m.letter || '').filter(Boolean).join('.').toUpperCase();
+          return (
+            <div className="space-y-6 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+              <div className="flex items-center gap-3 border-b pb-4 mb-4 select-none">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <HeartHandshake size={20} />
                 </div>
-              ))}
-              {!(data.motto) && (
-                <button 
-                  onClick={() => setData({...data, motto: [{letter:'C', text:''}]})} 
-                  className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl font-semibold transition"
-                >
-                  Buat Motto Baru
-                </button>
-              )}
+                <div>
+                  <h4 className="font-bold text-slate-900 font-display">Motto Layananku {acronym ? `(${acronym})` : '(C.E.P.A.T)'}</h4>
+                  <p className="text-slate-500 text-xs">Pendidikan etos kerja utama untuk seluruh perwakilan faskes.</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {(data.motto || []).map((m: any, idx: number) => (
+                  <div key={idx} className="flex gap-3 mb-2 items-center relative pr-12 group">
+                    <input 
+                      className="w-12 border border-slate-300 rounded-xl p-2.5 text-sm text-center font-extrabold text-blue-600 bg-white uppercase" 
+                      maxLength={2}
+                      value={m.letter} 
+                      onChange={e => handleMottoChange(idx, 'letter', e.target.value.toUpperCase())} 
+                      placeholder="Huruf"
+                    />
+                    <input 
+                      className="flex-grow border border-slate-300 rounded-xl p-2.5 px-3.5 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none" 
+                      value={m.text} 
+                      onChange={e => handleMottoChange(idx, 'text', e.target.value)} 
+                      placeholder="Pernyataan etos kerja"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeMotto(idx)}
+                      className="absolute right-0 bg-red-50 text-red-600 hover:bg-red-100 p-2.5 rounded-xl transition-colors shrink-0 cursor-pointer"
+                      title="Hapus motto"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+
+                <div className="pt-2 flex gap-3">
+                  <button 
+                    type="button"
+                    onClick={addMotto} 
+                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2.5 rounded-xl font-bold transition inline-flex items-center gap-1.5 cursor-pointer w-fit"
+                  >
+                    <Plus size={14} /> Tambah Moto Poin
+                  </button>
+                </div>
+
+                {!(data.motto && data.motto.length > 0) && (
+                  <button 
+                    type="button"
+                    onClick={() => setData({...data, motto: [{letter:'C', text:''}]})} 
+                    className="text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl font-semibold transition"
+                  >
+                    Buat Motto Baru
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {activeSubTab === 'kebijakan-mutu' && (
           <div className="space-y-4 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">

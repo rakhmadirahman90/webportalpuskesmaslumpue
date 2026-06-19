@@ -10,9 +10,14 @@ export default function AdminJadwal() {
     umum: [], spesialis: [], kia: []
   });
 
-  const [activeTab, setActiveTab] = useState<'umum' | 'spesialis' | 'kia'>('umum');
+  const [activeTab, setActiveTab] = useState<'umum' | 'kia'>('umum');
   const [editingId, setEditingId] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
+
+  const tabLabels: Record<'umum' | 'kia', string> = {
+    umum: 'Poliklinik Umum & Gigi',
+    kia: 'KIA & KB'
+  };
 
   const handleSave = () => {
     updateSection('jadwal', data);
@@ -96,13 +101,13 @@ export default function AdminJadwal() {
       </div>
       
       <div className="flex gap-2 mb-4 border-b pb-2">
-        {(['umum', 'spesialis', 'kia'] as const).map(tab => (
+        {(['umum', 'kia'] as const).map(tab => (
           <button 
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-t font-semibold ${activeTab === tab ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600' : 'text-slate-500 hover:bg-slate-50'}`}
           >
-            {tab.toUpperCase()}
+            {tabLabels[tab]}
           </button>
         ))}
       </div>
