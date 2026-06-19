@@ -20,6 +20,7 @@ import {
   HelpCircle,
   Menu,
   X,
+  Palette,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
@@ -37,6 +38,7 @@ import AdminContact from "./admin/AdminContact";
 import AdminSocials from "./admin/AdminSocials";
 import AdminProfile from "./admin/AdminProfile";
 import AdminUsers from "./admin/AdminUsers";
+import AdminBranding from "./admin/AdminBranding";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -71,6 +73,7 @@ export default function Admin() {
 
   const tabs = [
     { id: "hero", name: "Beranda (Hero)", icon: Home },
+    { id: "branding", name: "Tema & Logo Header", icon: Palette },
     { id: "profile", name: "Profil", icon: UserIcon },
     { id: "services", name: "Layanan Utama", icon: HeartPulse },
     { id: "fasilitas", name: "Fasilitas", icon: HeartPulse },
@@ -91,14 +94,19 @@ export default function Admin() {
       {/* Sidebar */}
       <aside className="w-72 bg-white border-r border-slate-200 flex flex-col hidden md:flex z-20 shadow-sm relative">
         <div className="p-6 border-b border-slate-100 flex items-center gap-3">
-          <div className="bg-blue-600 p-2 rounded-xl text-white shadow-md shadow-blue-600/20">
-            <Activity size={24} />
+          <div className="shrink-0 w-11 h-11 bg-blue-50/50 p-1.5 rounded-xl shadow-inner flex items-center justify-center">
+            <img
+              src={siteData?.kontak?.logoUrl || "/logo.png?v=2"}
+              alt="Logo Header Admin"
+              className="w-8 h-8 object-contain"
+              referrerPolicy="no-referrer"
+            />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight font-display">
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight font-display leading-none mb-1">
               Portal Admin
             </h1>
-            <p className="text-xs font-medium text-slate-500">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">
               Puskesmas Lumpue
             </p>
           </div>
@@ -162,8 +170,13 @@ export default function Admin() {
               {/* Header Drawer */}
               <div className="sticky top-0 bg-white border-b border-slate-100 z-20 px-5 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="bg-blue-600 p-1.5 rounded-lg text-white shadow-sm shadow-blue-600/10">
-                    <Activity size={18} />
+                  <div className="shrink-0 w-8 h-8 bg-blue-50/50 p-1 rounded-lg flex items-center justify-center">
+                    <img
+                      src={siteData?.kontak?.logoUrl || "/logo.png?v=2"}
+                      alt="Logo Header Admin"
+                      className="w-6 h-6 object-contain"
+                      referrerPolicy="no-referrer"
+                    />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[10px] font-extrabold text-blue-600 tracking-wide uppercase leading-none mb-0.5">
@@ -247,6 +260,26 @@ export default function Admin() {
             </h2>
           </div>
           <div className="flex items-center gap-3">
+            {/* Header Logo Management Quick Menu */}
+            <button
+              onClick={() => setActiveTab("branding")}
+              className="flex items-center gap-2 bg-slate-50 border border-slate-200/60 hover:bg-slate-100 hover:border-slate-300 p-1.5 pr-3 rounded-xl transition-all cursor-pointer text-left focus:ring-2 focus:ring-blue-500/20 outline-none shrink-0"
+              title="Kelola Logo & Tema pada Header Admin secara lengkap"
+            >
+              <div className="w-8 h-8 rounded-lg bg-white p-1 flex items-center justify-center shrink-0 border border-slate-100">
+                <img
+                  src={siteData?.kontak?.logoUrl || "/logo.png?v=2"}
+                  alt="Header Logo"
+                  className="w-6 h-6 object-contain"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[9px] font-bold text-blue-600 uppercase tracking-wider leading-none">Logo & Tema</span>
+                <span className="text-[10px] font-semibold text-slate-500 leading-none mt-0.5">Kelola Branding</span>
+              </div>
+            </button>
+
             <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Administrator Staff</span>
             <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
               A
@@ -472,6 +505,7 @@ export default function Admin() {
               </div>
             )}
 
+            {activeTab === "branding" && <AdminBranding />}
             {activeTab === "profile" && <AdminProfile />}
             {activeTab === "services" && <AdminServices />}
             {activeTab === "fasilitas" && <AdminFasilitas />}
@@ -488,6 +522,7 @@ export default function Admin() {
 
             {[
               "hero",
+              "branding",
               "profile",
               "services",
               "fasilitas",

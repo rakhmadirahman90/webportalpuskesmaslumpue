@@ -152,6 +152,8 @@ const defaultSiteData = {
       "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800",
     embedMap:
       "https://maps.google.com/maps?q=Puskesmas+Lumpue+Parepare&t=&z=15&ie=UTF8&iwloc=&output=embed",
+    logoUrl: "/logo.png?v=2",
+    theme: "blue",
   },
   sosialMedia: [
     {
@@ -691,7 +693,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
           setSiteData({
             hero: remoteData.hero || defaultSiteData.hero,
             profile: remoteData.profile || defaultSiteData.profile,
-            kontak: remoteData.kontak || defaultSiteData.kontak,
+            kontak: { ...defaultSiteData.kontak, ...(remoteData.kontak || {}) },
             sosialMedia: remoteData.sosialMedia || defaultSiteData.sosialMedia,
             services: remoteData.services || defaultSiteData.services,
             programUkm: remoteData.programUkm || defaultSiteData.programUkm,
@@ -712,6 +714,61 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     };
     loadData();
   }, []);
+
+  const activeTheme = siteData?.kontak?.theme || "blue";
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const themes: { [key: string]: any } = {
+      blue: {
+        "--primary-50": "#eff6ff",
+        "--primary-100": "#dbeafe",
+        "--primary-600": "#0061A0",
+        "--primary-700": "#005185",
+        "--primary-800": "#00416a",
+      },
+      teal: {
+        "--primary-50": "#f0fdfa",
+        "--primary-100": "#ccfbf1",
+        "--primary-600": "#0d9488",
+        "--primary-700": "#0f766e",
+        "--primary-800": "#115e59",
+      },
+      emerald: {
+        "--primary-50": "#ecfdf5",
+        "--primary-100": "#d1fae5",
+        "--primary-600": "#059669",
+        "--primary-700": "#047857",
+        "--primary-800": "#065f46",
+      },
+      violet: {
+        "--primary-50": "#faf5ff",
+        "--primary-100": "#f3e8ff",
+        "--primary-600": "#7c3aed",
+        "--primary-700": "#6d28d9",
+        "--primary-800": "#5b21b6",
+      },
+      indigo: {
+        "--primary-50": "#eef2ff",
+        "--primary-100": "#e0e7ff",
+        "--primary-600": "#4f46e5",
+        "--primary-700": "#4338ca",
+        "--primary-800": "#3730a3",
+      },
+      orange: {
+        "--primary-50": "#fff7ed",
+        "--primary-100": "#ffedd5",
+        "--primary-600": "#ea580c",
+        "--primary-700": "#c2410c",
+        "--primary-800": "#9a3412",
+      },
+    };
+
+    const selectedTheme = themes[activeTheme] || themes.blue;
+    Object.keys(selectedTheme).forEach((key) => {
+      root.style.setProperty(key, selectedTheme[key]);
+    });
+  }, [activeTheme]);
 
   const updateSection = async (section: string, data: any) => {
     // Optimistic update locally

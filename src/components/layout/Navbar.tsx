@@ -15,8 +15,11 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useCMS } from "../../context/CMSContext";
 
 export default function Navbar({ activePage }: { activePage?: string }) {
+  const { siteData } = useCMS();
+  const logoUrl = siteData?.kontak?.logoUrl || "/logo.png?v=2";
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
@@ -150,9 +153,10 @@ export default function Navbar({ activePage }: { activePage?: string }) {
             {/* Logo */}
             <div className="flex items-center gap-2 sm:gap-3">
               <img
-                src="/logo.png?v=2"
+                src={logoUrl}
                 alt="Logo Puskesmas Lumpue"
                 className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+                referrerPolicy="no-referrer"
               />
               <div className="flex flex-col justify-center">
                 <span className="text-[0.55rem] sm:text-[0.65rem] font-bold text-blue-600 tracking-wider sm:tracking-widest uppercase mb-0.5 leading-none">
@@ -168,7 +172,7 @@ export default function Navbar({ activePage }: { activePage?: string }) {
             <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
               <a
                 href="#portal"
-                className="flex items-center gap-2 bg-[#0061A0] hover:bg-blue-800 text-white px-4 py-2.5 rounded-lg font-semibold transition-colors text-sm shadow-md"
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-semibold transition-colors text-sm shadow-md"
               >
                 <Home size={18} /> Portal
               </a>
@@ -274,9 +278,10 @@ export default function Navbar({ activePage }: { activePage?: string }) {
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
                     <img
-                      src="/logo.png?v=2"
+                      src={logoUrl}
                       alt="Logo Puskesmas Lumpue"
                       className="w-6 h-6 object-contain"
+                      referrerPolicy="no-referrer"
                     />
                   </div>
                   <div className="flex flex-col">
