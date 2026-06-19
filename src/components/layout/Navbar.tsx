@@ -52,18 +52,18 @@ export default function Navbar({ activePage }: { activePage?: string }) {
   const navLinks = [
     {
       name: "Profil",
-      href: "#profil",
-      page: "profil",
+      href: "#selayang-pandang",
+      page: "selayang-pandang",
       icon: Building,
       subLinks: [
-        { name: "Selayang Pandang", tabId: "selayang-pandang" },
-        { name: "Visi & Misi", tabId: "visi-misi" },
-        { name: "Tujuan", tabId: "tujuan" },
-        { name: "Tata Nilai", tabId: "tata-nilai" },
-        { name: "Motto", tabId: "motto" },
-        { name: "Kebijakan Mutu", tabId: "kebijakan-mutu" },
-        { name: "Struktur Organisasi", tabId: "struktur" },
-        { name: "Data Pegawai", tabId: "pegawai" },
+        { name: "Selayang Pandang", tabId: "selayang-pandang", href: "#selayang-pandang" },
+        { name: "Visi & Misi", tabId: "visi-misi", href: "#visi-misi" },
+        { name: "Tujuan", tabId: "tujuan", href: "#tujuan" },
+        { name: "Tata Nilai", tabId: "tata-nilai", href: "#tata-nilai" },
+        { name: "Motto", tabId: "motto", href: "#motto" },
+        { name: "Kebijakan Mutu", tabId: "kebijakan-mutu", href: "#kebijakan-mutu" },
+        { name: "Struktur Organisasi", tabId: "struktur", href: "#struktur" },
+        { name: "Data Pegawai", tabId: "pegawai", href: "#pegawai" },
       ],
     },
     {
@@ -173,7 +173,14 @@ export default function Navbar({ activePage }: { activePage?: string }) {
                 <Home size={18} /> Portal
               </a>
               {navLinks.map((link) => {
-                const isActive = activePage === link.href.substring(1);
+                const isActive =
+                  activePage === link.href.substring(1) ||
+                  (link.subLinks &&
+                    link.subLinks.some(
+                      (sub) =>
+                        (sub.href && sub.href.substring(1) === activePage) ||
+                        sub.tabId === activePage,
+                    ));
 
                 if (link.subLinks) {
                   return (
@@ -302,7 +309,14 @@ export default function Navbar({ activePage }: { activePage?: string }) {
                 </a>
 
                 {navLinks.map((link) => {
-                  const isActive = activePage === link.href.substring(1);
+                  const isActive =
+                    activePage === link.href.substring(1) ||
+                    (link.subLinks &&
+                      link.subLinks.some(
+                        (sub) =>
+                          (sub.href && sub.href.substring(1) === activePage) ||
+                          sub.tabId === activePage,
+                      ));
                   const isExpanded = expandedMenu === link.name;
                   const LinkIcon = link.icon;
 

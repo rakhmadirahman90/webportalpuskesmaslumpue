@@ -42,10 +42,18 @@ function PublicLayout() {
         "home",
         "portal",
         "profil",
+        "selayang-pandang",
+        "visi-misi",
+        "tujuan",
+        "tata-nilai",
+        "motto",
+        "kebijakan-mutu",
+        "struktur",
+        "pegawai",
         "layanan",
-        "jadwal",
         "fasilitas",
         "tim-medis",
+        "jadwal",
         "publikasi",
         "program-ukm",
         "galeri",
@@ -72,7 +80,15 @@ function PublicLayout() {
       <main className="flex-grow pb-16">
         {activePage === "home" && <Hero />}
         {activePage === "portal" && <Hero />}
-        {activePage === "profil" && <Profile />}
+        {activePage === "profil" && <Profile activeTab="selayang-pandang" />}
+        {activePage === "selayang-pandang" && <Profile activeTab="selayang-pandang" />}
+        {activePage === "visi-misi" && <Profile activeTab="visi-misi" />}
+        {activePage === "tujuan" && <Profile activeTab="tujuan" />}
+        {activePage === "tata-nilai" && <Profile activeTab="tata-nilai" />}
+        {activePage === "motto" && <Profile activeTab="motto" />}
+        {activePage === "kebijakan-mutu" && <Profile activeTab="kebijakan-mutu" />}
+        {activePage === "struktur" && <Profile activeTab="struktur" />}
+        {activePage === "pegawai" && <Profile activeTab="pegawai" />}
         {activePage === "layanan" && <Services />}
         {activePage === "fasilitas" && <Fasilitas />}
         {activePage === "tim-medis" && <TimMedis />}

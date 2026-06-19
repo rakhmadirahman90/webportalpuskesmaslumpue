@@ -64,7 +64,12 @@ export default function AdminUsers() {
           .update(updates)
           .eq('username', selectedAdminUsername);
 
-        if (error) throw error;
+        if (error) {
+          if (error.code === '23505') {
+            throw new Error('Username ini sudah terdaftar di database.');
+          }
+          throw error;
+        }
         toast.success('Pengguna berhasil diperbarui!');
       } else {
         // Check local duplicate first
@@ -83,7 +88,12 @@ export default function AdminUsers() {
           .from('admins')
           .insert([{ username: cleanUsername, password: hashedPassword }]);
 
-        if (error) throw error;
+        if (error) {
+          if (error.code === '23505') {
+            throw new Error('Username ini sudah terdaftar di database.');
+          }
+          throw error;
+        }
         toast.success('Pengguna baru berhasil ditambahkan!');
       }
 
@@ -223,8 +233,25 @@ export default function AdminUsers() {
               <Loader2 className="animate-spin mr-2" /> Loading data...
             </div>
           ) : admins.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm">
-              Belum ada administrator yang terdaftar.
+            <div className="space-y-4">
+              <div className="py-12 text-center text-slate-500 text-sm bg-white border border-slate-200 rounded-2xl">
+                Belum ada administrator yang terdaftar di halaman ini.
+              </div>
+              <div className="py-6 px-6 bg-amber-50/60 rounded-2xl border border-amber-200/60 text-slate-700 shadow-sm">
+                <p className="text-xs sm:text-sm font-bold text-amber-900 mb-2 flex items-center gap-2">
+                  💡 Tips Konfigurasi Database Supabase
+                </p>
+                <p className="text-xs leading-relaxed text-slate-600 mb-3">
+                  Jika Anda sudah mendaftarkan akun tetapi daftar administrator di atas tetap kosong, hal ini biasanya disebabkan oleh fitur **Row Level Security (RLS)** Supabase yang otomatis aktif di tabel <code>admins</code> Anda, sehingga memblokir aplikasi membaca data secara anonim.
+                </p>
+                <p className="text-xs font-bold text-slate-700 mb-2">Solusi Mudah (Jalankan ini sekali saja di SQL Editor dashboard Supabase Anda):</p>
+                <pre className="bg-slate-900 text-amber-400 p-3.5 rounded-xl text-[10px] sm:text-xs font-mono overflow-x-auto select-all shadow-inner leading-normal">
+{`ALTER TABLE admins DISABLE ROW LEVEL SECURITY;`}
+                </pre>
+                <p className="text-[10px] text-slate-500 mt-2.5">
+                  * Setelah Anda menonaktifkan RLS atau menambahkan policy SELECT untuk role <code>anon</code>, refresh halaman ini untuk memuat seluruh daftar akun secara real-time.
+                </p>
+              </div>
             </div>
           ) : (
             <div className="overflow-hidden border border-slate-200 rounded-2xl shadow-sm bg-white">
