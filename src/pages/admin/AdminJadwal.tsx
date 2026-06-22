@@ -5,18 +5,25 @@ import { toast } from 'sonner';
 
 export default function AdminJadwal() {
   const { siteData, updateSection } = useCMS();
-  // schedules is an object with { umum: [], spesialis: [], kia: [] }
-  const [data, setData] = useState<any>(siteData?.jadwal || {
-    umum: [], spesialis: [], kia: []
+  // schedules is an object with { umum: [], spesialis: [], kia: [], posyandu: [], loket: [] }
+  const [data, setData] = useState<any>({
+    umum: [], 
+    spesialis: [], 
+    kia: [], 
+    posyandu: [], 
+    loket: [],
+    ...(siteData?.jadwal || {})
   });
 
-  const [activeTab, setActiveTab] = useState<'umum' | 'kia'>('umum');
+  const [activeTab, setActiveTab] = useState<'umum' | 'kia' | 'posyandu' | 'loket'>('umum');
   const [editingId, setEditingId] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
 
-  const tabLabels: Record<'umum' | 'kia', string> = {
+  const tabLabels: Record<'umum' | 'kia' | 'posyandu' | 'loket', string> = {
     umum: 'Poliklinik Umum & Gigi',
-    kia: 'KIA & KB'
+    kia: 'KIA & KB',
+    posyandu: 'Jadwal Posyandu',
+    loket: 'Layanan Loket'
   };
 
   const handleSave = () => {
@@ -100,8 +107,8 @@ export default function AdminJadwal() {
         </button>
       </div>
       
-      <div className="flex gap-2 mb-4 border-b pb-2">
-        {(['umum', 'kia'] as const).map(tab => (
+      <div className="flex gap-2 mb-4 border-b pb-2 flex-wrap">
+        {(['umum', 'kia', 'posyandu', 'loket'] as const).map(tab => (
           <button 
             key={tab}
             onClick={() => setActiveTab(tab)}

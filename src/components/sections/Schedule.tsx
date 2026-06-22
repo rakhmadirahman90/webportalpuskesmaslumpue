@@ -4,13 +4,16 @@ import { Calendar, Clock, User, AlertCircle } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 
 export default function Schedule() {
-  const [activeTab, setActiveTab] = useState<'umum' | 'kia'>('umum');
+  const [activeTab, setActiveTab] = useState<'umum' | 'kia' | 'posyandu' | 'loket'>('umum');
   const { siteData } = useCMS();
 
-  const schedules = siteData?.jadwal || {
+  const schedules = {
     umum: [],
     spesialis: [],
-    kia: []
+    kia: [],
+    posyandu: [],
+    loket: [],
+    ...(siteData?.jadwal || {})
   };
 
   return (
@@ -45,10 +48,12 @@ export default function Schedule() {
               {[
                 { id: 'umum', label: 'Poliklinik Umum & Gigi' },
                 { id: 'kia', label: 'KIA & KB' },
+                { id: 'posyandu', label: 'Posyandu' },
+                { id: 'loket', label: 'Pelayanan Loket' },
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as 'umum' | 'kia')}
+                  onClick={() => setActiveTab(tab.id as 'umum' | 'kia' | 'posyandu' | 'loket')}
                   className={`px-6 py-3 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
                     activeTab === tab.id 
                       ? 'bg-blue-600 text-white shadow-md' 
